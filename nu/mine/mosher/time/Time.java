@@ -31,4 +31,14 @@ public class Time implements Comparable
     {
         return this.date.compareTo(o);
     }
+
+    public boolean equals(Object o)
+    {
+        return this.date.equals(o);
+    }
+
+    public int hashCode()
+    {
+        return this.date.hashCode();
+    }
 }
