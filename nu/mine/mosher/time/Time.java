@@ -59,20 +59,16 @@ public class Time implements Comparable, Serializable
 
     public String toString()
     {
-        return ""+date.getTime();
+        return ""+ms;
     }
 
     private void writeObject(ObjectOutputStream s) throws IOException
     {
-        s.writeLong(date.getTime());
+        s.writeLong(ms);
     }
 
     private void readObject(ObjectInputStream s) throws IOException
     {
-        if (date != null)
-        {
-            throw new IllegalStateException();
-        }
-        date = new Date(s.readLong());
+        ms = s.readLong();
     }
 }
