@@ -3,15 +3,16 @@
  */
 package nu.mine.mosher.time;
 
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Improved version of <code>java.util.Date</code>.
+ * Objects of this class are immutable.
  * 
  * @author Chris Mosher
  */
-public class Time implements Comparable
+public class Time implements Comparable, Serializable
 {
     private final Date date;
 
