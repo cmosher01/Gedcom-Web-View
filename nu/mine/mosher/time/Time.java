@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class Time implements Comparable, Serializable
 {
-    private final Date date;
+    private Date date;
 
     /**
      * @param ms
