@@ -35,9 +35,13 @@ public class Time implements Comparable, Serializable
     {
         Time that = (Time)o;
         if (this.ms < that.ms)
+        {
             return -1;
+        }
         if (that.ms < this.ms)
+        {
             return +1;
+        }
         return 0;
     }
 
