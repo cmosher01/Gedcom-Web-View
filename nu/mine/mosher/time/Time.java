@@ -57,7 +57,7 @@ public class Time implements Comparable, Serializable
         s.writeLong(date.getTime());
     }
 
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+    private void readObject(ObjectInputStream s) throws IOException
     {
         date = new Date(s.readLong());
     }
