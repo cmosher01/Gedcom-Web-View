@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  * @author Chris Mosher
  */
-public class Time
+public class Time implements Comparable
 {
     private final Date date;
 
@@ -25,5 +25,10 @@ public class Time
     public long getTime()
     {
         return this.date.getTime();
+    }
+
+    public int compareTo(Object o)
+    {
+        return this.date.compareTo(o);
     }
 }
