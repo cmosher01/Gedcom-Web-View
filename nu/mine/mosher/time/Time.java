@@ -13,4 +13,12 @@ import java.util.Date;
 public class Time
 {
     private final Date date;
+
+    /**
+     * @param date
+     */
+    public Time(long ms)
+    {
+        this.date = new Date(ms);
+    }
 }
