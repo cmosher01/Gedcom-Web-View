@@ -17,29 +17,39 @@ import java.util.Date;
  */
 public class Time implements Comparable, Serializable
 {
-    private Date date;
+    private long ms;
 
     /**
-     * @param ms
+     * @param milliseconds
      */
-    public Time(long ms)
+    public Time(long milliseconds)
     {
-        date = new Date(ms);
+        this.ms = milliseconds;
     }
 
     public long getTime()
     {
-        return date.getTime();
+        return ms;
     }
 
     public int compareTo(Object o)
     {
-        return date.compareTo(o);
+        Time that = (Time)o;
+        if (this.ms < that.ms)
+            return -1;
+        if (that.ms < this.ms)
+            return +1;
+        return 0;
     }
 
     public boolean equals(Object o)
     {
-        return date.equals(o);
+        if (!(o instanceof Time))
+        {
+            return false;
+        }
+        Time that = (Time)o;
+        return this.ms == that.ms;
     }
 
     public int hashCode()
