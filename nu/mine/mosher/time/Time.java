@@ -3,6 +3,9 @@
  */
 package nu.mine.mosher.time;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -47,5 +50,15 @@ public class Time implements Comparable, Serializable
     public String toString()
     {
         return ""+date.getTime();
+    }
+
+    private void writeObject(ObjectOutputStream s) throws IOException
+    {
+        s.writeLong(date.getTime());
+    }
+
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+    {
+        date = new Date(s.readLong());
     }
 }
