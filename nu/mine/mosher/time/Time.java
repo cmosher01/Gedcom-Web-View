@@ -21,4 +21,9 @@ public class Time
     {
         this.date = new Date(ms);
     }
+
+    public long getTime()
+    {
+        return this.date;
+    }
 }
