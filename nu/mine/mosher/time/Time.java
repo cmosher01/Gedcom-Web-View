@@ -21,31 +21,31 @@ public class Time implements Comparable, Serializable
      */
     public Time(long ms)
     {
-        this.date = new Date(ms);
+        date = new Date(ms);
     }
 
     public long getTime()
     {
-        return this.date.getTime();
+        return date.getTime();
     }
 
     public int compareTo(Object o)
     {
-        return this.date.compareTo(o);
+        return date.compareTo(o);
     }
 
     public boolean equals(Object o)
     {
-        return this.date.equals(o);
+        return date.equals(o);
     }
 
     public int hashCode()
     {
-        return this.date.hashCode();
+        return date.hashCode();
     }
 
     public String toString()
     {
-        return ""+this.date.getTime();
+        return ""+date.getTime();
     }
 }
