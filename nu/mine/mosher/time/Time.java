@@ -3,6 +3,7 @@
  */
 package nu.mine.mosher.time;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -40,5 +41,11 @@ public class Time implements Comparable
     public int hashCode()
     {
         return this.date.hashCode();
+    }
+
+    public String toString()
+    {
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return f.format(this.date);
     }
 }
