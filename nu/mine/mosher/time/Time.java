@@ -24,6 +24,6 @@ public class Time
 
     public long getTime()
     {
-        return this.date;
+        return this.date.getTime();
     }
 }
