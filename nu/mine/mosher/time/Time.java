@@ -54,7 +54,7 @@ public class Time implements Comparable, Serializable
 
     public int hashCode()
     {
-        return date.hashCode();
+        return (int)(ms ^ (ms >>> 32));
     }
 
     public String toString()
