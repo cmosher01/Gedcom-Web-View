@@ -45,6 +45,6 @@ public class Time implements Comparable
 
     public String toString()
     {
-        return ""+ms;
+        return ""+this.date.getTime();
     }
 }
