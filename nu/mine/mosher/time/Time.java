@@ -59,6 +59,10 @@ public class Time implements Comparable, Serializable
 
     private void readObject(ObjectInputStream s) throws IOException
     {
+        if (date != null)
+        {
+            throw new IllegalStateException();
+        }
         date = new Date(s.readLong());
     }
 }
