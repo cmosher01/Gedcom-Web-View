@@ -15,7 +15,7 @@ public class Time
     private final Date date;
 
     /**
-     * @param date
+     * @param ms
      */
     public Time(long ms)
     {
