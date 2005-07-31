@@ -24,7 +24,7 @@ public class Time implements Comparable, Serializable
     private transient String asString;
 
     /**
-     * @param milliseconds
+     * @param milliseconds since Java epoch, as a <code>long</code>
      */
     public Time(final long milliseconds)
     {
@@ -35,6 +35,10 @@ public class Time implements Comparable, Serializable
 
 
 
+    /**
+     * @return milliseconds since Java epoch, as a <code>long</code>,
+     * as passed in to the constructor
+     */
     public long getTime()
     {
         return this.ms;
@@ -56,6 +60,7 @@ public class Time implements Comparable, Serializable
         return 0;
     }
 
+    @Override
     public boolean equals(final Object object)
     {
         if (!(object instanceof Time))
@@ -66,11 +71,18 @@ public class Time implements Comparable, Serializable
         return this.ms == that.ms;
     }
 
+    @Override
     public int hashCode()
     {
         return (int)(this.ms ^ (this.ms >>> 32));
     }
 
+    /**
+     * This time, as a string in the format:
+     * <code>yyyy/MM/dd HH:mm:ss.SSS</code> (as in <code>SimpleDateFormat</code>).
+     * @return time as a string
+     */
+    @Override
     public String toString()
     {
     	return this.asString;
