@@ -13,22 +13,23 @@ import java.util.Date;
 
 /**
  * Improved version of <code>java.util.Date</code>.
- * Objects of this class are immutable.
+ * Objects of this class are immutable. This class actually
+ * represents a bridge to <code>java.util.Date</code>.
  * 
  * @author Chris Mosher
  */
-public class Time implements Comparable, Serializable
+public class Time implements Comparable<Time>, Serializable
 {
     private long ms;
 
     private transient String asString;
 
     /**
-     * @param milliseconds since Java epoch, as a <code>long</code>
+     * @param date the <code>java.util.Date</code> this object will wrap
      */
-    public Time(final long milliseconds)
+    public Time(final Date date)
     {
-        this.ms = milliseconds;
+        this.ms = date.getTime();
 
         this.asString = calcString();
     }
@@ -36,29 +37,15 @@ public class Time implements Comparable, Serializable
 
 
     /**
-     * @return milliseconds since Java epoch, as a <code>long</code>,
-     * as passed in to the constructor
+     * Returns this time as a (new) <code>java.util.Date</code>. 
+     * @return new <code>java.util.Date</code>
      */
-    public long getTime()
+    public Date asDate()
     {
-        return this.ms;
+        return new Date(this.ms);
     }
 
 
-
-    public int compareTo(final Object object)
-    {
-        final Time that = (Time)object;
-        if (this.ms < that.ms)
-        {
-            return -1;
-        }
-        if (that.ms < this.ms)
-        {
-            return +1;
-        }
-        return 0;
-    }
 
     @Override
     public boolean equals(final Object object)
@@ -90,6 +77,21 @@ public class Time implements Comparable, Serializable
 
 
 
+    public int compareTo(final Time that)
+    {
+        if (this.ms < that.ms)
+        {
+            return -1;
+        }
+        if (that.ms < this.ms)
+        {
+            return +1;
+        }
+        return 0;
+    }
+
+
+
     private void writeObject(final ObjectOutputStream s) throws IOException
     {
         s.writeLong(this.ms);
@@ -100,6 +102,8 @@ public class Time implements Comparable, Serializable
         this.ms = s.readLong();
         this.asString = calcString();
     }
+
+
 
     private String calcString()
     {
