@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import nu.mine.mosher.core.Immutable;
 
 /**
  * Improved version of <code>java.util.Date</code>.
@@ -18,7 +19,7 @@ import java.util.Date;
  * 
  * @author Chris Mosher
  */
-public class Time implements Comparable<Time>, Serializable
+public class Time implements Comparable<Time>, Serializable, Immutable
 {
     private long ms;
 
@@ -31,7 +32,7 @@ public class Time implements Comparable<Time>, Serializable
     {
         this.ms = date.getTime();
 
-        this.asString = calcString();
+        init();
     }
 
 
@@ -94,20 +95,21 @@ public class Time implements Comparable<Time>, Serializable
 
     private void writeObject(final ObjectOutputStream s) throws IOException
     {
-        s.writeLong(this.ms);
+    	s.defaultWriteObject();
     }
 
-    private void readObject(final ObjectInputStream s) throws IOException
+    private void readObject(final ObjectInputStream s) throws IOException, ClassNotFoundException
     {
-        this.ms = s.readLong();
-        this.asString = calcString();
+    	s.defaultReadObject();
+
+    	init();
     }
 
 
 
-    private String calcString()
+    private void init()
     {
         final Format fmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-        return fmt.format(new Date(this.ms));
+        this.asString =  fmt.format(new Date(this.ms));
     }
 }
