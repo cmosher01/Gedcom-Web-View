@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import nu.mine.mosher.core.Immutable;
@@ -21,9 +21,16 @@ import nu.mine.mosher.core.Immutable;
  */
 public class Time implements Comparable<Time>, Serializable, Immutable
 {
+    private static final String ISO8601_RFC3339_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(ISO8601_RFC3339_DATE_TIME_FORMAT);
+
+
+
     private long ms;
 
     private transient String asString;
+
+
 
     /**
      * @param date the <code>java.util.Date</code> this object will wrap
@@ -33,6 +40,12 @@ public class Time implements Comparable<Time>, Serializable, Immutable
         this.ms = date.getTime();
 
         init();
+    }
+
+    private Time(final long ms)
+    {
+    	this.ms = ms;
+    	init();
     }
 
 
@@ -67,7 +80,8 @@ public class Time implements Comparable<Time>, Serializable, Immutable
 
     /**
      * This time, as a string in the format:
-     * <code>yyyy/MM/dd HH:mm:ss.SSS</code> (as in <code>SimpleDateFormat</code>).
+     * <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code> (as in <code>SimpleDateFormat</code>),
+     * or an empty string if this time is zero.
      * @return time as a string
      */
     @Override
@@ -109,7 +123,32 @@ public class Time implements Comparable<Time>, Serializable, Immutable
 
     private void init()
     {
-        final Format fmt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-        this.asString =  fmt.format(new Date(this.ms));
+        if (this.ms != 0)
+        {
+            this.asString = fmtDateTime.format(new Date(this.ms));
+        }
+        else
+        {
+	        this.asString = "";
+        }
+    }
+
+    /**
+     * @param sTime
+     * @return a new Time object
+     * @throws ParseException
+     */
+    public static Time readFromString(String sTime) throws ParseException
+    {
+        long ms = 0;
+        if (sTime.length() > 0)
+        {
+            if (sTime.endsWith("Z"))
+            {
+                sTime = sTime.substring(0,sTime.length()-1)+"+0000";
+            }
+            ms = fmtDateTime.parse(sTime).getTime();
+        }
+        return new Time(ms);
     }
 }
