@@ -36,9 +36,7 @@ public class Time implements Comparable<Time>, Serializable
      */
     public Time(final Date date)
     {
-        this.ms = date.getTime();
-
-        init();
+        this(date.getTime());
     }
 
     private Time(final long ms)
