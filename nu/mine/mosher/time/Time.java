@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import nu.mine.mosher.core.Immutable;
 
 /**
  * Improved version of <code>java.util.Date</code>.
@@ -19,7 +18,7 @@ import nu.mine.mosher.core.Immutable;
  * 
  * @author Chris Mosher
  */
-public class Time implements Comparable<Time>, Serializable, Immutable
+public class Time implements Comparable<Time>, Serializable
 {
     private static final String ISO8601_RFC3339_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(ISO8601_RFC3339_DATE_TIME_FORMAT);
