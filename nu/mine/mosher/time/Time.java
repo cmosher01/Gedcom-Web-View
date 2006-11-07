@@ -3,10 +3,6 @@
  */
 package nu.mine.mosher.time;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,16 +14,17 @@ import java.util.Date;
  * 
  * @author Chris Mosher
  */
-public class Time implements Comparable<Time>, Serializable
+public class Time implements Comparable<Time>
 {
     private static final String ISO8601_RFC3339_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(ISO8601_RFC3339_DATE_TIME_FORMAT);
 
 
 
-    private long ms;
+    private final long ms;
 
-    private transient String asString;
+    private transient final String asString;
+    private transient final int hash;
 
 
 
@@ -42,7 +39,15 @@ public class Time implements Comparable<Time>, Serializable
     private Time(final long ms)
     {
     	this.ms = ms;
-    	init();
+        if (this.ms != 0)
+        {
+            this.asString = fmtDateTime.format(new Date(this.ms));
+        }
+        else
+        {
+	        this.asString = "";
+        }
+        this.hash = (int)(this.ms ^ (this.ms >>> 32));
     }
 
 
@@ -72,7 +77,7 @@ public class Time implements Comparable<Time>, Serializable
     @Override
     public int hashCode()
     {
-        return (int)(this.ms ^ (this.ms >>> 32));
+        return this.hash;
     }
 
     /**
@@ -103,32 +108,6 @@ public class Time implements Comparable<Time>, Serializable
     }
 
 
-
-    private void writeObject(final ObjectOutputStream s) throws IOException
-    {
-    	s.defaultWriteObject();
-    }
-
-    private void readObject(final ObjectInputStream s) throws IOException, ClassNotFoundException
-    {
-    	s.defaultReadObject();
-
-    	init();
-    }
-
-
-
-    private void init()
-    {
-        if (this.ms != 0)
-        {
-            this.asString = fmtDateTime.format(new Date(this.ms));
-        }
-        else
-        {
-	        this.asString = "";
-        }
-    }
 
     /**
      * @param sTime
