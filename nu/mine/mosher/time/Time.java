@@ -120,11 +120,12 @@ public class Time implements Comparable<Time>
         long ms = 0;
         if (sTime.length() > 0)
         {
-            if (sTime.endsWith("Z"))
+        	String t = sTime;
+            if (t.endsWith("Z"))
             {
-                sTime = sTime.substring(0,sTime.length()-1)+"+0000";
+                t = t.substring(0,t.length()-1)+"+0000";
             }
-            ms = fmtDateTime.parse(sTime).getTime();
+            ms = fmtDateTime.parse(t).getTime();
         }
         return new Time(ms);
     }
