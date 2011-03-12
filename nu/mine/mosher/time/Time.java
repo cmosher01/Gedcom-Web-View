@@ -94,7 +94,8 @@ public class Time implements Comparable<Time>
 
 
 
-    public int compareTo(final Time that)
+    @Override
+	public int compareTo(final Time that)
     {
         if (this.ms < that.ms)
         {
