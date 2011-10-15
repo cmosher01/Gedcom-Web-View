@@ -85,6 +85,10 @@ public class DatePeriod implements Comparable<DatePeriod>
 	@Override
 	public int compareTo(final DatePeriod that)
 	{
+		if (that == null)
+		{
+			return 0;
+		}
 		int d = 0;
 		if (d == 0)
 		{
