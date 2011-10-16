@@ -87,7 +87,7 @@ public class DatePeriod implements Comparable<DatePeriod>
 	{
 		if (that == null)
 		{
-			return 0;
+			return -1;
 		}
 		int d = 0;
 		if (d == 0)
