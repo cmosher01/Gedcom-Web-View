@@ -33,6 +33,20 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>javacc</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <version>2.9</version>
         <configuration>
@@ -77,17 +91,10 @@
     </plugins>
   </build>
   <dependencies>
-    <!--
-		<dependency>
-			<groupId>nu.mine.mosher.time</groupId>
-			<artifactId>timeUtil</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-		</dependency>
--->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
+      <version>4.10</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
