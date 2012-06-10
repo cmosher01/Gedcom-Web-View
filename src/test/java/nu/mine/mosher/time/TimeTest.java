@@ -17,6 +17,7 @@ import org.junit.Test;
  * Smoke test of {@link Time} class.
  * @author christopher_mosher
  */
+@SuppressWarnings("static-method")
 public class TimeTest
 {
     /**

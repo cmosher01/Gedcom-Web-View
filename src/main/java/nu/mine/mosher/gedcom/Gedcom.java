@@ -42,7 +42,6 @@ public final class Gedcom
         UnsupportedEncodingException, FileNotFoundException, InvalidLevel
     {
         String charset = getCharset(in);
-        // System.out.println(in.toString()+": charset guessed: "+charset);
         return readTree(in, charset);
     }
 

@@ -36,7 +36,7 @@ class GedcomConcatenator
 
     private static void concatenateHelper(final TreeNode<GedcomLine> nodeParent)
     {
-        final List<TreeNode<GedcomLine>> rToBeRemoved = new ArrayList<TreeNode<GedcomLine>>();
+        final List<TreeNode<GedcomLine>> rToBeRemoved = new ArrayList<>();
 
         for (final TreeNode<GedcomLine> nodeChild : nodeParent)
         {

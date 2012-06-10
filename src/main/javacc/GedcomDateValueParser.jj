@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+@SuppressWarnings("all")
 public class GedcomDateValueParser
 {
 	private DatePeriod period;

@@ -13,7 +13,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>>
     private T object;
 
     private TreeNode<T> parent;
-    private final List<TreeNode<T>> children = new ArrayList<TreeNode<T>>();
+    private final List<TreeNode<T>> children = new ArrayList<>();
 
     public TreeNode()
     {

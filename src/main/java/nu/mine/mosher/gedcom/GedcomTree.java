@@ -18,7 +18,7 @@ import nu.mine.mosher.gedcom.exception.InvalidLevel;
 public class GedcomTree
 {
     private final TreeNode<GedcomLine> root;
-    private final Map<String, TreeNode<GedcomLine>> mapIDtoNode = new HashMap<String, TreeNode<GedcomLine>>();
+    private final Map<String, TreeNode<GedcomLine>> mapIDtoNode = new HashMap<>();
 
     private int prevLevel;
     private TreeNode<GedcomLine> prevNode;
@@ -28,7 +28,7 @@ public class GedcomTree
      */
     public GedcomTree()
     {
-        this.root = new TreeNode<GedcomLine>();
+        this.root = new TreeNode<>();
         this.prevNode = this.root;
         this.prevLevel = -1;
     }
@@ -54,7 +54,7 @@ public class GedcomTree
         }
 
         this.prevLevel = line.getLevel();
-        this.prevNode = new TreeNode<GedcomLine>();
+        this.prevNode = new TreeNode<>();
         this.prevNode.setObject(line);
         parent.addChild(this.prevNode);
 

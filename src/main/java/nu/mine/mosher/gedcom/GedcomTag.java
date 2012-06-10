@@ -22,7 +22,7 @@ public enum GedcomTag
     public static final Set<GedcomTag> setIndividualEvent;
     static
     {
-        final Set<GedcomTag> set = new HashSet<GedcomTag>();
+        final Set<GedcomTag> set = new HashSet<>();
 
         set.add(GedcomTag.BIRT);
         set.add(GedcomTag.CHR);
@@ -54,7 +54,7 @@ public enum GedcomTag
     public static final Set<GedcomTag> setIndividualAttribute;
     static
     {
-        final Set<GedcomTag> set = new HashSet<GedcomTag>();
+        final Set<GedcomTag> set = new HashSet<>();
 
         set.add(GedcomTag.CAST);
         set.add(GedcomTag.DSCR);
@@ -76,7 +76,7 @@ public enum GedcomTag
     public static final Set<GedcomTag> setFamilyEvent;
     static
     {
-        final Set<GedcomTag> set = new HashSet<GedcomTag>();
+        final Set<GedcomTag> set = new HashSet<>();
 
         set.add(GedcomTag.ANUL);
         set.add(GedcomTag.CENS);

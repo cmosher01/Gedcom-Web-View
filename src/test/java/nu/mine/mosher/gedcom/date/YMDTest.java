@@ -15,6 +15,7 @@ import org.junit.Test;
  * TODO
  * @author Chris Mosher
  */
+@SuppressWarnings("static-method")
 public class YMDTest
 {
     @Test
