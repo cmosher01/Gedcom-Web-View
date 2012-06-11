@@ -63,19 +63,18 @@ public class YMDTest
     @Test
     public void minimum()
     {
-        assertEquals("-9999-01-01", YMD.getMinimum().toString());
+        assertEquals("[before]", YMD.getMinimum().toString());
     }
 
     @Test
     public void maximum()
     {
-        assertEquals("9999-12-31", YMD.getMaximum().toString());
+        assertEquals("[after]", YMD.getMaximum().toString());
     }
 
-    @Test
+    @Test(expected=IllegalStateException.class)
     public void zero()
     {
         final YMD ymd = new YMD(0);
-        assertEquals("", ymd.toString());
     }
 }

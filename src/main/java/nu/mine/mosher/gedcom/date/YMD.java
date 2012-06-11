@@ -13,18 +13,37 @@ import nu.mine.mosher.time.Time;
 /**
  * Represents a date, specified as a year, month, and day, allowing for some
  * values to be unknown. An unknown day or month is specified as zero. Objects
- * of this class are immutable and thread-safe.
+ * of this class are immutable and thread-safe. Gregorian calendar is assumed.
  * @author Chris Mosher
  */
 public class YMD implements Comparable<YMD>
 {
-    /*
-     * One-based year, month, and day. Gregorian calendar is assumed. Zero
-     * indicates that field is "unknown" Negative year means B.C.
+    /**
+     * One-based year. Zero indicates that field is "unknown" Negative year
+     * means B.C. Must be -9999 to -1, or 1 to 9999.
      */
+
     private final int year;
+    /**
+     * month (1 = January) (0 = unknown)
+     */
     private final int month;
+    /**
+     * day of month (1-31) (0 = unknown)
+     */
+
     private final int day;
+
+    /**
+     * Indicates what the preferred display calendar is. true==Julian,
+     * false==Gregorian Note that this indicates only how to display the
+     * date(s), not how they are stored. Dates are always stored using the
+     * Gregorian calendar. Further, it is only a preference, and therefore the
+     * value may be ignored.
+     */
+    private final boolean julian;
+
+    private final boolean circa;
 
     private transient final int hash;
     private transient final Time approx;
@@ -34,7 +53,7 @@ public class YMD implements Comparable<YMD>
      */
     public YMD(final int year)
     {
-        this(year, 0, 0);
+        this(year, 0);
     }
 
     /**
@@ -43,7 +62,7 @@ public class YMD implements Comparable<YMD>
      */
     public YMD(final int year, final int month)
     {
-        this(year, month, 0);
+        this(year, month, 0, false, false);
     }
 
     /**
@@ -53,9 +72,34 @@ public class YMD implements Comparable<YMD>
      */
     public YMD(final int year, final int month, final int day)
     {
+        this(year, month, day, false, false);
+    }
+
+    public YMD(final int year, final int month, final int day, final boolean circa)
+    {
+        this(year, month, day, circa, false);
+    }
+
+    public YMD(final int year, final int month, final int day, final boolean circa, final boolean julian)
+    {
         this.year = year;
+        if (this.year <= -10000 || this.year == 0 || +10000 <= this.year)
+        {
+            throw new IllegalStateException("Invalid year: " + this.year);
+        }
         this.month = month;
+        if (this.month < 0 || 12 < this.month)
+        {
+            throw new IllegalStateException("Invalid month: " + this.month);
+        }
         this.day = day;
+        if (this.day < 0 || 31 < this.day)
+        {
+            throw new IllegalStateException("Invalid day: " + this.day);
+        }
+        this.circa = circa;
+        this.julian = julian;
+
         this.approx = calcApprox();
         this.hash = calcHash();
     }
@@ -71,6 +115,8 @@ public class YMD implements Comparable<YMD>
         this.year = cal.get(Calendar.YEAR);
         this.month = cal.get(Calendar.MONTH) + 1;
         this.day = cal.get(Calendar.DAY_OF_MONTH);
+        this.circa = false;
+        this.julian = false;
         this.approx = calcApprox();
         this.hash = calcHash();
     }
@@ -99,11 +145,21 @@ public class YMD implements Comparable<YMD>
         return this.year;
     }
 
+    public boolean isJulian()
+    {
+        return this.julian;
+    }
+
+    public boolean isCirca()
+    {
+        return this.circa;
+    }
+
     /**
      * Gets the exact <code>Time</code> represented by this <code>YMD</code>,
      * assuming it is exact. Throws otherwise.
-     * @return the <code>Time</code> representing this exact <code>YMD</code> (at
-     *         noon, local time).
+     * @return the <code>Time</code> representing this exact <code>YMD</code>
+     *         (at noon, local time).
      * @throws IllegalStateException if this <code>YMD</code> if any of year,
      *             month, or day are zero
      */
@@ -134,7 +190,7 @@ public class YMD implements Comparable<YMD>
      */
     public boolean isExact()
     {
-        return valid(this.year) && valid(this.month) && valid(this.day);
+        return valid(this.month) && valid(this.day);
     }
 
     /**
@@ -178,23 +234,38 @@ public class YMD implements Comparable<YMD>
     public String toString()
     {
         final StringBuilder sb = new StringBuilder();
-        if (this.year != 0)
+        if (this.circa)
         {
-            if (this.year < 0)
+            sb.append("c. ");
+        }
+
+        /* this check is an optimization */
+        if (this.year == 9999 || this.year == -9999)
+        {
+            if (equals(YMD.getMaximum()))
             {
-                sb.append('-');
+                return "[after]";
             }
-            sb.append(String.format("%04d",
-                Integer.valueOf(Math.abs(this.year))));
-            if (this.month > 0)
+            if (equals(YMD.getMinimum()))
             {
-                sb.append(String.format("-%02d", Integer.valueOf(this.month)));
-                if (this.day > 0)
-                {
-                    sb.append(String.format("-%02d", Integer.valueOf(this.day)));
-                }
+                return "[before]";
             }
         }
+        if (this.year < 0)
+        {
+            sb.append('-');
+        }
+        sb.append(String.format("%04d",
+            Integer.valueOf(Math.abs(this.year))));
+        if (this.month > 0)
+        {
+            sb.append(String.format("-%02d", Integer.valueOf(this.month)));
+            if (this.day > 0)
+            {
+                sb.append(String.format("-%02d", Integer.valueOf(this.day)));
+            }
+        }
+
         return sb.toString();
     }
 

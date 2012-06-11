@@ -167,9 +167,9 @@ void DateValue() :
 		if (dateNotes != null)
 		{
 			this.notes = dateNotes.getNotes();
-			this.period = new DatePeriod(
-				new DateRange(dateNotes.getCalYMD().getYMD(),dateNotes.getCalYMD().getYMD(),false,dateNotes.getCalYMD().isJulian()),
-				new DateRange(dateNotes.getCalYMD().getYMD(),dateNotes.getCalYMD().getYMD(),false,dateNotes.getCalYMD().isJulian()));
+//			this.period = new DatePeriod(
+//				new DateRange(dateNotes.getCalYMD().getYMD(),dateNotes.getCalYMD().getYMD(),false,dateNotes.getCalYMD().isJulian()),
+//				new DateRange(dateNotes.getCalYMD().getYMD(),dateNotes.getCalYMD().getYMD(),false,dateNotes.getCalYMD().isJulian()));
 		}
 		if (sNotes != null)
 		{
@@ -177,9 +177,9 @@ void DateValue() :
 		}
 		if (date != null)
 		{
-			this.period = new DatePeriod(
-				new DateRange(date.getYMD(),date.getYMD(),false,date.isJulian()),
-				new DateRange(date.getYMD(),date.getYMD(),false,date.isJulian()));
+//			this.period = new DatePeriod(
+//				new DateRange(date.getYMD(),date.getYMD(),false,date.isJulian()),
+//				new DateRange(date.getYMD(),date.getYMD(),false,date.isJulian()));
 		}
 	}
 }
@@ -213,7 +213,7 @@ DateRange DateRange() :
 			latest = new CalYMD(YMD.getMaximum(),julian);
 		}
 		julian = earliest.isJulian();
-		return new DateRange(earliest.getYMD(),latest.getYMD(),false,julian);
+		return new DateRange(earliest.getYMD(),latest.getYMD()/*,false,julian*/);
 	}
 }
 
@@ -230,8 +230,8 @@ DatePeriod DateApproximated() :
 	
 	{
 		return new DatePeriod(
-			new DateRange(date.getYMD(),date.getYMD(),true,date.isJulian()),
-			new DateRange(date.getYMD(),date.getYMD(),true,date.isJulian()));
+			new DateRange(date.getYMD(),date.getYMD()/*,true,date.isJulian()*/),
+			new DateRange(date.getYMD(),date.getYMD()/*,true,date.isJulian()*/));
 	}
 }
 
@@ -297,8 +297,8 @@ DatePeriod DatePeriod() :
 		}
 		julian = fromDate.isJulian();
 		return new DatePeriod(
-			new DateRange(fromDate.getYMD(),fromDate.getYMD(),julian,false),
-			new DateRange(toDate.getYMD(),toDate.getYMD(),julian,false));
+			new DateRange(fromDate.getYMD(),fromDate.getYMD()/*,julian,false*/),
+			new DateRange(toDate.getYMD(),toDate.getYMD()/*,julian,false*/));
 	}
 }
 

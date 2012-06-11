@@ -28,15 +28,21 @@ public class DatePeriod implements Comparable<DatePeriod>
      */
     public DatePeriod(final DateRange dateStart, final DateRange dateEnd)
     {
-        this.dateStart = dateStart;
-        if (this.dateStart == null)
+        if (dateStart == null)
         {
-            throw new IllegalStateException("dateStart cannot be null.");
+            this.dateStart = DateRange.UNKNOWN;
         }
-        this.dateEnd = dateEnd;
-        if (this.dateEnd == null)
+        else
         {
-            throw new IllegalStateException("dateEnd cannot be null.");
+            this.dateStart = dateStart;
+        }
+        if (dateEnd == null)
+        {
+            this.dateEnd = DateRange.UNKNOWN;
+        }
+        else
+        {
+            this.dateEnd = dateEnd;
         }
     }
 
@@ -54,6 +60,11 @@ public class DatePeriod implements Comparable<DatePeriod>
     public DateRange getEndDate()
     {
         return this.dateEnd;
+    }
+
+    public boolean isSingle()
+    {
+        return this.dateStart.equals(this.dateEnd);
     }
 
     @Override
@@ -77,11 +88,15 @@ public class DatePeriod implements Comparable<DatePeriod>
     @Override
     public String toString()
     {
-        if (this.dateStart.equals(this.dateEnd))
+        if (isSingle())
         {
             return this.dateStart.toString();
         }
-        return this.dateStart + "\u2013" + this.dateEnd;
+        final StringBuilder sb = new StringBuilder(32);
+        sb.append(this.dateStart.toString());
+        sb.append("-");
+        sb.append(this.dateEnd.toString());
+        return sb.toString();
     }
 
     @Override
@@ -96,7 +111,7 @@ public class DatePeriod implements Comparable<DatePeriod>
         {
             d = this.dateStart.compareTo(that.dateStart);
         }
-        if (d == 0)
+        if (d == 0 || this.dateStart.equals(DateRange.UNKNOWN))
         {
             d = this.dateEnd.compareTo(that.dateEnd);
         }

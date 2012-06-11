@@ -16,25 +16,21 @@ public class DateRange implements Comparable<DateRange>
 {
     /*
      * YMD always represent Gregorian calendar. Range of possible dates is given
-     * by earliest thru latest (inclusive). Date is exact iff
+     * by earliest thru latest (inclusive). Date is exact if and only if
      * earliest.equals(latest).
      */
     private final YMD earliest;
     private final YMD latest;
 
-    /**
-     * Indicates what the preferred display calendar is. true==Julian,
-     * false==Gregorian Note that this indicates only how to display the
-     * date(s), not how they are stored. Dates are always stored using the
-     * Gregorian calendar. Further, it is only a preference, and therefore the
-     * value may be ignored.
-     */
-    private final boolean julian;
-
-    private final boolean circa;
-
     private transient final int hash;
     private transient final Time approx;
+
+    public static final DateRange UNKNOWN = new DateRange(null, null);
+
+    public DateRange(final YMD exact)
+    {
+        this(exact, exact);
+    }
 
     /**
      * @param earliest
@@ -42,31 +38,6 @@ public class DateRange implements Comparable<DateRange>
      */
     public DateRange(final YMD earliest, final YMD latest)
     {
-        this(earliest, latest, false, false);
-    }
-
-    /**
-     * @param earliest
-     * @param latest
-     * @param circa
-     */
-    public DateRange(final YMD earliest, final YMD latest, final boolean circa)
-    {
-        this(earliest, latest, circa, false);
-    }
-
-    /**
-     * @param earliest
-     * @param latest
-     * @param circa
-     * @param julian
-     */
-    public DateRange(final YMD earliest, final YMD latest, final boolean circa,
-        final boolean julian)
-    {
-        this.julian = julian;
-        this.circa = circa;
-
         if (earliest != null)
         {
             this.earliest = earliest;
@@ -116,24 +87,12 @@ public class DateRange implements Comparable<DateRange>
      */
     public boolean isExact()
     {
+        /* optimization: same object */
+        if (this.earliest == this.latest)
+        {
+            return true;
+        }
         return this.earliest.equals(this.latest);
-    }
-
-    /**
-     * @return if this date should be show using the Julian calendar (if so, the
-     *         caller is responsible for converting it).
-     */
-    public boolean isJulian()
-    {
-        return this.julian;
-    }
-
-    /**
-     * @return if this is an approximate date
-     */
-    public boolean isCirca()
-    {
-        return this.circa;
     }
 
     /**
@@ -155,8 +114,7 @@ public class DateRange implements Comparable<DateRange>
         final DateRange that = (DateRange) object;
 
         return this.earliest.equals(that.earliest)
-            && this.latest.equals(that.latest)
-            && this.julian == that.julian && this.circa == that.circa;
+            && this.latest.equals(that.latest);
     }
 
     @Override
@@ -170,22 +128,19 @@ public class DateRange implements Comparable<DateRange>
     {
         final StringBuffer sb = new StringBuffer();
 
-        if (this.circa)
-        {
-            sb.append("c. ");
-        }
-
         if (isExact())
         {
             sb.append(this.earliest.toString());
         }
+        else if (equals(UNKNOWN))
+        {
+            sb.append("[unknown]");
+        }
         else
         {
-            sb.append("[between ");
             sb.append(this.earliest.toString());
-            sb.append(" and ");
+            sb.append("?");
             sb.append(this.latest.toString());
-            sb.append("]");
         }
         return sb.toString();
     }
@@ -205,6 +160,21 @@ public class DateRange implements Comparable<DateRange>
 
     private Time calcApprox()
     {
+        if (this.earliest.equals(YMD.getMinimum()))
+        {
+            return this.latest.getApproxTime();
+        }
+        if (this.latest.equals(YMD.getMaximum()))
+        {
+            return this.earliest.getApproxTime();
+        }
+
+        /* optimization: don't bother making a new Time object if this.isExact */
+        if (this.isExact())
+        {
+            return this.earliest.getApproxTime();
+        }
+
         return new Time(new Date(
             (this.earliest.getApproxTime().asDate().getTime() + this.latest
                 .getApproxTime().asDate().getTime()) / 2));
@@ -218,10 +188,6 @@ public class DateRange implements Comparable<DateRange>
         h += this.earliest.hashCode();
         h *= 37;
         h += this.latest.hashCode();
-        h *= 37;
-        h += this.julian ? 0 : 1;
-        h *= 37;
-        h += this.circa ? 0 : 1;
 
         return h;
     }
