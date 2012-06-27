@@ -1,1 +1,389 @@
-options{  IGNORE_CASE = true;  STATIC = false;}PARSER_BEGIN(GedcomDateValueParser)package nu.mine.mosher.gedcom.date.parser;import nu.mine.mosher.gedcom.date.YMD;import nu.mine.mosher.gedcom.date.DateRange;import nu.mine.mosher.gedcom.date.DatePeriod;@ SuppressWarnings("all") public class GedcomDateValueParser{  public DatePeriod parse() throws ParseException, DateRange.DatesOutOfOrder  {    return DateValue();  }}PARSER_END(GedcomDateValueParser)TOKEN :{  < FROM : "FROM" >| < TO : "TO" >| < BEFORE : "BEF" >| < AFTER : "AFT" >| < BETWEEN : "BET" >| < AND : "AND" >| < ABOUT : "ABT" >| < CALCULATED : "CAL" >| < ESTIMATED : "EST" >| < INTERPRETED : "INT" >}TOKEN :{  < MONTH_LOWER_LIMIT : "MONTH_LOWER_LIMIT_4d645e804c4611e0b8af0800200c9a66" >| < JAN : "JAN" >| < FEB : "FEB" >| < MAR : "MAR" >| < APR : "APR" >| < MAY : "MAY" >| < JUN : "JUN" >| < JUL : "JUL" >| < AUG : "AUG" >| < SEP : "SEP" >| < OCT : "OCT" >| < NOV : "NOV" >| < DEC : "DEC" >}TOKEN :{  < GREGORIAN : "GREGORIAN" >| < JULIAN : "JULIAN" >}TOKEN :{  < BC :    "BC"  | "B.C."  | "BCE"  | "B.C.E." >| < AD :    "AD"  | "A.D."  | "CE"  | "C.E." >}TOKEN :{  < NUMBER : ([ "0"-"9" ])+ >| < SLASH : "/" >| < AT : "@" >| < SPACES : (" ")+ >| < RAWTEXT : "(" (~[ ")" ])+ ")" >}DatePeriod DateValue() throws DateRange.DatesOutOfOrder :{  DatePeriod d;}{  (    d = DateInterp()  | d = DatePeriod()  | d = DateRange()  | d = DateApprox()  | d = DateSingle()  )  < EOF >  {    return d;  }}DatePeriod DateInterp() throws DateRange.DatesOutOfOrder :{  DatePeriod d;}{  < INTERPRETED > S() d = DateSingle() S()  /* TODO */DatePhrase()  {    return d;  }}String DatePhrase() :{  Token text;}{  text = < RAWTEXT >  {    return text.image;  }}DatePeriod DatePeriod() throws DateRange.DatesOutOfOrder :{  YMD fromDate = null;  YMD toDate = null;}{  (    < FROM > S() fromDate = Date() [ S() < TO > S() toDate = Date() ]  | < TO > S() toDate = Date()  )  {    return new DatePeriod(new DateRange(fromDate, fromDate), new DateRange(toDate, toDate));  }}DatePeriod DateRange() throws DateRange.DatesOutOfOrder :{  YMD earliest = null;  YMD latest = null;}{  (    < AFTER > S() earliest = Date()  | < BEFORE > S() latest = Date()  | < BETWEEN > S() earliest = Date() S() < AND > S() latest = Date()  )  {    return new DatePeriod(new DateRange(earliest, latest));  }}DatePeriod DateApprox() :{  YMD ymd;}{  (    < ABOUT >  | < CALCULATED >  | < ESTIMATED >  )  S() ymd = Date()  {    return new DatePeriod(new DateRange(new YMD(ymd.getYear(), ymd.getMonth(), ymd.getDay(), true, ymd.isJulian())));  }}DatePeriod DateSingle() :{  YMD ymd;}{  ymd = Date()  {    return new DatePeriod(new DateRange(ymd));  }}YMD Date() :{  YMD ymd;}{  (    LOOKAHEAD(20)    "@#D" < GREGORIAN > "@" OS() ymd = DateGregor()  | LOOKAHEAD(20)    "@#D" < JULIAN > "@" OS() ymd = DateJulian()  | LOOKAHEAD(20)    ymd = DateSlash()  | LOOKAHEAD(20)    ymd = DateGregor()  )  {    return ymd;  }}YMD DateGregor() :{  YMD ymd;  int e = 1;}{  ymd = DateGregorRaw()  [    LOOKAHEAD(4)    S() e = Epoch()  ]  {    return new YMD(ymd.getYear() * e, ymd.getMonth(), ymd.getDay(), ymd.isCirca(), ymd.isJulian());  }}YMD DateJulian() :{  YMD ymd;  int e = 1;}{  ymd = DateJulianRaw()  [    LOOKAHEAD(2)    S() e = Epoch()  ]  {    return new YMD(ymd.getYear() * e, ymd.getMonth(), ymd.getDay(), ymd.isCirca(), ymd.isJulian());  }}YMD DateSlash() :{  int day = 0;  int month = 0;  int year = 0;}{  [    LOOKAHEAD(2)    [ day = Day() S() ] month = MonthEngl() S()  ]  year = YearSlash()  {    return new YMD(year, month, day, false, true);  }}YMD DateGregorRaw() :{  int day = 0;  int month = 0;  int year = 0;}{  [    LOOKAHEAD(7)    [ day = Day() S() ] month = MonthEngl() S()  ]  year = Year()  {    return new YMD(year, month, day);  }}YMD DateJulianRaw() :{  int day = 0;  int month = 0;  int year = 0;}{  [    LOOKAHEAD(7)    [ day = Day() S() ] month = MonthEngl() S()  ]  year = YearJulian()  {    return new YMD(year, month, day, false, true);  }}int YearJulian() :{  int year;}{  (    LOOKAHEAD(2)    year = YearSlash()  | year = Year()  )  {    return year;  }}int YearSlash() :{  int year;}{  year = Year() < SLASH > N()  {    return year + 1;  }}int Year() :{  int year;}{  year = N()  {    if (year == 0)    {      throw new ParseException("year cannot be zero.");    }    return year;  }}int Day() :{  int day;}{  day = N()  {    return day;  }}int N() :{}{  < NUMBER >  {    return Integer.parseInt(this.token.image);  }}void S() :{}{  < SPACES >}void OS() :{}{  [ < SPACES > ]}int Epoch() :{}{  < BC >  {    return - 1;  }| < AD >  {    return 1;  }}int MonthEngl() :{}{  (    < JAN >  | < FEB >  | < MAR >  | < APR >  | < MAY >  | < JUN >  | < JUL >  | < AUG >  | < SEP >  | < OCT >  | < NOV >  | < DEC >  )  {    return this.token.kind - MONTH_LOWER_LIMIT;  }}
+options
+{
+  IGNORE_CASE = true;
+  STATIC = false;
+}
+
+PARSER_BEGIN(GedcomDateValueParser)
+package nu.mine.mosher.gedcom.date.parser;
+import nu.mine.mosher.gedcom.date.YMD;
+import nu.mine.mosher.gedcom.date.DateRange;
+import nu.mine.mosher.gedcom.date.DatePeriod;
+@ SuppressWarnings("all") public class GedcomDateValueParser
+{
+  public DatePeriod parse() throws ParseException, DateRange.DatesOutOfOrder
+  {
+    return DateValue();
+  }
+}
+
+PARSER_END(GedcomDateValueParser)
+
+TOKEN :
+{
+  < FROM : "FROM" >
+| < TO : "TO" >
+| < BEFORE : "BEF" >
+| < AFTER : "AFT" >
+| < BETWEEN : "BET" >
+| < AND : "AND" >
+| < ABOUT : "ABT" >
+| < CALCULATED : "CAL" >
+| < ESTIMATED : "EST" >
+| < INTERPRETED : "INT" >
+}
+
+TOKEN :
+{
+  < MONTH_LOWER_LIMIT : "MONTH_LOWER_LIMIT_4d645e804c4611e0b8af0800200c9a66" >
+| < JAN : "JAN" >
+| < FEB : "FEB" >
+| < MAR : "MAR" >
+| < APR : "APR" >
+| < MAY : "MAY" >
+| < JUN : "JUN" >
+| < JUL : "JUL" >
+| < AUG : "AUG" >
+| < SEP : "SEP" >
+| < OCT : "OCT" >
+| < NOV : "NOV" >
+| < DEC : "DEC" >
+}
+
+TOKEN :
+{
+  < GREGORIAN : "GREGORIAN" >
+| < JULIAN : "JULIAN" >
+}
+
+TOKEN :
+{
+  < BC :
+    "BC"
+  | "B.C."
+  | "BCE"
+  | "B.C.E." >
+| < AD :
+    "AD"
+  | "A.D."
+  | "CE"
+  | "C.E." >
+}
+
+TOKEN :
+{
+  < NUMBER : ([ "0"-"9" ])+ >
+| < SLASH : "/" >
+| < AT : "@" >
+| < SPACES : (" ")+ >
+| < RAWTEXT : "(" (~[ ")" ])+ ")" >
+}
+
+DatePeriod DateValue() throws DateRange.DatesOutOfOrder :
+{
+  DatePeriod d;
+}
+{
+  (
+    d = DateInterp()
+  | d = DatePeriod()
+  | d = DateRange()
+  | d = DateApprox()
+  | d = DateSingle()
+  )
+  < EOF >
+  {
+    return d;
+  }
+}
+
+DatePeriod DateInterp() throws DateRange.DatesOutOfOrder :
+{
+  DatePeriod d;
+}
+{
+  < INTERPRETED > S() d = DateSingle() S()  /* TODO */DatePhrase()
+  {
+    return d;
+  }
+}
+
+String DatePhrase() :
+{
+  Token text;
+}
+{
+  text = < RAWTEXT >
+  {
+    return text.image;
+  }
+}
+
+DatePeriod DatePeriod() throws DateRange.DatesOutOfOrder :
+{
+  YMD fromDate = null;
+  YMD toDate = null;
+}
+{
+  (
+    < FROM > S() fromDate = Date() [ S() < TO > S() toDate = Date() ]
+  | < TO > S() toDate = Date()
+  )
+  {
+    return new DatePeriod(new DateRange(fromDate, fromDate), new DateRange(toDate, toDate));
+  }
+}
+
+DatePeriod DateRange() throws DateRange.DatesOutOfOrder :
+{
+  YMD earliest = null;
+  YMD latest = null;
+}
+{
+  (
+    < AFTER > S() earliest = Date()
+  | < BEFORE > S() latest = Date()
+  | < BETWEEN > S() earliest = Date() S() < AND > S() latest = Date()
+  )
+  {
+    return new DatePeriod(new DateRange(earliest, latest));
+  }
+}
+
+DatePeriod DateApprox() :
+{
+  YMD ymd;
+}
+{
+  (
+    < ABOUT >
+  | < CALCULATED >
+  | < ESTIMATED >
+  )
+  S() ymd = Date()
+  {
+    return new DatePeriod(new DateRange(new YMD(ymd.getYear(), ymd.getMonth(), ymd.getDay(), true, ymd.isJulian())));
+  }
+}
+
+DatePeriod DateSingle() :
+{
+  YMD ymd;
+}
+{
+  ymd = Date()
+  {
+    return new DatePeriod(new DateRange(ymd));
+  }
+}
+
+YMD Date() :
+{
+  YMD ymd;
+}
+{
+  (
+    LOOKAHEAD(7)
+    "@#D" < GREGORIAN > "@" OS() ymd = DateGregor()
+  | LOOKAHEAD(7)
+    "@#D" < JULIAN > "@" OS() ymd = DateJulian()
+  | LOOKAHEAD(7)
+    ymd = DateSlash()
+  | LOOKAHEAD(7)
+    ymd = DateGregor()
+  )
+  {
+    return ymd;
+  }
+}
+
+YMD DateGregor() :
+{
+  YMD ymd;
+  int e = 1;
+}
+{
+  ymd = DateGregorRaw()
+  [
+    LOOKAHEAD(4)
+    S() e = Epoch()
+  ]
+  {
+    return new YMD(ymd.getYear() * e, ymd.getMonth(), ymd.getDay(), ymd.isCirca(), ymd.isJulian());
+  }
+}
+
+YMD DateJulian() :
+{
+  YMD ymd;
+  int e = 1;
+}
+{
+  ymd = DateJulianRaw()
+  [
+    LOOKAHEAD(2)
+    S() e = Epoch()
+  ]
+  {
+    return new YMD(ymd.getYear() * e, ymd.getMonth(), ymd.getDay(), ymd.isCirca(), ymd.isJulian());
+  }
+}
+
+YMD DateSlash() :
+{
+  int day = 0;
+  int month = 0;
+  int year = 0;
+}
+{
+  [
+    LOOKAHEAD(2)
+    [ day = Day() S() ] month = MonthEngl() S()
+  ]
+  year = YearSlash()
+  {
+    return new YMD(year, month, day, false, true);
+  }
+}
+
+YMD DateGregorRaw() :
+{
+  int day = 0;
+  int month = 0;
+  int year = 0;
+}
+{
+  [
+    LOOKAHEAD(7)
+    [ day = Day() S() ] month = MonthEngl() S()
+  ]
+  year = Year()
+  {
+    return new YMD(year, month, day);
+  }
+}
+
+YMD DateJulianRaw() :
+{
+  int day = 0;
+  int month = 0;
+  int year = 0;
+}
+{
+  [
+    LOOKAHEAD(7)
+    [ day = Day() S() ] month = MonthEngl() S()
+  ]
+  year = YearJulian()
+  {
+    return new YMD(year, month, day, false, true);
+  }
+}
+
+int YearJulian() :
+{
+  int year;
+}
+{
+  (
+    LOOKAHEAD(2)
+    year = YearSlash()
+  | year = Year()
+  )
+  {
+    return year;
+  }
+}
+
+int YearSlash() :
+{
+  int year;
+}
+{
+  year = Year() < SLASH > N()
+  {
+    return year + 1;
+  }
+}
+
+int Year() :
+{
+  int year;
+}
+{
+  year = N()
+  {
+    if (year == 0)
+    {
+      throw new ParseException("year cannot be zero.");
+    }
+    return year;
+  }
+}
+
+int Day() :
+{
+  int day;
+}
+{
+  day = N()
+  {
+    return day;
+  }
+}
+
+int N() :
+{}
+{
+  < NUMBER >
+  {
+    return Integer.parseInt(this.token.image);
+  }
+}
+
+void S() :
+{}
+{
+  < SPACES >
+}
+
+void OS() :
+{}
+{
+  [ < SPACES > ]
+}
+
+int Epoch() :
+{}
+{
+  < BC >
+  {
+    return - 1;
+  }
+| < AD >
+  {
+    return 1;
+  }
+}
+
+int MonthEngl() :
+{}
+{
+  (
+    < JAN >
+  | < FEB >
+  | < MAR >
+  | < APR >
+  | < MAY >
+  | < JUN >
+  | < JUL >
+  | < AUG >
+  | < SEP >
+  | < OCT >
+  | < NOV >
+  | < DEC >
+  )
+  {
+    return this.token.kind - MONTH_LOWER_LIMIT;
+  }
+}
