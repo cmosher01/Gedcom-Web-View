@@ -63,6 +63,15 @@ public final class Time implements Comparable<Time>
         return new Date(this.ms);
     }
 
+    /**
+     * Compares this <code>Time</code> to another object to see of they are
+     * equal. <code>object<code> will be considered equal if and only if
+     * it is an instance of <code>Time<code> and it has the same
+     * millisecond value as this <code>Time</code>
+     * @param object other object to compare to this object
+     * @return true if the other object is a <code>Time</code> that has the same
+     *         millisecond value
+     */
     @Override
     public boolean equals(final Object object)
     {
@@ -74,6 +83,10 @@ public final class Time implements Comparable<Time>
         return this.ms == that.ms;
     }
 
+    /**
+     * Calculates a hash code for this object.
+     * @return the hash code
+     */
     @Override
     public int hashCode()
     {
@@ -92,6 +105,13 @@ public final class Time implements Comparable<Time>
         return this.asString;
     }
 
+    /**
+     * Compares another <code>Time</code> to this time. This is consistent with
+     * <code>equals</code>.
+     * @return -1 if this is less (earlier) than the given <code>Time</code>, +1
+     *         if this is greater (later) than the given <code>Time</code>, or 0
+     *         if the two are equal.
+     */
     @Override
     public int compareTo(final Time that)
     {

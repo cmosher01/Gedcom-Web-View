@@ -9,7 +9,11 @@ import nu.mine.mosher.time.Time;
 
 
 /**
- * TODO
+ * Represents an date that could fall sometime within a given range. For
+ * example, "some date between 1840 and 1846 inclusive," would be represented as
+ * a a range with earliest year 1840 and latest year 1846. A range of "unknown"
+ * is represented by a full range (earliest = Jan. 1, 9999 BC, and latest = Dec.
+ * 31, 9999 AD). Date is "exact" if and only if earliest.equals(latest).
  * @author Chris Mosher
  */
 public class DateRange implements Comparable<DateRange>
@@ -24,19 +28,56 @@ public class DateRange implements Comparable<DateRange>
 
     private transient final int hash;
     private transient final Time approx;
+    private transient final boolean exact;
 
-    public static final DateRange UNKNOWN = new DateRange(null, null);
+    /**
+     * Represents an unknown date (Jan. 1, 9999 BC to Dec. 31, 9999 AD)
+     */
+    public static final DateRange UNKNOWN = new DateRange(null);
 
-    public DateRange(final YMD exact)
+    /**
+     * Indicates that the (supposed) earliest and latest dates were given
+     * incorrectly, such that latest is less than earliest.
+     * @author Chris Mosher
+     */
+    public static class DatesOutOfOrder extends Exception
     {
-        this(exact, exact);
+        private DatesOutOfOrder(final YMD earliestGreater, final YMD latestLesser)
+        {
+            super("Latest date (" + latestLesser + ") is less than earliest date (" + earliestGreater + ").");
+        }
     }
 
     /**
-     * @param earliest
-     * @param latest
+     * Initializes an exact date.
+     * @param ymdExact the exact date (earliest = latest = ymdExact)
      */
-    public DateRange(final YMD earliest, final YMD latest)
+    public DateRange(final YMD ymdExact)
+    {
+        if (ymdExact != null)
+        {
+            this.earliest = this.latest = ymdExact;
+            this.exact = true;
+        }
+        else
+        {
+            this.earliest = YMD.getMinimum();
+            this.latest = YMD.getMaximum();
+            this.exact = false;
+        }
+        this.approx = calcApprox();
+        this.hash = calcHash();
+    }
+
+    /**
+     * Initializes a date range.
+     * @param earliest earliest possible date
+     * @param latest latest possible date
+     * @throws DatesOutOfOrder if <code>latest</code> is less than
+     *             <code>earliest</code>
+     */
+    @SuppressWarnings("synthetic-access")
+    public DateRange(final YMD earliest, final YMD latest) throws DatesOutOfOrder
     {
         if (earliest != null)
         {
@@ -58,12 +99,12 @@ public class DateRange implements Comparable<DateRange>
 
         if (this.latest.compareTo(this.earliest) < 0)
         {
-            throw new IllegalArgumentException(
-                "earliest date must be less than or equal to latest date");
+            throw new DatesOutOfOrder(this.earliest, this.latest);
         }
 
         this.approx = calcApprox();
         this.hash = calcHash();
+        this.exact = this.earliest.equals(this.latest);
     }
 
     /**
@@ -87,12 +128,7 @@ public class DateRange implements Comparable<DateRange>
      */
     public boolean isExact()
     {
-        /* optimization: same object */
-        if (this.earliest == this.latest)
-        {
-            return true;
-        }
-        return this.earliest.equals(this.latest);
+        return this.exact;
     }
 
     /**
@@ -103,6 +139,11 @@ public class DateRange implements Comparable<DateRange>
         return this.approx;
     }
 
+    /**
+     * Compares this range to another object to see if it has the same value
+     * (both earliest and latest dates)
+     * @return true if object is a DateRange that is equal
+     */
     @Override
     public boolean equals(final Object object)
     {
@@ -117,16 +158,25 @@ public class DateRange implements Comparable<DateRange>
             && this.latest.equals(that.latest);
     }
 
+    /**
+     * Returns a hash code for this object.
+     * @return hash code
+     */
     @Override
     public int hashCode()
     {
         return this.hash;
     }
 
+    /**
+     * Returns a string representation of this range, indended for display to
+     * the end user, and not intended for persistence.
+     * @return displayable string
+     */
     @Override
     public String toString()
     {
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
 
         if (isExact())
         {
@@ -145,21 +195,23 @@ public class DateRange implements Comparable<DateRange>
         return sb.toString();
     }
 
+    /**
+     * Compares this range to the given range. Not consistent with equals.
+     * @param that range to compare to
+     * @return -1, 0, or +1; for less, equal, or greater
+     */
     @Override
     public int compareTo(final DateRange that)
     {
-        int d = 0;
-
-        if (d == 0)
-        {
-            d = this.approx.compareTo(that.approx);
-        }
-
-        return d;
+        return this.approx.compareTo(that.approx);
     }
 
     private Time calcApprox()
     {
+        if (this.earliest.equals(YMD.getMinimum()) && this.latest.equals(YMD.getMaximum()))
+        {
+            return new Time(new Date(0));
+        }
         if (this.earliest.equals(YMD.getMinimum()))
         {
             return this.latest.getApproxTime();
@@ -169,15 +221,26 @@ public class DateRange implements Comparable<DateRange>
             return this.earliest.getApproxTime();
         }
 
-        /* optimization: don't bother making a new Time object if this.isExact */
-        if (this.isExact())
+        /* optimization: don't bother making a new Time object if exact */
+        if (this.exact)
         {
             return this.earliest.getApproxTime();
         }
 
-        return new Time(new Date(
-            (this.earliest.getApproxTime().asDate().getTime() + this.latest
-                .getApproxTime().asDate().getTime()) / 2));
+        /* @formatter:off */
+        return
+            new Time(
+                new Date(
+                    (
+                        this.earliest.getApproxTime().asDate().getTime()
+                        +
+                        this.latest.getApproxTime().asDate().getTime()
+                    )
+                    /
+                    2
+                )
+            );
+        /* @formatter:on */
     }
 
     private int calcHash()

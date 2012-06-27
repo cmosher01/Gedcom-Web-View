@@ -8,14 +8,23 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.mine.mosher.collection.TreeNode.NotChild;
+
 import org.junit.Test;
 
 
 
+/**
+ * Unit tests for {@link TreeNode}.
+ * @author Chris Mosher
+ */
 @SuppressWarnings(
 { "static-method", "boxing" })
 public class TreeNodeTest
 {
+    /**
+     * Tests adding a child.
+     */
     @Test
     public void nominalChild()
     {
@@ -39,8 +48,12 @@ public class TreeNodeTest
         assertThat(b.parent(), sameInstance(a));
     }
 
+    /**
+     * Tests removing a child.
+     * @throws NotChild should not happen
+     */
     @Test
-    public void nominalRemoveChild()
+    public void nominalRemoveChild() throws NotChild
     {
         final String sa = "a";
         final TreeNode<String> a = new TreeNode<>(sa);
@@ -61,6 +74,24 @@ public class TreeNodeTest
         assertThat(b.parent(), nullValue());
     }
 
+    /**
+     * Tests invalid child removal
+     * @throws NotChild should not happen
+     */
+    @Test(expected = TreeNode.NotChild.class)
+    public void invalidRemoveChild() throws NotChild
+    {
+        final String sa = "a";
+        final TreeNode<String> a = new TreeNode<>(sa);
+        final String sb = "b";
+        final TreeNode<String> b = new TreeNode<>(sb);
+
+        a.removeChild(b);
+    }
+
+    /**
+     * Tests removing a node from its parent.
+     */
     @Test
     public void nominalRemoveFromParent()
     {
@@ -84,6 +115,10 @@ public class TreeNodeTest
         assertThat(b.parent(), nullValue());
     }
 
+    /**
+     * Test adding a node that already has a parent as a child to different
+     * node.
+     */
     @Test
     public void addChildOfOtherExistingParent()
     {
@@ -111,6 +146,9 @@ public class TreeNodeTest
         assertThat(b.parent(), sameInstance(x));
     }
 
+    /**
+     * Tests adding three children.
+     */
     @Test
     public void threeChildren()
     {
@@ -136,8 +174,12 @@ public class TreeNodeTest
         assertThat(actual.get(2), is("c3"));
     }
 
+    /**
+     * Tests removing a middle child.
+     * @throws NotChild should not happen
+     */
     @Test
-    public void removeMiddleChild()
+    public void removeMiddleChild() throws NotChild
     {
         final TreeNode<String> p = new TreeNode<>("p");
 
@@ -159,5 +201,15 @@ public class TreeNodeTest
         }
         assertThat(actual.get(0), is("c1"));
         assertThat(actual.get(1), is("c3"));
+    }
+
+    /**
+     * Tests a simple string representation.
+     */
+    @Test
+    public void nominalToString()
+    {
+        final TreeNode<String> p = new TreeNode<>("ABC");
+        assertThat(p.toString(), is("ABC"));
     }
 }

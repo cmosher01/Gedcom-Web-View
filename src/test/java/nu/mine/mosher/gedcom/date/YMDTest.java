@@ -4,22 +4,21 @@
 package nu.mine.mosher.gedcom.date;
 
 
-
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 
 
 /**
- * TODO
  * @author Chris Mosher
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings({"static-method","javadoc"})
 public class YMDTest
 {
     @Test
-    public void typical()
+    public void nominal()
     {
         final YMD ymd = new YMD(2006, 11, 6);
         assertEquals("2006-11-06", ymd.toString());
@@ -72,9 +71,30 @@ public class YMDTest
         assertEquals("[after]", YMD.getMaximum().toString());
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test
+    public void nominalEquals()
+    {
+        final YMD ymd1 = new YMD(1966, 7, 3);
+        final YMD ymd2 = new YMD(1966, 7, 3);
+        assertThat(ymd2, not(sameInstance(ymd1)));
+        assertTrue(ymd1.equals(ymd2));
+        assertTrue(ymd2.equals(ymd1));
+    }
+
+    @Test
+    public void nominalNotEquals()
+    {
+        final YMD ymd1 = new YMD(1966, 7, 3);
+        final YMD ymd2 = new YMD(1966, 7, 4);
+        assertThat(ymd2, not(sameInstance(ymd1)));
+        assertFalse(ymd1.equals(ymd2));
+        assertFalse(ymd2.equals(ymd1));
+    }
+
+    @SuppressWarnings("unused")
+    @Test(expected=RuntimeException.class)
     public void zero()
     {
-        final YMD ymd = new YMD(0);
+        new YMD(0);
     }
 }

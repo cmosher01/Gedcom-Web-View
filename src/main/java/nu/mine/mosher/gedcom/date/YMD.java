@@ -13,25 +13,27 @@ import nu.mine.mosher.time.Time;
 /**
  * Represents a date, specified as a year, month, and day, allowing for some
  * values to be unknown. An unknown day or month is specified as zero. Objects
- * of this class are immutable and thread-safe. Gregorian calendar is assumed.
+ * of this class are immutable and thread-safe. Gregorian calendar is always
+ * assumed; this class does not do any converting of dates between different
+ * calendars.
  * @author Chris Mosher
  */
 public class YMD implements Comparable<YMD>
 {
     /**
-     * One-based year. Zero indicates that field is "unknown" Negative year
-     * means B.C. Must be -9999 to -1, or 1 to 9999.
+     * One-based year. Negative year means B.C.; positive means A.D. Must be
+     * -9999 to -1, or 1 to 9999.
      */
-
     private final int year;
+
     /**
      * month (1 = January) (0 = unknown)
      */
     private final int month;
+
     /**
      * day of month (1-31) (0 = unknown)
      */
-
     private final int day;
 
     /**
@@ -43,13 +45,17 @@ public class YMD implements Comparable<YMD>
      */
     private final boolean julian;
 
+    /**
+     * Indicates the date is an approximation.
+     */
     private final boolean circa;
 
     private transient final int hash;
     private transient final Time approx;
 
     /**
-     * @param year
+     * Initializes this YMD with the given year, and an unknown month and day.
+     * @param year the year (-9999 to -1, or 1 to 9999)
      */
     public YMD(final int year)
     {
@@ -57,8 +63,9 @@ public class YMD implements Comparable<YMD>
     }
 
     /**
-     * @param year
-     * @param month
+     * Initializes this YMD with the given year and month, and an unknown day.
+     * @param year the year (-9999 to -1, or 1 to 9999)
+     * @param month the month (1=Jan. to 12=Dec.) or 0 meaning "unknown"
      */
     public YMD(final int year, final int month)
     {
@@ -66,20 +73,40 @@ public class YMD implements Comparable<YMD>
     }
 
     /**
-     * @param year
-     * @param month
-     * @param day
+     * Initializes this YMD with the given year, month and day.
+     * @param year the year (-9999 to -1, or 1 to 9999)
+     * @param month the month (1=Jan. to 12=Dec.) or 0 meaning "unknown"
+     * @param day the day within the month (1-31) or 0 meaning "unknown"
      */
     public YMD(final int year, final int month, final int day)
     {
         this(year, month, day, false, false);
     }
 
+    /**
+     * Initializes this YMD with the given year, month and day, and the given
+     * "circa" (true or false, to indicate approximation or not).
+     * @param year the year (-9999 to -1, or 1 to 9999)
+     * @param month the month (1=Jan. to 12=Dec.) or 0 meaning "unknown"
+     * @param day the day within the month (1-31) or 0 meaning "unknown"
+     * @param circa true if this date is an approximation
+     */
     public YMD(final int year, final int month, final int day, final boolean circa)
     {
         this(year, month, day, circa, false);
     }
 
+    /**
+     * Initializes this YMD with the given year, month and day, and the given
+     * "circa" (true or false, to indicate approximation or not).
+     * @param year the year (-9999 to -1, or 1 to 9999)
+     * @param month the month (1=Jan. to 12=Dec.) or 0 meaning "unknown"
+     * @param day the day within the month (1-31) or 0 meaning "unknown"
+     * @param circa true if this date is an approximation
+     * @param julian true if this date is preferred to be shown in the Julian
+     *            calendar (it does not indicate that the given year, month, and
+     *            date are Julian--they are Gregorian regardless)
+     */
     public YMD(final int year, final int month, final int day, final boolean circa, final boolean julian)
     {
         this.year = year;
@@ -105,7 +132,10 @@ public class YMD implements Comparable<YMD>
     }
 
     /**
-     * @param time
+     * Initializes this YMD with the year, month and day taken from the given
+     * {@link Time}.
+     * @param time <code>Time</code> to get the year, month, and day of (must be
+     *            Gregorian)
      */
     public YMD(final Time time)
     {
@@ -145,11 +175,19 @@ public class YMD implements Comparable<YMD>
         return this.year;
     }
 
+    /**
+     * Returns if this date is preferred to be shown using the Julian calendar.
+     * @return true if should be (converted to and) displayed in Julian
+     */
     public boolean isJulian()
     {
         return this.julian;
     }
 
+    /**
+     * Returns if this date is an approximation.
+     * @return if this date is an approximation
+     */
     public boolean isCirca()
     {
         return this.circa;
@@ -190,7 +228,7 @@ public class YMD implements Comparable<YMD>
      */
     public boolean isExact()
     {
-        return valid(this.month) && valid(this.day);
+        return valid(this.month) && valid(this.day) && !this.circa;
     }
 
     /**
@@ -211,6 +249,13 @@ public class YMD implements Comparable<YMD>
         return new YMD(9999, 12, 31);
     }
 
+    /**
+     * Compares this date to the given object. Note that two "unknown" values
+     * (zero) are still considered equal.
+     * @param object the object to compare this object to
+     * @return true if the given object is a <code>YMD</code> with the same
+     *         values for year, month, and day.
+     */
     @Override
     public boolean equals(final Object object)
     {
@@ -224,12 +269,20 @@ public class YMD implements Comparable<YMD>
             && this.day == that.day;
     }
 
+    /**
+     * Gets the hash code for this object.
+     * @return the hash code
+     */
     @Override
     public int hashCode()
     {
         return this.hash;
     }
 
+    /**
+     * Formats this object into a string, intended to be shown to the end user.
+     * @return string for display
+     */
     @Override
     public String toString()
     {
@@ -269,6 +322,12 @@ public class YMD implements Comparable<YMD>
         return sb.toString();
     }
 
+    /**
+     * Compares this date to the given date. Not consistent with
+     * <code>equals</code>. Uses heuristics to provide nice sequencing, intended
+     * for display to the end-user.
+     * @return -1, 0, or 1, for less, equal, or greater
+     */
     @Override
     public int compareTo(final YMD that)
     {
