@@ -92,9 +92,8 @@ public class GedcomDateValueParserTest
     @Test
     public void nominalOS() throws ParseException, DateRange.DatesOutOfOrder
     {
-        // TODO shouldn't this get converted to gregorian in the YMD?
         final DatePeriod period = parse("@#DJULIAN@ 11 FEB 1731/2");
-        assertThat(period, is(new DatePeriod(new DateRange(new YMD(1732,2,11,false,true)))));
+        assertThat(period, is(new DatePeriod(new DateRange(new YMD(1732,2,22,false,true)))));
     }
 
     @Test
@@ -120,7 +119,7 @@ public class GedcomDateValueParserTest
     public void unlabeledDateWithSlashedYearIsDetectedAsJulian() throws ParseException, DateRange.DatesOutOfOrder
     {
         final DatePeriod period = parse("11 FEB 1731/2");
-        assertThat(period, is(new DatePeriod(new DateRange(new YMD(1732,2,11,false,true)))));
+        assertThat(period, is(new DatePeriod(new DateRange(new YMD(1732,2,22,false,true)))));
     }
 
     @Test(expected=ParseException.class)

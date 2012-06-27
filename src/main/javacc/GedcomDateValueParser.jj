@@ -6,6 +6,9 @@ options
 
 PARSER_BEGIN(GedcomDateValueParser)
 package nu.mine.mosher.gedcom.date.parser;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import nu.mine.mosher.gedcom.date.YMD;
 import nu.mine.mosher.gedcom.date.DateRange;
 import nu.mine.mosher.gedcom.date.DatePeriod;
@@ -14,6 +17,21 @@ import nu.mine.mosher.gedcom.date.DatePeriod;
   public DatePeriod parse() throws ParseException, DateRange.DatesOutOfOrder
   {
     return DateValue();
+  }
+
+  /* Converts Julian to Gregorian */
+  private static YMD julianToGregorian(final YMD ymdJulian)
+  {
+    final GregorianCalendar J = new GregorianCalendar();
+    J.setGregorianChange(new Date(Long.MAX_VALUE));
+    J.set(ymdJulian.getYear(), ymdJulian.getMonth() - 1, ymdJulian.getDay());
+
+    final Date date = J.getTime();
+
+    final GregorianCalendar G = new GregorianCalendar();
+    G.setGregorianChange(new Date(Long.MIN_VALUE));
+    G.setTime(date);
+    return new YMD(G.get(Calendar.YEAR), G.get(Calendar.MONTH) + 1, G.get(Calendar.DAY_OF_MONTH), false, true);
   }
 }
 
@@ -242,7 +260,7 @@ YMD DateSlash() :
   ]
   year = YearSlash()
   {
-    return new YMD(year, month, day, false, true);
+    return julianToGregorian(new YMD(year, month, day));
   }
 }
 
@@ -276,7 +294,7 @@ YMD DateJulianRaw() :
   ]
   year = YearJulian()
   {
-    return new YMD(year, month, day, false, true);
+    return julianToGregorian(new YMD(year, month, day));
   }
 }
 
