@@ -31,8 +31,8 @@ public class Person implements Comparable<Person>
     private final ArrayList<Partnership> rParnership;
     private final boolean isPrivate;
 
-    private Time birth = null;
-    private Time death = null;
+    private Time birth = new Time(new Date(0));
+    private Time death = new Time(new Date(0));
     private List<Time> rMarriage = new ArrayList<Time>();
     private List<Time> rDivorce = new ArrayList<Time>();
 

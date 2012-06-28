@@ -1,0 +1,7 @@
+@template nav()@
+
+<nav>
+	<a href="index.html">
+		home
+	</a>
+</nav>

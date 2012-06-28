@@ -89,6 +89,35 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.2.2</version>
+        <configuration>
+          <container>
+            <containerId>jboss7x</containerId>
+            <type>remote</type>
+          </container>
+          <configuration>
+            <type>runtime</type>
+            <properties>
+              <context>genealogy</context>
+              <cargo.hostname>buildbot</cargo.hostname>
+              <cargo.server.settings>deployments</cargo.server.settings>
+            </properties>
+          </configuration>
+          <deployer>
+            <type>remote</type>
+          </deployer>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-controller-client</artifactId>
+            <version>7.0.1.Final</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
