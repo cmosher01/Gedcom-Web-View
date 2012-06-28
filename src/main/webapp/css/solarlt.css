@@ -1,0 +1,18 @@
+@import url("solarbase.css");
+
+html
+{
+	background-color: #fdf6e3;
+}
+
+td, th
+{
+	border-color: #eee8d5;
+}
+
+.person .events th,
+.label,
+.person .events tr.other_relative
+{
+	background-color: #eee8d5;
+}

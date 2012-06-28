@@ -1,0 +1,55 @@
+@template source(source)@
+
+@include header()@
+
+@include head(source.getTitle())@
+
+<body>
+	@include nav()@
+
+	<article class="source">
+		<header>
+			<h1>@source.getTitle()@</h1>
+		</header>
+
+		<section class="specs">	
+			<table>
+				<colgroup><col></colgroup>
+				<colgroup><col></colgroup>
+				<thead>
+				</thead>
+				<tfoot>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td class="label">author</td>
+						<td class="author">@source.getAuthor()@</td>
+					</tr>
+					<tr>
+						<td class="label">title</td>
+						<td class="title"><cite>@source.getTitle()@</cite></td>
+					</tr>
+					<tr>
+						<td class="label">publication</td>
+						<td class="pub">@source.getPublication()@</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		@if (!source.getText().isEmpty())@
+			<section class="transcription">
+				<blockquote>
+					<h1>
+						transcription and/or representation of source [with notes in brackets]:
+					</h1>
+					@source.getText()@
+				</blockquote>
+			<section>
+		@end if@
+	</article>
+
+	@include foot()@
+</body>
+
+@include footer()@

@@ -1,0 +1,34 @@
+@template eventsSelf(rEvent)@
+
+@if (!rEvent.isEmpty())@
+	<table class="events">
+		<thead>
+			<tr>
+				<th>event</th>
+				<th>date</th>
+				<th>place</th>
+				<th>notes</th>
+				<th>source</th>
+			</tr>
+		</thead>
+		<tfoot>
+		</tfoot>
+		<tbody>
+			@loop iEvent : rEvent.size()@
+				<tr>
+					<td class="label">@rEvent[iEvent].getType()@</td>
+					<td class="date">
+						@if (Util.isNull(rEvent[iEvent].getDate()))@
+							&nbsp;
+						@else@
+							@rEvent[iEvent].getDate().toString()@
+						@end if@
+					</td>
+					<td class="place">@rEvent[iEvent].getPlace()@</td>
+					<td class="notes">@rEvent[iEvent].getNote()@</td>
+					<td class="source">@include linkSource(rEvent[iEvent].getSource())@</td>
+				</tr>
+			@end loop@
+		</tbody>
+	</table>
+@end if@

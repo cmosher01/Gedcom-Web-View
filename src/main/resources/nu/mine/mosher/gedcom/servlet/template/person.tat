@@ -1,0 +1,42 @@
+@template person(person,isFamilyEvents,otherFiles)@
+
+@include header()@
+
+@include head(person)@
+
+<body>
+	@include nav()@
+
+	<article class="person">
+		<section class="parents">
+		  <span class="relation">father</span>
+		  @include link(person.getFather(),isFamilyEvents)@
+
+		  <span class="relation">mother</span>
+		  @include link(person.getMother(),isFamilyEvents)@
+		</section>
+
+		<header>
+			<h1><span class="name">@person.getClassedName()@</span></h1>
+		</header>
+
+		@if (!otherFiles.isEmpty())@
+			This person is also in these other gedcom files:
+			@loop iFile : otherFiles.size()@
+				<span class="gedcom">
+					<a href="@otherFiles[iFile]@?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@">@otherFiles[iFile]@</a>
+				</span>
+			@end loop@
+		@end if@
+
+		@if (!person.isPrivate())@
+			@include events(person,isFamilyEvents)@
+		@end if@
+	
+		@include partnerships(person.getPartnerships(),person.isPrivate(),isFamilyEvents)@
+	</article>
+
+	@include foot()@
+</body>
+
+@include footer()@

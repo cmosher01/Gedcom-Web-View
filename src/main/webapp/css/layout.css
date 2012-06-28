@@ -1,0 +1,30 @@
+td, th
+{
+	border-style: solid;
+	border-width: thin;
+}
+
+.person .events .label
+{
+	width: 15%;
+}
+
+.person .events .date
+{
+	white-space: nowrap;
+}
+
+.person .events .notes
+{
+	width: 20%;
+}
+
+.person .events .source
+{
+	width: 10%;
+}
+
+.family_events
+{
+	text-align: right;
+}
