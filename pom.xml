@@ -32,6 +32,7 @@
     </profile>
   </profiles>
   <build>
+    <finalName>genealogy</finalName>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -101,7 +102,6 @@
           <configuration>
             <type>runtime</type>
             <properties>
-              <context>genealogy</context>
               <cargo.hostname>buildbot</cargo.hostname>
               <cargo.server.settings>deployments</cargo.server.settings>
             </properties>
