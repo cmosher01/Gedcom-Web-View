@@ -197,7 +197,7 @@ public class GedcomServlet extends HttpServlet
 				showErrorPage(response);
 				return;
 			}
-			final UUID uuid = UUID.fromString(paramPersonUUID);
+			final UUID uuid = uuidFromString(paramPersonUUID);
 			final Loader loader = this.mapLoader.get(pathInfo.substring(1));
 			final Writer out = openPage(response);
 			final List<String> otherFiles = new ArrayList<String>();
@@ -225,7 +225,7 @@ public class GedcomServlet extends HttpServlet
 				showErrorPage(response);
 				return;
 			}
-			final UUID uuid = UUID.fromString(paramPersonUUID);
+			final UUID uuid = uuidFromString(paramPersonUUID);
 			final Loader loader = this.mapLoader.get(pathInfo.substring(1));
 			final Writer out = openPage(response);
 			final List<String> otherFiles = new ArrayList<String>();
@@ -304,7 +304,7 @@ public class GedcomServlet extends HttpServlet
 		{
 			return null;
 		}
-		return loader.lookUpPerson(UUID.fromString(uuid));
+		return loader.lookUpPerson(uuidFromString(uuid));
 	}
 
 	private Source findSourceByUuid(final String pathInfo, final String uuid)
@@ -322,10 +322,20 @@ public class GedcomServlet extends HttpServlet
 		{
 			return null;
 		}
-		return loader.lookUpSource(UUID.fromString(uuid));
+		return loader.lookUpSource(uuidFromString(uuid));
 	}
 
-
+    private static UUID uuidFromString(final String uuid)
+    {
+        try
+        {
+            return UUID.fromString(uuid);
+        }
+        catch (final Throwable e)
+        {
+            return null;
+        }
+    }
 
 	private static Writer openPage(final HttpServletResponse response) throws IOException
 	{
