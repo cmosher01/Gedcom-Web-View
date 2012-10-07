@@ -32,9 +32,10 @@ import net.sourceforge.templat.exception.TemplateParsingException;
 import nu.mine.mosher.gedcom.Gedcom;
 import nu.mine.mosher.gedcom.GedcomTree;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
-import nu.mine.mosher.gedcom.servlet.struct.GedcomFile;
-import nu.mine.mosher.gedcom.servlet.struct.Person;
-import nu.mine.mosher.gedcom.servlet.struct.Source;
+import nu.mine.mosher.gedcom.model.GedcomFile;
+import nu.mine.mosher.gedcom.model.Loader;
+import nu.mine.mosher.gedcom.model.Person;
+import nu.mine.mosher.gedcom.model.Source;
 
 /**
  * @author Chris Mosher
