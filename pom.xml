@@ -18,30 +18,9 @@
       <url>http://mosher.mine.nu/nexus/content/repositories/releases</url>
     </repository>
   </distributionManagement>
-  <profiles>
-    <profile>
-      <id>m2eclipse</id>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <build>
-        <directory>eclipse-target</directory>
-      </build>
-    </profile>
-  </profiles>
   <build>
     <finalName>genealogy</finalName>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.9</version>
-        <configuration>
-          <buildOutputDirectory>eclipse-target</buildOutputDirectory>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
