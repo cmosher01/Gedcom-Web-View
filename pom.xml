@@ -18,6 +18,9 @@
       <url>http://mosher.mine.nu/nexus/content/repositories/releases</url>
     </repository>
   </distributionManagement>
+  <scm>
+    <developerConnection>scm:git:[fetch=]https://github.com/cmosher01/Gedcom-Web-View.git[push=]git@github.com:cmosher01/Gedcom-Web-View.git</developerConnection>
+  </scm>
   <build>
     <finalName>genealogy</finalName>
     <plugins>
