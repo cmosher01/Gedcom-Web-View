@@ -6,6 +6,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +76,8 @@ public class GedcomServlet extends HttpServlet
 		final Map<UUID,Loader> mapMasterUuidToLoader = new HashMap<UUID,Loader>(1024);
 		for (final File fileGedcom : rFileGedcom)
 		{
-			final GedcomTree gt = Gedcom.parseFile(fileGedcom);
+			final Charset charset = Gedcom.getCharset(fileGedcom);
+			final GedcomTree gt = Gedcom.parseFile(fileGedcom, charset);
 
 			final Loader loader = new Loader(gt,fileGedcom.getName());
 			loader.parse();

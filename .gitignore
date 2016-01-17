@@ -1,5 +1,4 @@
-/.project
-/.settings
-/.classpath
-/target
-/eclipse-target
+/.idea/
+*.iml
+/.gradle/
+/build/
