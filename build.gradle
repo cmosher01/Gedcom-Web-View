@@ -1,20 +1,22 @@
-apply plugin: 'war'
-apply plugin: 'maven'
+group 'nu.mine.mosher.gedcom.servlet'
+version '1.0.0-SNAPSHOT'
 
-group = 'nu.mine.mosher.gedcom'
-version = '1.1.1-SNAPSHOT'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     maven {
+        mavenCentral()
         url 'http://mosher.mine.nu/maven'
     }
 }
 
+mainClassName = "nu.mine.mosher.gedcom.servlet.Main"
+
 dependencies {
     compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version:'latest.integration'
     compile group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
-    providedCompile group: 'org.jboss.spec', name: 'jboss-javaee-7.0', version:'latest.release'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.0.M13'
 }

@@ -163,22 +163,6 @@ public class GedcomServlet extends HttpServlet
 
 	private void tryGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, TemplateLexingException, TemplateParsingException
 	{
-		/*
-		 * If URL after context path was empty or just "/"
-		 * redirect to /index.html page.
-		 */
-		final String pathInfo = request.getPathInfo();
-		if (pathInfo == null || pathInfo.length() <= 1)
-		{
-			response.sendRedirect(request.getContextPath()+"/index.html");
-			return;
-		}
-
-		handleValidRequest(request, response);
-	}
-
-	private void handleValidRequest(final HttpServletRequest request, final HttpServletResponse response)
-			throws IOException, TemplateLexingException, TemplateParsingException {
 		final String pathInfo = request.getPathInfo();
 		if (pathInfo.equals("/index.html"))
 		{
@@ -263,7 +247,7 @@ public class GedcomServlet extends HttpServlet
 		}
 
 		/* oops, bad requested URL; go back to the home page */
-		response.sendRedirect(request.getContextPath()+"/index.html");
+		response.sendRedirect("/index.html");
 	}
 
 	private void buildGedcomFilesList(final List<GedcomFile> rFile)
