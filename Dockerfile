@@ -2,8 +2,9 @@ FROM java
 
 MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
-# sdkman needs bash
+# sdkman needs bash and zip
 SHELL [ "/bin/bash", "--login", "-c" ]
+RUN apt-get update && apt-get install zip
 
 ENV HOME /root
 WORKDIR $HOME
