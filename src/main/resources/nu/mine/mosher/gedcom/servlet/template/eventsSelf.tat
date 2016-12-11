@@ -26,7 +26,11 @@
 					</td>
 					<td class="place">@rEvent[iEvent].getPlace()@</td>
 					<td class="notes">@rEvent[iEvent].getNote()@</td>
-					<td class="source">@include linkSource(rEvent[iEvent].getSource(),rEvent[iEvent].getCitationPage(),rEvent[iEvent].getCitationExtraText())@</td>
+					<td class="source">
+						@loop iCit : rEvent[iEvent].getCitations().size()@
+							@include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(),rEvent[iEvent].getCitations()[iCit].getPage(),rEvent[iEvent].getCitations()[iCit].getExtraText())@
+						@end loop@
+					</td>
 				</tr>
 			@end loop@
 		</tbody>
