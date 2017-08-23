@@ -3,11 +3,9 @@ version '1.0.0-SNAPSHOT'
 
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
     maven {
+        mavenLocal()
         mavenCentral()
         url 'http://mosher.mine.nu/maven'
     }
@@ -16,7 +14,7 @@ repositories {
 mainClassName = "nu.mine.mosher.gedcom.servlet.Main"
 
 dependencies {
-    compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version:'latest.integration'
+    compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', classifier: 'all', version:'latest.integration'
     compile group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.0.M13'
 }

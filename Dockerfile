@@ -4,7 +4,7 @@ MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
 # sdkman needs bash and zip
 SHELL [ "/bin/bash", "--login", "-c" ]
-RUN apt-get update && apt-get install zip
+RUN apt-get update && apt-get install -y zip
 
 ENV HOME /root
 WORKDIR $HOME
@@ -23,5 +23,7 @@ COPY static/ ./tomcat.8080/webapps/static/
 COPY settings.gradle ./
 COPY build.gradle ./
 COPY src/ ./src/
+
+EXPOSE 8080
 
 RUN gradle build
