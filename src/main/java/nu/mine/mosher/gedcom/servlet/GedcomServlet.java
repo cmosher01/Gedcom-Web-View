@@ -26,6 +26,7 @@ import net.sourceforge.templat.Templat;
 import net.sourceforge.templat.exception.TemplateLexingException;
 import net.sourceforge.templat.exception.TemplateParsingException;
 import nu.mine.mosher.gedcom.Gedcom;
+import nu.mine.mosher.gedcom.GedcomConcatenator;
 import nu.mine.mosher.gedcom.GedcomTree;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.GedcomFile;
@@ -71,7 +72,9 @@ public class GedcomServlet extends HttpServlet
         final Map<UUID,Loader> mapMasterUuidToLoader = new HashMap<UUID,Loader>(1024);
         for (final File fileGedcom : rFileGedcom)
         {
-            final Loader loader = new Loader(Gedcom.readFile(new BufferedInputStream(new FileInputStream(fileGedcom))),fileGedcom.getName());
+            final GedcomTree gt = Gedcom.readFile(new BufferedInputStream(new FileInputStream(fileGedcom)));
+            final Loader loader = new Loader(gt,fileGedcom.getName());
+            new GedcomConcatenator(gt).concatenate();
             loader.parse();
             this.mapLoader.put(loader.getName(),loader);
 
