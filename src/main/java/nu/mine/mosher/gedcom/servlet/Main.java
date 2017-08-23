@@ -8,7 +8,6 @@ import org.apache.catalina.startup.Tomcat;
 import javax.servlet.Servlet;
 
 
-
 /**
  * Created by Chris Mosher on 11/11/16.
  */
@@ -18,10 +17,8 @@ public class Main extends Tomcat {
     }
 
 
-
     private Main() {
     }
-
 
 
     private Main initContext() {
@@ -35,7 +32,6 @@ public class Main extends Tomcat {
         start();
         getServer().await();
     }
-
 
 
     private static void initGedcomServlet(final Context ctx) {
