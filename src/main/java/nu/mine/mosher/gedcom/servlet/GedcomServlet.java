@@ -84,11 +84,10 @@ public class GedcomServlet extends HttpServlet {
         ServletException {
         final File dirGedcom = new File(getGedcomDir(servletConfig)).getCanonicalFile();
 
-        final File[]
-            rFile =
-            dirGedcom.listFiles(file -> file.isFile() &&
-                file.canRead() &&
-                (file.getName().endsWith(".ged") || file.getName().endsWith(".GED")));
+        // @formatter:off
+        final File[] rFile = dirGedcom.listFiles(
+            file -> file.isFile() && file.canRead() && (file.getName().endsWith(".ged") || file.getName().endsWith(".GED")));
+        // @formatter:on
 
         if (rFile == null || rFile.length == 0) {
             throw new ServletException("Cannot find any readable files in " + dirGedcom);
@@ -268,10 +267,10 @@ public class GedcomServlet extends HttpServlet {
     }
 
     private static void showPersonPage(
-        final Person person,
-        final boolean isFamilyEvents,
-        final Writer out,
-        final List<String> otherFiles) throws TemplateLexingException, TemplateParsingException, IOException {
+        final Person person, final boolean isFamilyEvents, final Writer out, final List<String> otherFiles) throws
+        TemplateLexingException,
+        TemplateParsingException,
+        IOException {
         final StringBuilder sb = new StringBuilder(256);
         final Templat tat = new Templat(GedcomServlet.class.getResource("template/person.tat"));
         tat.render(sb, person, isFamilyEvents, otherFiles);
