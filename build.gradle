@@ -1,20 +1,21 @@
-group 'nu.mine.mosher.gedcom.servlet'
-version '1.0.0-SNAPSHOT'
-
+apply plugin: 'java'
 apply plugin: 'application'
 
+group = 'nu.mine.mosher.gedcom.servlet'
+version = '1.0.0-SNAPSHOT'
+mainClassName = 'nu.mine.mosher.gedcom.servlet.Main'
+sourceCompatibility = 1.8
+
 repositories {
+    mavenLocal()
+    mavenCentral()
     maven {
-        mavenLocal()
-        mavenCentral()
         url 'http://mosher.mine.nu/maven'
     }
 }
 
-mainClassName = "nu.mine.mosher.gedcom.servlet.Main"
-
 dependencies {
-    compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version:'latest.integration'
+    compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version: 'latest.integration'
     compile group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.0.M13'
 }
