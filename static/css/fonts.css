@@ -1,37 +1,21 @@
-@import url("http://fonts.googleapis.com/css?family=Gentium+Basic|Sorts+Mill+Goudy&subset=latin,latin-ext");
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans|Source+Code+Pro');
 
-
-
-body
-{
-	font-family:
-		"Sorts Mill Goudy",
-		"Gentium Basic",
-		"Lucida Sans Unicode",
-		"Arial Unicode MS",
-		"Arial",
-		"Helvetica",
-		"serif";
+body {
+    font-family: 'Fira Sans', sans-serif;
 }
 
-
-
-article > header
-{
-	font-size: 300%;
+article > header {
+    font-size: 300%;
 }
 
-.surname
-{
-	font-size: 133%;
+.surname {
+    font-size: 133%;
 }
 
-.pub
-{
-	font-size: 90%;
+.pub {
+    font-size: 90%;
 }
 
-.source
-{
-	font-size: 90%;
+.source {
+    font-size: 90%;
 }

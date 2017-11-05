@@ -1,41 +1,33 @@
-nav, article, footer
-{
-	margin: 2%;
+nav, article, footer {
+    margin: 2%;
 }
 
-footer
-{
-	margin-top: 4%;
+footer {
+    margin-top: 4%;
 }
 
-section
-{
-	margin-top: 2%;
-	margin-bottom: 2%;
+section {
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
-blockquote
-{
-	margin-top: 2em;
+blockquote {
+    margin-top: 2em;
 }
 
-blockquote h1
-{
-	margin-bottom: 1em;
+blockquote h1 {
+    margin-bottom: 1em;
 }
 
-.person .parents .name + .relation
-{
-	margin-left: 3em;
+.person .parents .name + .relation {
+    margin-left: 3em;
 }
 
-.children
-{
-	margin-left: 4em;
-	margin-top: 1em;
+.children {
+    margin-left: 4em;
+    margin-top: 1em;
 }
 
-th, td
-{
-	padding: 1px;
+th, td {
+    padding: 1px;
 }
