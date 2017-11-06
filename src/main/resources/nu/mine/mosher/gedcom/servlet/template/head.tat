@@ -1,7 +1,7 @@
 @template head(title)@
 
 <head>
-	<meta charset="utf-8">
-	<title>@title@</title>
-	<link rel="stylesheet" href="static/css/solarlt.css">
+    <meta charset="utf-8">
+    <title>@title@</title>
+    <link rel="stylesheet" href="static/css/solarlt.css">
 </head>

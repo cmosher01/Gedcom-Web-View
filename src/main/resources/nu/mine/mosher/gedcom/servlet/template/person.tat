@@ -5,38 +5,43 @@
 @include head(person)@
 
 <body>
-	@include nav()@
+    @include nav()@
 
-	<article class="person">
-		<section class="parents">
-		  <span class="relation">father</span>
-		  @include link(person.getFather(),isFamilyEvents)@
+    <article class="person">
+        <section class="parents">
+            <div class="father">
+                father: @include link(person.getFather(),isFamilyEvents)@
+            </div>
+            <div class="mother">
+                mother: @include link(person.getMother(),isFamilyEvents)@
+            </div>
+        </section>
 
-		  <span class="relation">mother</span>
-		  @include link(person.getMother(),isFamilyEvents)@
-		</section>
+        <header>
+            <h1 class="personName">@person.getClassedName()@</h1>
 
-		<header>
-			<h1><span class="name">@person.getClassedName()@</span></h1>
-		</header>
+            @if (!otherFiles.isEmpty())@
+                <div class="gedcomLink">
+                    See also:
+                    @loop iFile : otherFiles.size()@
+                        <div class="gedcom">
+                            <a href="@otherFiles[iFile]@?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@">
+                                @otherFiles[iFile]@
+                            </a>
+                        </div>
+                    @end loop@
+                </div>
+            @end if@
+        </header>
 
-		@if (!otherFiles.isEmpty())@
-			This person is also in these other gedcom files:
-			@loop iFile : otherFiles.size()@
-				<span class="gedcom">
-					<a href="@otherFiles[iFile]@?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@">@otherFiles[iFile]@</a>
-				</span>
-			@end loop@
-		@end if@
+        @if (!person.isPrivate())@
+            @include events(person,isFamilyEvents)@
+        @end if@
 
-		@if (!person.isPrivate())@
-			@include events(person,isFamilyEvents)@
-		@end if@
-	
-		@include partnerships(person.getPartnerships(),person.isPrivate(),isFamilyEvents)@
-	</article>
+        @include partnerships(person.getPartnerships(),person.isPrivate(),isFamilyEvents)@
+    </article>
 
-	@include foot()@
+    @include foot()@
 </body>
 
 @include footer()@

@@ -195,9 +195,11 @@ public class GedcomServlet extends HttpServlet {
     private void buildGedcomFilesList(final List<GedcomFile> rFile) {
         for (final Map.Entry<String, Loader> entry : this.mapLoader.entrySet()) {
             final Person first = entry.getValue().getFirstPerson();
-            final String descrip = entry.getValue().getDescription();
-            final GedcomFile file = new GedcomFile(entry.getKey(), first, HtmlUtil.escapeHtml(descrip == null ? "" : descrip));
-            rFile.add(file);
+            if (first != null) {
+                final String descrip = entry.getValue().getDescription();
+                final GedcomFile file = new GedcomFile(entry.getKey(), first, HtmlUtil.escapeHtml(descrip == null ? "" : descrip));
+                rFile.add(file);
+            }
         }
 
         final Collator collator = Collator.getInstance();
@@ -290,5 +292,11 @@ public class GedcomServlet extends HttpServlet {
     private static void showErrorPage(HttpServletResponse response) throws IOException {
         response.sendError(404,
             "Sorry, I cannot find that web page. Please press the back button and then try something else.");
+    }
+
+    public static String styleCitation(final String citation) {
+        return citation
+            .replaceAll("\\b_(.+?)_\\b","<span class=\"published\">$1</span>")
+            .replaceAll("\\b([a-zA-Z]+://[^ ]+?) ", "<a href=\"$1\">$1</a> ");
     }
 }

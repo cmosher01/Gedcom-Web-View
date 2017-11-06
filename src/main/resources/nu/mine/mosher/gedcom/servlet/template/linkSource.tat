@@ -1,14 +1,12 @@
 @template linkSource(source,page,text)@
 <span class="source">
-	@if (Util.isNull(source))@
-	    &nbsp;
-	@else@
-		<cite>
-		    @text@
-			<a href="?source_uuid=@source.getUuid()@">
-				@source.getShortName()@
-			</a>
-			@page@
-		</cite>
-	@end if@
+    @if (Util.isNull(source))@
+        &nbsp;
+    @else@
+        <aside class="citation">
+            {<a href="?source_uuid=@source.getUuid()@">@source.getTitle()@</a>}
+            @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(page)@
+            @text@
+        </aside>
+    @end if@
 </span>

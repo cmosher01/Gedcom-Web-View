@@ -1,7 +1,9 @@
 @template nav()@
 
-<nav>
-	<a href="index.html">
-		home
-	</a>
-</nav>
+<header>
+    <nav>
+        <a href="index.html">
+            home
+        </a>
+    </nav>
+</header>

@@ -1,16 +1,18 @@
 @template events(person,isFamilyEvents)@
 
-<section class="events">
-	<div class="family_events">
-		@if (isFamilyEvents)@
-			<a href="?person_uuid=@person.getUuid()@">hide family events</a>
-		@else@
-			<a href="?personfam_uuid=@person.getUuid()@">show family events</a>
-		@end if@
-	</div>
-	@if (isFamilyEvents)@
-		@include eventsFamily(person.getFamilyEvents())@
-	@else@
-		@include eventsSelf(person.getEvents())@
-	@end if@
+<section>
+    <!--
+        <div class="family_events">
+            @if (isFamilyEvents)@
+                <a href="?person_uuid=@person.getUuid()@">hide family events</a>
+            @else@
+                <a href="?personfam_uuid=@person.getUuid()@">show family events</a>
+            @end if@
+        </div>
+    -->
+    @if (isFamilyEvents)@
+        @include eventsFamily(person.getFamilyEvents())@
+    @else@
+        @include eventsSelf(person.getEvents())@
+    @end if@
 </section>

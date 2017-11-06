@@ -1,13 +1,13 @@
 @template link(person,isFamilyEvents)@
 <span class="name">
-	@if (Util.isNull(person))@
-		[unknown]
-	@else@
-		<a
-			href=
-				"?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@"
-		>
-			@person.getClassedName()@
-		</a>
-	@end if@
+    @if (Util.isNull(person))@
+        [unknown]
+    @else@
+        <a
+            href=
+                "?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@"
+        >
+            @person.getClassedName()@
+        </a>
+    @end if@
 </span>

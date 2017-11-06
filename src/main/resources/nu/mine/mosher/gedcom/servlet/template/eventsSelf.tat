@@ -1,38 +1,23 @@
 @template eventsSelf(rEvent)@
 
-@if (!rEvent.isEmpty())@
-	<table class="events">
-		<thead>
-			<tr>
-				<th>event</th>
-				<th>date</th>
-				<th>place</th>
-				<th>notes</th>
-				<th>source</th>
-			</tr>
-		</thead>
-		<tfoot>
-		</tfoot>
-		<tbody>
-			@loop iEvent : rEvent.size()@
-				<tr>
-					<td class="label">@rEvent[iEvent].getType()@</td>
-					<td class="date">
-						@if (Util.isNull(rEvent[iEvent].getDate()))@
-							&nbsp;
-						@else@
-							@rEvent[iEvent].getDate().toString()@
-						@end if@
-					</td>
-					<td class="place">@rEvent[iEvent].getPlace()@</td>
-					<td class="notes">@rEvent[iEvent].getNote()@</td>
-					<td class="source">
-						@loop iCit : rEvent[iEvent].getCitations().size()@
-							@include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(),rEvent[iEvent].getCitations()[iCit].getPage(),rEvent[iEvent].getCitations()[iCit].getExtraText())@
-						@end loop@
-					</td>
-				</tr>
-			@end loop@
-		</tbody>
-	</table>
-@end if@
+<div class="events">
+    @loop iEvent : rEvent.size()@
+        <div class="event">
+            <div class="eventVitals">
+                <div class="vitalType">@rEvent[iEvent].getType()@</div>
+                <div class="vitalDate">
+                    @if (Util.isNull(rEvent[iEvent].getDate()))@
+                        &nbsp;
+                    @else@
+                        @rEvent[iEvent].getDate().toString()@
+                    @end if@
+                </div>
+                <div class="vitalPlace">@rEvent[iEvent].getPlace()@</div>
+            </div>
+            <aside class="note">@rEvent[iEvent].getNote()@</aside>
+            @loop iCit : rEvent[iEvent].getCitations().size()@
+                @include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(),rEvent[iEvent].getCitations()[iCit].getPage(),rEvent[iEvent].getCitations()[iCit].getExtraText())@
+            @end loop@
+        </div>
+    @end loop@
+</div>

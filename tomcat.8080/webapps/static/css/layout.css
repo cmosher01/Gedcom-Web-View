@@ -1,0 +1,73 @@
+/* General margins */
+header, section, footer {
+    margin: 2rem;
+}
+
+
+
+/* Make copyright stick to the bottom */
+body {
+    margin: 0 0 100px;
+    padding: 1rem;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+
+/* layout Person page */
+.parents {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.father {
+    text-align: left;
+}
+
+.mother {
+    text-align: right;
+}
+
+.personName {
+    text-align: center;
+}
+
+.gedcomLink {
+    font-size: 80%;
+}
+
+.eventVitals {
+    display: grid;
+    grid-template-columns: minmax(min-content,10%) minmax(min-content,10%) auto;
+    grid-column-gap: 6px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.vitalDate {
+    white-space: nowrap;
+}
+
+.gedcom {
+    display: inline-block;
+}
+
+.citation {
+    font-size: 80%;
+    font-feature-settings: "onum";
+    text-indent: 5em;
+    text-align: justify;
+    text-justify: auto;
+    margin-left: 20%;
+    margin-right: 1em;
+    padding-left: 5em;
+}
+
+.published {
+    font-style: italic;
+}

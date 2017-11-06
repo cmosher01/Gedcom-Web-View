@@ -15,7 +15,7 @@ blockquote {
     margin-top: 2em;
 }
 
-blockquote h1 {
+blockquote {
     margin-bottom: 1em;
 }
 
@@ -26,8 +26,4 @@ blockquote h1 {
 .children {
     margin-left: 4em;
     margin-top: 1em;
-}
-
-th, td {
-    padding: 1px;
 }

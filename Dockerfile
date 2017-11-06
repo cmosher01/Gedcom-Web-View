@@ -18,11 +18,10 @@ RUN echo "org.gradle.daemon=false" >gradle.properties
 ENTRYPOINT [ "gradle" ]
 CMD [ "run" ]
 
-COPY static/ ./tomcat.8080/webapps/static/
-
 COPY settings.gradle ./
 COPY build.gradle ./
 COPY src/ ./src/
+COPY tomcat.8080/webapps/static/ ./tomcat.8080/webapps/static/
 
 EXPOSE 8080
 

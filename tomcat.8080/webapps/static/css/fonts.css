@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:i300,300,500|Source+Code+Pro');
+
+@font-face {
+    font-family: "Born";
+    src: url('http://mosher.mine.nu/font/Born.otf');
+}
+
+body {
+    /*
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 300;
+    */
+    font-family: 'Born', sans-serif;
+}
+
+.vitalDate {
+    font-family: "Source Code Pro", monospace;
+}
+
+
+
+.surname {
+    font-size: 133%;
+}
+
+.personName {
+    font-size: 200%;
+    font-weight: 500;
+}
