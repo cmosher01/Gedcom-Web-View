@@ -5,33 +5,22 @@
 @include head(person)@
 
 <body>
-    @include nav()@
+    @include nav(otherFiles,person)@
 
     <article class="person">
         <section class="parents">
             <div class="father">
-                father: @include link(person.getFather(),isFamilyEvents)@
+                <span class="relation">father:</span>
+                @include link(person.getFather(),isFamilyEvents)@
             </div>
             <div class="mother">
-                mother: @include link(person.getMother(),isFamilyEvents)@
+                <span class="relation">mother:</span>
+                @include link(person.getMother(),isFamilyEvents)@
             </div>
         </section>
-
         <header>
+            <hr class="sim">
             <h1 class="personName">@person.getClassedName()@</h1>
-
-            @if (!otherFiles.isEmpty())@
-                <div class="gedcomLink">
-                    See also:
-                    @loop iFile : otherFiles.size()@
-                        <div class="gedcom">
-                            <a href="@otherFiles[iFile]@?person@if (isFamilyEvents)@fam@end if@_uuid=@person.getUuid()@">
-                                @otherFiles[iFile]@
-                            </a>
-                        </div>
-                    @end loop@
-                </div>
-            @end if@
         </header>
 
         @if (!person.isPrivate())@

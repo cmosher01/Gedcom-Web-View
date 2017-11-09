@@ -1,5 +1,6 @@
 @template events(person,isFamilyEvents)@
 
+<hr class="sec">
 <section>
     <!--
         <div class="family_events">

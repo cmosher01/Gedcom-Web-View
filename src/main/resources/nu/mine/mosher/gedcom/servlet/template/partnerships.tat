@@ -1,9 +1,12 @@
 @template partnerships(rPartnership,isPrivate,isFamilyEvents)@
 @if (!rPartnership.isEmpty())@
     @loop iPartnership : rPartnership.size()@
+        <hr class="sec">
         <section class="partnership">
-            <span class="relation">partnership</span>
-            @include link(rPartnership[iPartnership].getPartner(),isFamilyEvents)@
+            <div class="partner">
+                <span class="relation">partnership:</span>
+                @include link(rPartnership[iPartnership].getPartner(),isFamilyEvents)@
+            </div>
 
             @if (!isFamilyEvents)@
                 @if (!isPrivate)@
@@ -15,8 +18,8 @@
 
             @if (!rPartnership[iPartnership].getChildren().isEmpty())@
                 <div class="children">
-                    <span class="relation">children</span>
-                    <ul>
+                    <span class="relation">children:</span>
+                    <ul class="childrenList">
                         @loop iChild : rPartnership[iPartnership].getChildren().size()@
                             <li>@include link(rPartnership[iPartnership].getChildren().get(iChild),isFamilyEvents)@</li>
                         @end loop@

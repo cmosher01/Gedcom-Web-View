@@ -5,8 +5,12 @@ html {
     color: var(--sol-base00);
 }
 
-.citation, footer, .gedcomLink {
+.citation, footer, .gedcomLink, .parents {
     color: var(--sol-base1);
+}
+
+.gedcom {
+    color: var(--sol-base00);
 }
 
 .eventVitals {
@@ -15,6 +19,7 @@ html {
 }
 
 .personName,
+.sourceTitle,
 .parents .name,
 .partnership .name {
     color: var(--sol-violet);
@@ -29,4 +34,33 @@ a:hover {
     border-left : 2px solid var(--sol-base2);
     border-right: 2px solid var(--sol-base2);
     border-bottom: 2px solid var(--sol-base2);
+}
+
+hr.sec {
+    overflow: visible;
+    padding: 0;
+    border: none;
+    border-top: medium double var(--sol-base1);
+    color: var(--sol-base1);
+    text-align: center;
+    margin-top: 3ex;
+    margin-bottom: 0;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+hr.sec:after {
+    content: "§";
+    display: inline-block;
+    position: relative;
+    top: -0.62em;
+    padding: 0 0.25em;
+    background: var(--sol-base3);
+}
+
+hr.sim {
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+    border: none;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--sol-base2), var(--sol-base1), var(--sol-base2));
 }

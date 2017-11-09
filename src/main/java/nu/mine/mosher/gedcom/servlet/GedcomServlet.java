@@ -297,6 +297,6 @@ public class GedcomServlet extends HttpServlet {
     public static String styleCitation(final String citation) {
         return citation
             .replaceAll("\\b_(.+?)_\\b","<span class=\"published\">$1</span>")
-            .replaceAll("\\b([a-zA-Z]+://[^ ]+?) ", "<a href=\"$1\">$1</a> ");
+            .replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
     }
 }

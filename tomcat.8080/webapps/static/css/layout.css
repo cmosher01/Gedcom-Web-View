@@ -1,25 +1,42 @@
 /* General margins */
 header, section, footer {
-    margin: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    margin-top: 2ex;
+    margin-bottom: 2ex;
 }
 
 
 
 /* Make copyright stick to the bottom */
 body {
-    margin: 0 0 100px;
-    padding: 1rem;
+    margin: 0 0 120px;
 }
 
 footer {
     position: absolute;
     bottom: 0;
     left: 0;
+    height: 100px;
 }
 
 
 
 /* layout Person page */
+nav {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.home {
+    text-align: left;
+}
+
+.gedcomLink {
+    text-align: right;
+}
+
 .parents {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -37,13 +54,17 @@ footer {
     text-align: center;
 }
 
+.gedcom {
+    display: inline-block;
+}
+
 .gedcomLink {
     font-size: 80%;
 }
 
 .eventVitals {
     display: grid;
-    grid-template-columns: minmax(min-content,10%) minmax(min-content,10%) auto;
+    grid-template-columns: minmax(min-content,10%) minmax(min-content,15%) auto;
     grid-column-gap: 6px;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -51,18 +72,14 @@ footer {
 
 .vitalDate {
     white-space: nowrap;
-}
-
-.gedcom {
-    display: inline-block;
+    font-feature-settings: "onum" off;
 }
 
 .citation {
     font-size: 80%;
-    font-feature-settings: "onum";
-    text-indent: 5em;
+    text-indent: 4em;
     text-align: justify;
-    text-justify: auto;
+    text-justify: distribute;
     margin-left: 20%;
     margin-right: 1em;
     padding-left: 5em;
@@ -70,4 +87,46 @@ footer {
 
 .published {
     font-style: italic;
+}
+
+.partner {
+    margin-bottom: 2ex;
+}
+
+.children {
+    margin-top: 2ex;
+}
+
+.childrenList {
+    padding-left: 2em;
+}
+
+
+
+/* layout Source page */
+.specs {
+    display: grid;
+    grid-template-columns: minmax(min-content,15%) auto;
+    grid-row-gap: 6px;
+    background-color: var(--sol-base2);
+    color: var(--sol-base01);
+}
+
+.sourceTitle {
+    text-align: center;
+}
+
+
+
+
+
+/* styles for html in gedcom files */
+table {
+    border-collapse: collapse;
+    border: 1px solid var(--sol-base1);
+}
+
+td, th {
+    border: 1px solid var(--sol-base1);
+    padding: 3px;
 }

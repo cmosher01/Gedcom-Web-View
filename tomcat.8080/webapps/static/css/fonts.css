@@ -1,29 +1,46 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:i300,300,500|Source+Code+Pro');
+@font-face {
+    font-family: quant;
+    src: url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 @font-face {
-    font-family: "Born";
-    src: url('http://mosher.mine.nu/font/Born.otf');
+    font-family: sourcecode;
+    src: url('http://mosher.mine.nu/font/sourcecode/SourceCodeVariable-Roman.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
-    /*
-    font-family: 'Fira Sans', sans-serif;
-    font-weight: 300;
-    */
-    font-family: 'Born', sans-serif;
+    font-family: quant, serif;
+
+    font-weight: normal;
+    font-style: normal;
+    text-rendering: geometricPrecision;
+    font-feature-settings: "kern", "liga", "hlig", "dlig", "onum";
+
+    line-height: 104%;
 }
 
+
 .vitalDate {
-    font-family: "Source Code Pro", monospace;
+    font-family: sourcecode, monospace;
+
+    font-weight: normal;
+    font-style: normal;
 }
 
 
 
 .surname {
-    font-size: 133%;
+    font-weight: bold;
 }
 
-.personName {
+.personName, .sourceTitle {
     font-size: 200%;
-    font-weight: 500;
+}
+
+footer {
+    font-size: 80%;
 }

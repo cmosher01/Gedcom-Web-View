@@ -5,18 +5,32 @@
 @include head(source.getTitle())@
 
 <body>
-    @include nav()@
+    @include nav(null,null)@
 
     <article class="source">
         <header>
-            <h1>@source.getTitle()@</h1>
+            <hr class="sim">
+            <h1 class="sourceTitle">@source.getTitle()@</h1>
         </header>
 
+        <hr class="sec">
+
         <section class="specs">
-            <div class="label">author</div><div class="author">@source.getAuthor()@</div>
-            <div class="label">title</div><div class="title"><cite>@source.getTitle()@</cite></div>
-            <div class="label">publication</div><div class="pub">@source.getPublication()@</div>
+            <div class="label">author</div>
+            <div class="author">@source.getAuthor()@</div>
+
+            <div class="label">title</div>
+            <div class="title">
+                @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(source.getTitle())@
+            </div>
+
+            <div class="label">publication</div>
+            <div class="pub">
+                @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(source.getPublication())@
+            </div>
         </section>
+
+        <hr class="sec">
 
         <section class="transcription">
             <blockquote>
