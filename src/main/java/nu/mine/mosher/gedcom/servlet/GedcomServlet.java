@@ -26,6 +26,10 @@ import java.util.*;
  * Created 2006-09-24.
  */
 public class GedcomServlet extends HttpServlet {
+    public static final String P_PERSON = "person_uuid";
+    public static final String P_SOURCE = "source_uuid";
+    public static final String P_PERSON_INDEX = "person_index";
+
     private final Map<String, Loader> mapLoader = new TreeMap<>();
     private final Map<UUID, Set<Loader>> mapPersonCrossRef = new HashMap<>(32);
 
@@ -79,9 +83,7 @@ public class GedcomServlet extends HttpServlet {
         }
     }
 
-    private static void getGedcomFiles(final ServletConfig servletConfig, final Collection<File> rFileGedcom) throws
-        IOException,
-        ServletException {
+    private static void getGedcomFiles(final ServletConfig servletConfig, final Collection<File> rFileGedcom) throws IOException, ServletException {
         final File dirGedcom = new File(getGedcomDir(servletConfig)).getCanonicalFile();
 
         // @formatter:off
@@ -114,11 +116,10 @@ public class GedcomServlet extends HttpServlet {
         }
     }
 
-    private void tryGet(final HttpServletRequest request, final HttpServletResponse response) throws
-        IOException,
-        TemplateLexingException,
-        TemplateParsingException {
+    private void tryGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, TemplateLexingException, TemplateParsingException {
         final String pathInfo = request.getPathInfo();
+        final String gedcomName = pathInfo.substring(1);
+
         if (pathInfo.equals("/index.html")) {
             final List<GedcomFile> rFile = new ArrayList<>(this.mapLoader.size());
             buildGedcomFilesList(rFile);
@@ -126,70 +127,55 @@ public class GedcomServlet extends HttpServlet {
             final Writer out = openPage(response);
             showFirstPage(rFile, out);
             closePage(out);
+        } else if (request.getParameter(P_PERSON_INDEX) != null) {
+            writePersonIndexPage(gedcomName, request.getParameter(P_PERSON_INDEX), response);
+        } else if (request.getParameter(P_PERSON) != null) {
+            writePersonPage(gedcomName, request.getParameter(P_PERSON), response);
+        } else if (request.getParameter(P_SOURCE) != null) {
+            writeSourcePage(gedcomName, request.getParameter(P_SOURCE), response);
+        } else {
+            /* oops, bad requested URL; go back to the home page */
+            response.sendRedirect("/index.html");
+        }
+    }
+
+    private void writeSourcePage(final String gedcomName, final String paramSourceUUID, final HttpServletResponse response) throws IOException, TemplateLexingException, TemplateParsingException {
+        final Source source = findSourceByUuid(gedcomName, paramSourceUUID);
+        if (source == null) {
+            showErrorPage(response);
             return;
         }
+        final Writer out = openPage(response);
+        showSourcePage(source, out);
+        closePage(out);
+    }
 
-        String paramPersonUUID = request.getParameter("person_uuid");
-        if (paramPersonUUID != null && paramPersonUUID.length() > 0) {
-            final Person person = findPersonByUuid(pathInfo.substring(1), paramPersonUUID);
-            if (person == null) {
-                showErrorPage(response);
-                return;
-            }
-            final UUID uuid = uuidFromString(paramPersonUUID);
-            final Loader loader = this.mapLoader.get(pathInfo.substring(1));
-            final Writer out = openPage(response);
-            final List<String> otherFiles = new ArrayList<>();
-            if (this.mapPersonCrossRef.containsKey(uuid)) {
-                for (final Loader gedcom : this.mapPersonCrossRef.get(uuid)) {
-                    if (gedcom != loader) {
-                        otherFiles.add(gedcom.getName());
-                    }
+    private void writePersonIndexPage(final String gedcomName, final String index, final HttpServletResponse response) throws IOException, TemplateLexingException, TemplateParsingException {
+        final Loader loader = this.mapLoader.get(gedcomName);
+        final Writer out = openPage(response);
+        showPersonIndexPage(loader.getAllPeople(), out);
+        closePage(out);
+    }
+
+    private void writePersonPage(final String gedcomName, final String paramPersonUUID, final HttpServletResponse response) throws IOException, TemplateLexingException, TemplateParsingException {
+        final Person person = findPersonByUuid(gedcomName, paramPersonUUID);
+        if (person == null) {
+            showErrorPage(response);
+            return;
+        }
+        final UUID uuid = uuidFromString(paramPersonUUID);
+        final Loader loader = this.mapLoader.get(gedcomName);
+        final Writer out = openPage(response);
+        final List<String> otherFiles = new ArrayList<>();
+        if (this.mapPersonCrossRef.containsKey(uuid)) {
+            for (final Loader gedcom : this.mapPersonCrossRef.get(uuid)) {
+                if (gedcom != loader) {
+                    otherFiles.add(gedcom.getName());
                 }
             }
-            showPersonPage(person, false, out, otherFiles);
-            closePage(out);
-            return;
         }
-
-        paramPersonUUID = request.getParameter("personfam_uuid");
-        if (paramPersonUUID != null && paramPersonUUID.length() > 0) {
-            final Person person = findPersonByUuid(pathInfo.substring(1), paramPersonUUID);
-            if (person == null) {
-                showErrorPage(response);
-                return;
-            }
-            final UUID uuid = uuidFromString(paramPersonUUID);
-            final Loader loader = this.mapLoader.get(pathInfo.substring(1));
-            final Writer out = openPage(response);
-            final List<String> otherFiles = new ArrayList<>();
-            if (this.mapPersonCrossRef.containsKey(uuid)) {
-                for (final Loader gedcom : this.mapPersonCrossRef.get(uuid)) {
-                    if (gedcom != loader) {
-                        otherFiles.add(gedcom.getName());
-                    }
-                }
-            }
-            showPersonPage(person, true, out, otherFiles);
-            closePage(out);
-            return;
-        }
-
-        final String paramSourceUUID = request.getParameter("source_uuid");
-        if (paramSourceUUID != null && paramSourceUUID.length() > 0) {
-            final Source source = findSourceByUuid(pathInfo.substring(1), paramSourceUUID);
-            if (source == null) {
-                showErrorPage(response);
-                return;
-            }
-            final Writer out = openPage(response);
-            showSourcePage(source, out);
-            closePage(out);
-            return;
-        }
-
-        /* oops, bad requested URL; go back to the home page */
-        response.sendRedirect("/index.html");
+        showPersonPage(person, false, out, otherFiles);
+        closePage(out);
     }
 
     private void buildGedcomFilesList(final List<GedcomFile> rFile) {
@@ -210,14 +196,14 @@ public class GedcomServlet extends HttpServlet {
     }
 
 
-    private Person findPersonByUuid(final String pathInfo, final String uuid) {
+    private Person findPersonByUuid(final String gedcomName, final String uuid) {
         if (uuid == null || uuid.length() == 0) {
             return null;
         }
-        if (pathInfo == null || pathInfo.length() == 0) {
+        if (gedcomName == null || gedcomName.length() == 0) {
             return null;
         }
-        final Loader loader = this.mapLoader.get(pathInfo);
+        final Loader loader = this.mapLoader.get(gedcomName);
         if (loader == null) {
             return null;
         }
@@ -258,31 +244,29 @@ public class GedcomServlet extends HttpServlet {
     }
 
 
-    private static void showFirstPage(final List<GedcomFile> rFile, final Writer out) throws
-        TemplateLexingException,
-        TemplateParsingException,
-        IOException {
+    private static void showFirstPage(final List<GedcomFile> rFile, final Writer out) throws TemplateLexingException, TemplateParsingException, IOException {
         final StringBuilder sb = new StringBuilder(256);
         final Templat tat = new Templat(GedcomServlet.class.getResource("template/index.tat"));
         tat.render(sb, rFile);
         out.write(sb.toString());
     }
 
-    private static void showPersonPage(
-        final Person person, final boolean isFamilyEvents, final Writer out, final List<String> otherFiles) throws
-        TemplateLexingException,
-        TemplateParsingException,
-        IOException {
+    private void showPersonIndexPage(final List<Person> people, final Writer out) throws TemplateLexingException, TemplateParsingException, IOException {
+        final StringBuilder sb = new StringBuilder(256);
+        final Templat tat = new Templat(GedcomServlet.class.getResource("template/personIndex.tat"));
+        tat.render(sb, people, "");
+        out.write(sb.toString());
+    }
+
+    private static void showPersonPage(final Person person, final boolean isFamilyEvents, final Writer out, final List<String> otherFiles)
+        throws TemplateLexingException, TemplateParsingException, IOException {
         final StringBuilder sb = new StringBuilder(256);
         final Templat tat = new Templat(GedcomServlet.class.getResource("template/person.tat"));
         tat.render(sb, person, isFamilyEvents, otherFiles);
         out.write(sb.toString());
     }
 
-    private static void showSourcePage(final Source source, final Writer out) throws
-        TemplateLexingException,
-        TemplateParsingException,
-        IOException {
+    private static void showSourcePage(final Source source, final Writer out) throws TemplateLexingException, TemplateParsingException, IOException {
         final StringBuilder sb = new StringBuilder(256);
         final Templat tat = new Templat(GedcomServlet.class.getResource("template/source.tat"));
         tat.render(sb, source);
@@ -290,13 +274,10 @@ public class GedcomServlet extends HttpServlet {
     }
 
     private static void showErrorPage(HttpServletResponse response) throws IOException {
-        response.sendError(404,
-            "Sorry, I cannot find that web page. Please press the back button and then try something else.");
+        response.sendError(404, "Sorry, I cannot find that web page. Please press the back button and then try something else.");
     }
 
     public static String styleCitation(final String citation) {
-        return citation
-            .replaceAll("\\b_(.+?)_\\b","<span class=\"published\">$1</span>")
-            .replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
+        return citation.replaceAll("\\b_(.+?)_\\b", "<span class=\"published\">$1</span>").replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
     }
 }

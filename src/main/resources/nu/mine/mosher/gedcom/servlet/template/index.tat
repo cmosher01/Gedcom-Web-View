@@ -5,20 +5,22 @@
 @include head(null)@
 
 <body>
-    <article class="gedcoms">
+    <div class="homePage">
         <p>Please choose a genealogy to explore:</p>
 
-        @loop iGed : rGed.size()@
-            <div class="gedcomName">
-                <a href="@rGed[iGed].getFile()@?person_uuid=@rGed[iGed].getFirstPerson().getUuid()@">
-                    @rGed[iGed].getFile()@
-                </a>
-            </div>
-            <div class="gedcomDescription">
-                @rGed[iGed].getDescription()@
-            </div>
-        @end loop@
-    </article>
+        <div class="gedcoms">
+            @loop iGed : rGed.size()@
+                <div class="gedcomName">
+                    <a href="@rGed[iGed].getFile()@?person_index=0">
+                        @rGed[iGed].getFile()@
+                    </a>
+                </div>
+                <div class="gedcomDescription">
+                    @rGed[iGed].getDescription()@
+                </div>
+            @end loop@
+        </div>
+    </div>
 </body>
 
 @include footer()@

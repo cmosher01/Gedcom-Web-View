@@ -23,6 +23,34 @@ footer {
 
 
 
+/* layout Index.html page */
+.homePage {
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+}
+
+.gedcoms {
+    margin-top: 2ex;
+    display: grid;
+    grid-template-columns: minmax(min-content,15%) auto;
+}
+
+
+
+/* layout person index page */
+.nameList {
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+}
+
+
+
 /* layout Person page */
 nav {
     display: grid;
