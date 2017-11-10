@@ -5,12 +5,7 @@
     font-style: normal;
 }
 
-@font-face {
-    font-family: sourcecode;
-    src: url('http://mosher.mine.nu/font/sourcecode/SourceCodeVariable-Roman.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
 
 body {
     font-family: quant, serif;
@@ -20,12 +15,11 @@ body {
     text-rendering: geometricPrecision;
     font-feature-settings: "kern", "liga", "hlig", "dlig", "onum";
 
-    line-height: 104%;
 }
 
 
 .vitalDate {
-    font-family: sourcecode, monospace;
+    font-family: 'Source Code Pro', monospace;
 
     font-weight: normal;
     font-style: normal;
