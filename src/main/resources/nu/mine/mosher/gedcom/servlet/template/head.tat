@@ -3,5 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>@title@</title>
+    <link rel="preload" href="http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="static/css/solarlt.css">
 </head>

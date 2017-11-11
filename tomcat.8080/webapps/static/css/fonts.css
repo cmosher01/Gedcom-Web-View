@@ -1,22 +1,13 @@
 @font-face {
     font-family: quant;
-    src: url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.ttf') format('truetype');
+    src:
+        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff2') format('woff2'),
+        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-
-
-
-
-@font-face {
-    font-family: hieroglify;
-    src: url('http://mosher.mine.nu/font/hieroglify/Hieroglify.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 
 
 

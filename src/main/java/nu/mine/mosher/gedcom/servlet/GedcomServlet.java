@@ -127,6 +127,8 @@ public class GedcomServlet extends HttpServlet {
             final Writer out = openPage(response);
             showFirstPage(rFile, out);
             closePage(out);
+        } else if (pathInfo.equals("/favicon.ico")) {
+            response.setStatus(HttpServletResponse.SC_OK);
         } else if (request.getParameter(P_PERSON_INDEX) != null) {
             writePersonIndexPage(gedcomName, request.getParameter(P_PERSON_INDEX), response);
         } else if (request.getParameter(P_PERSON) != null) {
