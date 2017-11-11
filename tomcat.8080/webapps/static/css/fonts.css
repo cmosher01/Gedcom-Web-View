@@ -7,6 +7,19 @@
 
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
 
+
+
+
+@font-face {
+    font-family: hieroglify;
+    src: url('http://mosher.mine.nu/font/hieroglify/Hieroglify.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
 body {
     font-family: quant, serif;
 
