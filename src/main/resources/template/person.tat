@@ -1,21 +1,21 @@
-@template person(person,isFamilyEvents,otherFiles)@
+@template person(person, file, otherFiles)@
 
 @include header()@
 
 @include head(person)@
 
 <body>
-    @include nav(otherFiles,person)@
+    @include nav(file, otherFiles, person)@
 
     <article class="person">
         <section class="parents">
             <div class="father">
                 <span class="relation">father:</span>
-                @include link(person.getFather(),isFamilyEvents)@
+                @include link(person.getFather())@
             </div>
             <div class="mother">
                 <span class="relation">mother:</span>
-                @include link(person.getMother(),isFamilyEvents)@
+                @include link(person.getMother())@
             </div>
         </section>
         <header>
@@ -23,11 +23,9 @@
             <h1 class="personName">@person.getClassedName()@</h1>
         </header>
 
-        @if (!person.isPrivate())@
-            @include events(person,isFamilyEvents)@
-        @end if@
+        @include events(person.getEvents(), person.isPrivate())@
 
-        @include partnerships(person.getPartnerships(),person.isPrivate(),isFamilyEvents)@
+        @include partnerships(person.getPartnerships(), person.isPrivate())@
     </article>
 
     @include foot()@

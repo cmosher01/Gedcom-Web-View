@@ -1,0 +1,10 @@
+@template link(person)@
+<span class="name">
+    @if (Util.isNull(person))@
+        [unknown]
+    @else@
+        <a href="@person.getUuid()@">
+            @person.getClassedName()@
+        </a>
+    @end if@
+</span>

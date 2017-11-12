@@ -1,0 +1,22 @@
+---
+version: '2'
+services:
+  fetch:
+    image: alpine
+    environment:
+      - REPO
+    command: "/root/docker-fetch.sh"
+    volumes:
+      - "./docker-fetch.sh:/root/docker-fetch.sh:ro"
+      - "gedcom:/root/gedcom"
+  gedcomwebview:
+    build: .
+    ports:
+      - "8080:4567"
+    volumes:
+      - "gedcom:/home/gradle/gedcom:ro"
+    depends_on:
+      - fetch
+    command: gedcom-web-view
+volumes:
+  gedcom:

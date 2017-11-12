@@ -1,11 +1,11 @@
-@template source(source)@
+@template source(source, file)@
 
 @include header()@
 
 @include head(source.getTitle())@
 
 <body>
-    @include nav(null,null)@
+    @include nav(null, null, null)@
 
     <article class="source">
         <header>
@@ -21,12 +21,12 @@
 
             <div class="label">title</div>
             <div class="title">
-                @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(source.getTitle())@
+                @nu.mine.mosher.gedcom.GedcomWebView.styleCitation(source.getTitle())@
             </div>
 
             <div class="label">publication</div>
             <div class="pub">
-                @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(source.getPublication())@
+                @nu.mine.mosher.gedcom.GedcomWebView.styleCitation(source.getPublication())@
             </div>
         </section>
 

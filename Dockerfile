@@ -1,28 +1,29 @@
-FROM java
+FROM gradle:alpine
 
 MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
-# sdkman needs bash and zip
-SHELL [ "/bin/bash", "--login", "-c" ]
-RUN apt-get update && apt-get install -y zip
+EXPOSE 4567
+VOLUME /home/gradle/gedcom
 
-ENV HOME /root
-WORKDIR $HOME
 
-# install sdkman and latest gradle
-RUN curl -s https://get.sdkman.io | bash
-RUN sdk install gradle
-RUN ln -s /root/.sdkman/candidates/gradle/current/bin/gradle /usr/local/bin/gradle
+
+USER root
+RUN chmod -R a+w /usr/local
+
 RUN echo "org.gradle.daemon=false" >gradle.properties
 
-ENTRYPOINT [ "gradle" ]
-CMD [ "run" ]
+COPY docker-run.sh ./
+RUN chmod a+x docker-run.sh
+ENTRYPOINT ["/home/gradle/docker-run.sh"]
 
 COPY settings.gradle ./
 COPY build.gradle ./
 COPY src/ ./src/
-COPY tomcat.8080/webapps/static/ ./tomcat.8080/webapps/static/
 
-EXPOSE 8080
+RUN chown -R gradle: ./
+USER gradle
 
-RUN gradle build
+
+
+RUN gradle build >build.log 2>&1
+RUN tar xf build/distributions/*.tar --strip-components=1 -C /usr/local

@@ -9,14 +9,14 @@
         <p>Please choose a genealogy to explore:</p>
 
         <div class="gedcoms">
-            @loop iGed : rGed.size()@
+            @loop i : rGed.size()@
                 <div class="gedcomName">
-                    <a href="@rGed[iGed].getFile()@?person_index=0">
-                        @rGed[iGed].getFile()@
+                    <a href="@rGed[i].getFile()@/persons/">
+                        @rGed[i].getFile()@
                     </a>
                 </div>
                 <div class="gedcomDescription">
-                    @rGed[iGed].getDescription()@
+                    @rGed[i].getDescription()@
                 </div>
             @end loop@
         </div>

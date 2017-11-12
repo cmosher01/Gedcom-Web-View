@@ -1,16 +1,16 @@
-@template personIndex(people,index)@
+@template personIndex(people, index)@
 
 @include header()@
 
 @include head(null)@
 
 <body>
-    @include nav(null,null)@
+    @include nav(null, null, null)@
 
     <ul class="nameList">
         @loop i : people.size()@
             <li>
-                <a href="?person_uuid=@people[i].getUuid()@">
+                <a href="@people[i].getUuid()@">
                     @people[i].getNameSortedDisplay()@
                 </a>
             </li>

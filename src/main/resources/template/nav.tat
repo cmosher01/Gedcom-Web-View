@@ -1,0 +1,27 @@
+@template nav(file, otherFiles, person)@
+
+<header>
+    <nav>
+        <div class="home">
+            <a href="../../">home</a>
+            <a href="./">@file@</a>
+        </div>
+
+
+
+        @if (!Util.isNull(otherFiles))@
+            @if (!otherFiles.isEmpty())@
+                <div class="gedcomLink">
+                    See also:
+                    @loop iFile : otherFiles.size()@
+                        <div class="gedcom">
+                            <a href="@otherFiles[iFile]@/persons/@person.getUuid()@">
+                                @otherFiles[iFile]@
+                            </a>
+                        </div>
+                    @end loop@
+                </div>
+            @end if@
+        @end if@
+    </nav>
+</header>

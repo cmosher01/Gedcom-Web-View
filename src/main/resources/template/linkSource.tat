@@ -4,9 +4,9 @@
         &nbsp;
     @else@
         <aside class="citation">
-            {<a href="?source_uuid=@source.getUuid()@">@source.getTitle()@</a>}
-            @nu.mine.mosher.gedcom.servlet.GedcomServlet.styleCitation(page)@
-            @text@
+            @nu.mine.mosher.gedcom.GedcomWebView.styleCitation(page)@
+            {<a href="../sources/@source.getUuid()@">@source.getTitle()@</a>}
+            "@text@"
         </aside>
     @end if@
 </span>

@@ -1,3 +1,5 @@
+@template foot()@
+
 <footer>
     <hr class="sim">
     <p>

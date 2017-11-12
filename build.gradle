@@ -1,9 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-group = 'nu.mine.mosher.gedcom.servlet'
+group = 'nu.mine.mosher.gedcom.webview'
 version = '1.0.0-SNAPSHOT'
-mainClassName = 'nu.mine.mosher.gedcom.servlet.Main'
+mainClassName = 'nu.mine.mosher.gedcom.GedcomWebView'
 sourceCompatibility = 1.8
 
 repositories {
@@ -17,5 +17,6 @@ repositories {
 dependencies {
     compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version: 'latest.integration'
     compile group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.0.M13'
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: 'latest.release'
+    compile group: 'com.sparkjava', name: 'spark-core', version: 'latest.release'
 }

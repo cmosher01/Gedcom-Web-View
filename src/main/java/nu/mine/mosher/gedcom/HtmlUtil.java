@@ -1,4 +1,4 @@
-package nu.mine.mosher.gedcom.servlet;
+package nu.mine.mosher.gedcom;
 
 public final class HtmlUtil {
     private HtmlUtil() {

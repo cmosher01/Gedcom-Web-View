@@ -7,9 +7,7 @@
                 <div class="eventVitals">
                     <div class="vitalType">@rEvent[iEvent].getType()@</div>
                     <div class="vitalDate">
-                        @if (Util.isNull(rEvent[iEvent].getDate()))@
-                            &nbsp;
-                        @else@
+                        @if (!Util.isNull(rEvent[iEvent].getDate()))@
                             @rEvent[iEvent].getDate().toString()@
                         @end if@
                     </div>
@@ -17,7 +15,7 @@
                 </div>
                 <aside class="note">@rEvent[iEvent].getNote()@</aside>
                 @loop iCit : rEvent[iEvent].getCitations().size()@
-                    @include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(),rEvent[iEvent].getCitations()[iCit].getPage(),rEvent[iEvent].getCitations()[iCit].getExtraText())@
+                    @include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(), rEvent[iEvent].getCitations()[iCit].getPage(), rEvent[iEvent].getCitations()[iCit].getExtraText())@
                 @end loop@
             </div>
         @end loop@

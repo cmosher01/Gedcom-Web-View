@@ -1,0 +1,8 @@
+@template events(events, private)@
+
+<hr class="sec">
+<section>
+    @if (!private)@
+        @include eventsSelf(events)@
+    @end if@
+</section>
