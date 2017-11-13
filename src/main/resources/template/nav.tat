@@ -15,7 +15,7 @@
                     See also:
                     @loop iFile : otherFiles.size()@
                         <div class="gedcom">
-                            <a href="@otherFiles[iFile]@/persons/@person.getUuid()@">
+                            <a href="../../@otherFiles[iFile]@/persons/@person.getUuid()@">
                                 @otherFiles[iFile]@
                             </a>
                         </div>

@@ -11,8 +11,8 @@
         <div class="gedcoms">
             @loop i : rGed.size()@
                 <div class="gedcomName">
-                    <a href="@rGed[i].getFile()@/persons/">
-                        @rGed[i].getFile()@
+                    <a href="@rGed[i].getName()@/persons/">
+                        @rGed[i].getName()@
                     </a>
                 </div>
                 <div class="gedcomDescription">
