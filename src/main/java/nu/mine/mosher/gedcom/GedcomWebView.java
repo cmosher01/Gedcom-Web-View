@@ -45,67 +45,55 @@ public class GedcomWebView {
 
 
 
-    private void run() throws IOException, InvalidLevel {
+    @SuppressWarnings("CodeBlock2Expr")
+    private void run() throws IOException {
         staticFiles.location("/public");
         staticFiles.expireTime(600);
 
+
+
+        redirect.get("", "/");
+        get("/", (req, res) -> index(), new TemplAtEngine());
+
         get("/favicon.ico", (req, res) -> null);
 
-        get("", (req, res) -> {
-            res.redirect("/");
-            return null;
-        });
-        get("/", (req, res) -> {
-            res.type("text/html");
-            final Object[] rArgs = { this.files.getFiles() };
-            return new ModelAndView(rArgs, "index.tat");
-        }, new TemplAtEngine());
-
-
-
-        path("/:ged/persons", () -> {
-            get("", (req, res) -> {
-                res.redirect("persons/");
-                return null;
+        path("/:ged", () -> {
+            path("/persons", () -> {
+                redirect.get("", "persons/");
+                get("/", (req, res) -> personIndex(req.params(":ged")), new TemplAtEngine());
+                get("/:id", (req, res) -> person(req.params(":ged"), uuidFromString(req.params(":id"))), new TemplAtEngine());
             });
-
-            get("/", (req, res) -> {
-                final String gedcomName = req.params(":ged");
-
-                final List<Person> people = this.files.getAllPeople(gedcomName);
-
-                final Object[] rArgs = { people, 0 };
-                res.type("text/html");
-                return new ModelAndView(rArgs, "personIndex.tat");
-            }, new TemplAtEngine());
-
-            get("/:id", (req, res) -> {
-                final String gedcomName = req.params(":ged");
-                final UUID uuid = uuidFromString(req.params(":id"));
-
-                final Person person = this.files.getPerson(gedcomName, uuid);
-                final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-
-                final Object[] rArgs = { person, gedcomName, otherFiles };
-                res.type("text/html");
-                return new ModelAndView(rArgs, "person.tat");
-            }, new TemplAtEngine());
-        });
-
-        path("/:ged/sources", () -> {
-            get("/:id", (req, res) -> {
-                final String gedcomName = req.params(":ged");
-                final UUID uuid = uuidFromString(req.params(":id"));
-
-                final Source source = this.files.getSource(gedcomName, uuid);
-
-                final Object[] rArgs = { source, gedcomName };
-                res.type("text/html");
-                return new ModelAndView(rArgs, "source.tat");
-            }, new TemplAtEngine());
+            path("/sources", () -> {
+                get("/:id", (req, res) -> source(req.params(":ged"), uuidFromString(req.params(":id"))), new TemplAtEngine());
+            });
         });
     }
 
+
+
+    private ModelAndView index() throws IOException {
+        final Object[] rArgs = { this.files.getFiles() };
+        return new ModelAndView(rArgs, "index.tat");
+    }
+
+    private ModelAndView personIndex(final String gedcomName) throws IOException {
+        final List<Person> people = this.files.getAllPeople(gedcomName);
+        final Object[] rArgs = { people, 0 };
+        return new ModelAndView(rArgs, "personIndex.tat");
+    }
+
+    private ModelAndView person(final String gedcomName, final UUID uuid) throws IOException {
+        final Person person = this.files.getPerson(gedcomName, uuid);
+        final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
+        final Object[] rArgs = { person, gedcomName, otherFiles };
+        return new ModelAndView(rArgs, "person.tat");
+    }
+
+    private ModelAndView source(final String gedcomName, final UUID uuid) throws IOException {
+        final Source source = this.files.getSource(gedcomName, uuid);
+        final Object[] rArgs = { source, gedcomName };
+        return new ModelAndView(rArgs, "source.tat");
+    }
 
 
 
@@ -117,6 +105,7 @@ public class GedcomWebView {
         }
     }
 
+    @SuppressWarnings("unused") /* used in templates */
     public static String styleCitation(final String citation) {
         return citation.replaceAll("\\b_(.+?)_\\b", "<span class=\"published\">$1</span>").replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
     }

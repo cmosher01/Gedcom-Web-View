@@ -14,11 +14,13 @@ import java.util.*;
 
 
 
+@SuppressWarnings("WeakerAccess")
 public class GedcomFilesHandler {
     /*
     this is for the list of gedcom files
     on the first page (index.tat)
      */
+    @SuppressWarnings("unused")  /* used in templates */
     public static class GedcomFile {
         private final String name;
         private final String description;
@@ -122,8 +124,8 @@ public class GedcomFilesHandler {
      *
      * @param fileGedcom GEDCOM file to read
      * @return Loader representing the GEDCOM file (and model)
-     * @throws IOException
-     * @throws InvalidLevel
+     * @throws IOException if I/O error
+     * @throws InvalidLevel if GEDCOM level number is invalid
      */
     private static Loader parseGedcomFile(final File fileGedcom) throws IOException, InvalidLevel {
         final GedcomTree gt = Gedcom.readFile(new BufferedInputStream(new FileInputStream(fileGedcom)));
