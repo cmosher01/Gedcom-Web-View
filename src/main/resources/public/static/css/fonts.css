@@ -1,18 +1,145 @@
+/*
+The goal is to be able to meaningfully display as many characters as
+possible, in order to cover the various personal and place names that
+could appear in various GEDCOM files from around the world and back
+into history. In that same vein, we favor freely available fonts.
+
+Use the serif font Quant for most latin characters, and Source Code
+Pro for monospaced characters (dates and <PRE></PRE>).
+
+For other code blocks, favor Noto fonts from Google. These come in
+separate files, so add the most popular ones ones.
+
+Next add specialty fonts, for hierogyphs, and others.
+
+Next in priority is Code 2002, which covers many other missing glyphs,
+in a fairly clean manner.
+
+Next, try the default font names (which will check the fonts installed
+on the end-user's local system).
+
+Next use Unifont which shows (rather ugly, but at least readable) glyphs
+for most everything else.
+
+Finally, instead of displaying a rectangle for missing glyphs, use
+Last Resort to show the code point and block information, then SIL
+BMP font to show code points for the few yet still missing BMP glyphs.
+*/
+
+
+
+/* MAIN FONT */
 @font-face {
     font-family: quant;
     src:
         url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff2') format('woff2'),
         url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
 }
 
+/* MONOSPACED FONT for dates and PRE-formatted text */
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+/* SPECIALTY FONTS (Noto has good coverage; add more as needed) */
+@font-face {
+    font-family: noto;
+    src:
+        url('http://mosher.mine.nu/font/noto/NotoSerif-Regular.woff') format('woff'),
+        url('http://mosher.mine.nu/font/noto/NotoSerif-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: noto-hebrew;
+    src:
+        url('http://mosher.mine.nu/font/noto/NotoSerifHebrew-Regular.woff') format('woff'),
+        url('http://mosher.mine.nu/font/noto/NotoSerifHebrew-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: noto-arabic;
+    src:
+        url('http://mosher.mine.nu/font/noto/NotoNaskhArabic-Regular.woff') format('woff'),
+        url('http://mosher.mine.nu/font/noto/NotoNaskhArabic-Regular.ttf') format('truetype');
+}
+
+/* ancient fonts (hieroglyphs, etc.) */
+@font-face {
+    font-family: abydos;
+    src:
+        url('http://mosher.mine.nu/font/abydos/AbydosR_hint.woff2') format('woff2'),
+        url('http://mosher.mine.nu/font/abydos/AbydosR_hint.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: aegean;
+    src:
+        url('http://mosher.mine.nu/font/aegean/Aegean_hint.woff') format('woff'),
+        url('http://mosher.mine.nu/font/aegean/Aegean_hint.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: hana-min-b;
+    src:
+        url('http://mosher.mine.nu/font/hanamin/HanaMinB.woff') format('woff'),
+        url('http://mosher.mine.nu/font/hanamin/HanaMinB.ttf') format('truetype');
+}
+
+
+
+/* FALLBACK FONTS for missing glyphs */
+@font-face {
+    font-family: code2002;
+    src:
+        url('http://mosher.mine.nu/font/code2002/code2002.woff') format('woff'),
+        url('http://mosher.mine.nu/font/code2002/code2002.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: unifont;
+    src:
+        url('http://mosher.mine.nu/font/unifont/unifont-10.0.06.woff') format('woff'),
+        url('http://mosher.mine.nu/font/unifont/unifont-10.0.06.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: unifont-smp;
+    src:
+        url('http://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.woff') format('woff'),
+        url('http://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: unifont-pua;
+    src:
+        url('http://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.woff') format('woff'),
+        url('http://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: lastresort;
+    src:
+        url('http://mosher.mine.nu/font/lastresort/LastResort.woff') format('woff'),
+        url('http://mosher.mine.nu/font/lastresort/LastResort.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: silbmp;
+    src:
+        url('http://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.woff') format('woff'),
+        url('http://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.ttf') format('truetype');
+}
+
+
+
 
 
 
 body {
-    font-family: quant, serif;
+    font-family:
+        quant,
+        noto, noto-hebrew, noto-arabic, aegean, abydos, hana-min-b,
+        code2002,
+        serif, sans-serif, monospace, cursive, fantasy,
+        unifont, unifont-smp, unifont-pua, lastresort, silbmp;
 
     font-weight: normal;
     font-style: normal;
@@ -21,12 +148,12 @@ body {
 
 }
 
-
-.vitalDate {
+.vitalDate, pre {
     font-family: 'Source Code Pro', monospace;
 
     font-weight: normal;
     font-style: normal;
+    text-rendering: geometricPrecision;
 }
 
 
