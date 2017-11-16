@@ -72,26 +72,26 @@ public class GedcomWebView {
 
 
     private ModelAndView index() throws IOException {
-        final Object[] rArgs = { this.files.getFiles() };
+        final Object[] rArgs = { this.files.getFiles(), ".." };
         return new ModelAndView(rArgs, "index.tat");
     }
 
     private ModelAndView personIndex(final String gedcomName) throws IOException {
         final List<Person> people = this.files.getAllPeople(gedcomName);
-        final Object[] rArgs = { people, 0 };
+        final Object[] rArgs = { people, 0, "../.." };
         return new ModelAndView(rArgs, "personIndex.tat");
     }
 
     private ModelAndView person(final String gedcomName, final UUID uuid) throws IOException {
         final Person person = this.files.getPerson(gedcomName, uuid);
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final Object[] rArgs = { person, gedcomName, otherFiles };
+        final Object[] rArgs = { person, gedcomName, otherFiles, "../.." };
         return new ModelAndView(rArgs, "person.tat");
     }
 
     private ModelAndView source(final String gedcomName, final UUID uuid) throws IOException {
         final Source source = this.files.getSource(gedcomName, uuid);
-        final Object[] rArgs = { source, gedcomName };
+        final Object[] rArgs = { source, gedcomName, "../.." };
         return new ModelAndView(rArgs, "source.tat");
     }
 

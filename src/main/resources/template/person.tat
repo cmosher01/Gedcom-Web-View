@@ -1,8 +1,8 @@
-@template person(person, file, otherFiles)@
+@template person(person, file, otherFiles, root)@
 
 @include header()@
 
-@include head(person)@
+@include head(person, root)@
 
 <body>
     @include nav(file, otherFiles, person)@

@@ -1,8 +1,8 @@
-@template source(source, file)@
+@template source(source, file, root)@
 
 @include header()@
 
-@include head(source.getTitle())@
+@include head(source.getTitle(), root)@
 
 <body>
     @include nav(null, null, null)@

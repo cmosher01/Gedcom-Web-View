@@ -1,8 +1,8 @@
-@template personIndex(people, index)@
+@template personIndex(people, index, root)@
 
 @include header()@
 
-@include head(null)@
+@include head(null, root)@
 
 <body>
     @include nav(null, null, null)@
