@@ -72,7 +72,7 @@ public class GedcomWebView {
 
 
     private ModelAndView index() throws IOException {
-        final Object[] rArgs = { this.files.getFiles(), ".." };
+        final Object[] rArgs = { this.files.getFiles(), "." };
         return new ModelAndView(rArgs, "index.tat");
     }
 
