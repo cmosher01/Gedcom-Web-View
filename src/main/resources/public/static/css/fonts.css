@@ -1,29 +1,54 @@
 /*
 The goal is to be able to meaningfully display as many characters as
 possible, in order to cover the various personal and place names that
-could appear in various GEDCOM files from around the world and back
+could appear in any GEDCOM file, from around the world, and back
 into history. In that same vein, we favor freely available fonts.
 
-Use the serif font Quant for most latin characters, and Source Code
-Pro for monospaced characters (dates and <PRE></PRE>).
 
-For other code blocks, favor Noto fonts from Google. These come in
-separate files, so add the most popular ones ones.
 
-Next add specialty fonts, for hierogyphs, and others.
+Browsers will search for glyphs in font family files, in priority
+order, downloading them as needed.
 
-Next in priority is Code 2002, which covers many other missing glyphs,
-in a fairly clean manner.
 
-Next, try the default font names (which will check the fonts installed
-on the end-user's local system).
 
-Next use Unifont which shows (rather ugly, but at least readable) glyphs
-for most everything else.
+First, we use the serif font "Quant" http://www.hoftype.de/Quant/
+for most usual latin characters. The "Light" face was free at this time (2017).
 
-Finally, instead of displaying a rectangle for missing glyphs, use
-Last Resort to show the code point and block information, then SIL
-BMP font to show code points for the few yet still missing BMP glyphs.
+And we use "Source Code Pro" https://github.com/adobe-fonts/source-code-pro/
+for monospaced characters (dates and <PRE></PRE>).
+
+Next in priority are "GNU FreeFont" https://www.gnu.org/software/freefont/
+and "Code 2000," "Code 2001," and "Code 2002" (by James Kass)
+https://web.archive.org/web/20101122142710/http://code2000.net/code2000_page.htm
+(original web site is longer available; see also http://www.fontspace.com/james-kass )
+which together cover a huge range of characters across
+many languages, modern and historical, and also look appealing.
+
+The previous are highest priority to have the best change of finding the
+desired character with a minimal of font downloads. Next we proceed to
+the rarer characters missing from the above fonts.
+
+These include the ancient fonts by George Douros http://users.teilar.gr/~g1951d/
+"Abydos," "Aegean," and "Symbola;" and "Tibetan" from Google's
+Noto set of fonts https://www.google.com/get/noto/
+If the need arises, more specialty fonts (from Noto or elsewhere) could be
+added here, as well.
+
+Next, try the default font names, which will check the fonts installed
+on the end-user's local system. This will allow the user the ability to
+find and install their own font if they need a glyph that's missing.
+
+Next in priority order we try "GNU Unifont" http://unifoundry.com/unifont.html
+which is a bitmap font converted to True Type format. As such, its
+appearance is not necessarily pretty, but provides the user with something
+that is, at the very least, intelligible. The three font sets used are
+BMP, SMP, and CSUR-PUA. These provide a huge coverage of Unicode glyphs.
+
+Finally, instead of displaying a rectangle for yet missing glyphs, use
+the Apple/Unicode "Last Resort" font http://www.unicode.org/policies/lastresortfont_eula.html
+which shows code point and block information, then SIL's
+"Unicode BMP Fallback" font http://scripts.sil.org/cms/scripts/page.php?item_id=UnicodeBMPFallbackFont
+which shows code points for a few of the yet still missing BMP glyphs.
 */
 
 
@@ -33,33 +58,58 @@ BMP font to show code points for the few yet still missing BMP glyphs.
     font-family: quant;
     src:
         url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff2') format('woff2'),
-        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff') format('woff');
+        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff') format('woff'),
+        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.ttf') format('truetype');
 }
+
+
 
 /* MONOSPACED FONT for dates and PRE-formatted text */
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-
-/* SPECIALTY FONTS (Noto has good coverage; add more as needed) */
 @font-face {
-    font-family: noto;
+    font-family: sourcecode;
     src:
-        url('http://mosher.mine.nu/font/noto/NotoSerif-Regular.woff') format('woff'),
-        url('http://mosher.mine.nu/font/noto/NotoSerif-Regular.ttf') format('truetype');
+        url('http://mosher.mine.nu/font/sourcecode/SourceCodePro-Regular.woff') format('woff'),
+        url('http://mosher.mine.nu/font/sourcecode/SourceCodePro-Regular.otf') format('opentype');
+}
+
+
+
+/* UNICODE FONTS for most glyphs */
+@font-face {
+    font-family: freefont;
+    src:
+        url('http://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
 }
 
 @font-face {
-    font-family: noto-hebrew;
+    font-family: code2000;
     src:
-        url('http://mosher.mine.nu/font/noto/NotoSerifHebrew-Regular.woff') format('woff'),
-        url('http://mosher.mine.nu/font/noto/NotoSerifHebrew-Regular.ttf') format('truetype');
+        url('http://mosher.mine.nu/font/code2000/code2000.woff') format('woff'),
+        url('http://mosher.mine.nu/font/code2000/code2000.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: noto-arabic;
+    font-family: code2001;
     src:
-        url('http://mosher.mine.nu/font/noto/NotoNaskhArabic-Regular.woff') format('woff'),
-        url('http://mosher.mine.nu/font/noto/NotoNaskhArabic-Regular.ttf') format('truetype');
+        url('http://mosher.mine.nu/font/code2000/code2001.woff') format('woff'),
+        url('http://mosher.mine.nu/font/code2000/code2001.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: code2002;
+    src:
+        url('http://mosher.mine.nu/font/code2000/code2002.woff') format('woff'),
+        url('http://mosher.mine.nu/font/code2000/code2002.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: tibetan;
+    src:
+        url('http://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.woff') format('woff'),
+        url('http://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.ttf') format('truetype');
+}
+
+
 
 /* ancient fonts (hieroglyphs, etc.) */
 @font-face {
@@ -77,22 +127,15 @@ BMP font to show code points for the few yet still missing BMP glyphs.
 }
 
 @font-face {
-    font-family: hana-min-b;
+    font-family: symbola;
     src:
-        url('http://mosher.mine.nu/font/hanamin/HanaMinB.woff') format('woff'),
-        url('http://mosher.mine.nu/font/hanamin/HanaMinB.ttf') format('truetype');
+        url('http://mosher.mine.nu/font/symbola/Symbola_hint.woff') format('woff'),
+        url('http://mosher.mine.nu/font/symbola/Symbola_hint.ttf') format('truetype');
 }
 
 
 
-/* FALLBACK FONTS for missing glyphs */
-@font-face {
-    font-family: code2002;
-    src:
-        url('http://mosher.mine.nu/font/code2002/code2002.woff') format('woff'),
-        url('http://mosher.mine.nu/font/code2002/code2002.ttf') format('truetype');
-}
-
+/* LAST RESORT fonts (bitmaps and missing) */
 @font-face {
     font-family: unifont;
     src:
@@ -136,10 +179,12 @@ BMP font to show code points for the few yet still missing BMP glyphs.
 body {
     font-family:
         quant,
-        noto, noto-hebrew, noto-arabic, aegean, abydos, hana-min-b,
-        code2002,
+        freefont, code2000, code2001, code2002,
+        abydos, aegean, symbola,
+        tibetan,
         serif, sans-serif, monospace, cursive, fantasy,
-        unifont, unifont-smp, unifont-pua, lastresort, silbmp;
+        unifont, unifont-smp, unifont-pua,
+        lastresort, silbmp;
 
     font-weight: normal;
     font-style: normal;
@@ -149,7 +194,7 @@ body {
 }
 
 .vitalDate, pre {
-    font-family: 'Source Code Pro', monospace;
+    font-family: sourcecode, monospace, /* minimal fallback set: */ sans-serif, unifont, unifont-smp;
 
     font-weight: normal;
     font-style: normal;
