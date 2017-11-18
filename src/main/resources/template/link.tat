@@ -4,7 +4,7 @@
         [unknown]
     @else@
         <a href="@person.getUuid()@">
-            @person.getClassedName()@
+            @person.getNameSortedDisplay()@
         </a>
     @end if@
 </span>

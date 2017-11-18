@@ -9,11 +9,7 @@
 
     <ul class="nameList">
         @loop i : people.size()@
-            <li>
-                <a href="@people[i].getUuid()@">
-                    @people[i].getNameSortedDisplay()@
-                </a>
-            </li>
+            <li>@include link(people[i])@</li>
         @end loop@
     </ul>
 

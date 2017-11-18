@@ -21,12 +21,12 @@
 
             <div class="label">title</div>
             <div class="title">
-                @nu.mine.mosher.gedcom.GedcomWebView.styleCitation(source.getTitle())@
+                @nu.mine.mosher.Util.styleCitation(source.getTitle())@
             </div>
 
             <div class="label">publication</div>
             <div class="pub">
-                @nu.mine.mosher.gedcom.GedcomWebView.styleCitation(source.getPublication())@
+                @nu.mine.mosher.Util.styleCitation(source.getPublication())@
             </div>
         </section>
 

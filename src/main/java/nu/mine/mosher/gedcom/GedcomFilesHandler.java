@@ -1,5 +1,6 @@
 package nu.mine.mosher.gedcom;
 
+import nu.mine.mosher.Util;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.Loader;
 import nu.mine.mosher.gedcom.model.Person;
@@ -27,7 +28,7 @@ public class GedcomFilesHandler {
 
         private GedcomFile(String n, String d) {
             name = n;
-            description = HtmlUtil.escapeHtml(d == null ? "" : d);
+            description = d == null ? "" : d;
         }
 
         public String getName() {
@@ -62,7 +63,7 @@ public class GedcomFilesHandler {
             buildPersonCrossReferences(loader, mapMasterUuidToLoader);
         }
 
-        final Collator collator = CollatorFactory.create();
+        final Collator collator = Util.createCollator();
         files.sort((f1, f2) -> collator.compare(f1.getName(), f2.getName()));
         this.rFile = Collections.unmodifiableList(files);
     }

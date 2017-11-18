@@ -1,5 +1,6 @@
 package nu.mine.mosher.gedcom;
 
+import nu.mine.mosher.Util;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.Person;
 import nu.mine.mosher.gedcom.model.Source;
@@ -61,10 +62,10 @@ public class GedcomWebView {
             path("/persons", () -> {
                 redirect.get("", "persons/");
                 get("/", (req, res) -> personIndex(req.params(":ged")), new TemplAtEngine());
-                get("/:id", (req, res) -> person(req.params(":ged"), uuidFromString(req.params(":id"))), new TemplAtEngine());
+                get("/:id", (req, res) -> person(req.params(":ged"), Util.uuidFromString(req.params(":id"))), new TemplAtEngine());
             });
             path("/sources", () -> {
-                get("/:id", (req, res) -> source(req.params(":ged"), uuidFromString(req.params(":id"))), new TemplAtEngine());
+                get("/:id", (req, res) -> source(req.params(":ged"), Util.uuidFromString(req.params(":id"))), new TemplAtEngine());
             });
         });
     }
@@ -93,20 +94,5 @@ public class GedcomWebView {
         final Source source = this.files.getSource(gedcomName, uuid);
         final Object[] rArgs = { source, gedcomName, "../.." };
         return new ModelAndView(rArgs, "source.tat");
-    }
-
-
-
-    private static UUID uuidFromString(final String uuid) {
-        try {
-            return UUID.fromString(uuid);
-        } catch (final Throwable e) {
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unused") /* used in templates */
-    public static String styleCitation(final String citation) {
-        return citation.replaceAll("\\b_(.+?)_\\b", "<span class=\"published\">$1</span>").replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
     }
 }

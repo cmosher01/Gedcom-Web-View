@@ -129,7 +129,41 @@ nav {
     padding-left: 2em;
 }
 
+.controls {
+    text-align: right;
+    font-size: 65%
+}
 
+.showSources {
+    display: none;
+}
+
+.showSources ~ .events > .event > .source {
+    display: none;
+}
+
+.showSources:checked ~ .events > .event > .source {
+    display: inline;
+}
+
+.copyright {
+    display: grid;
+    grid-template-areas:
+        "badge notice"
+        "badge license";
+}
+
+.copyright > .badge {
+    grid-area: badge;
+}
+
+.copyright > .notice {
+    grid-area: notice;
+}
+
+.copyright > .license {
+    grid-area: license;
+}
 
 /* layout Source page */
 .specs {

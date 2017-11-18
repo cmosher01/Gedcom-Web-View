@@ -10,7 +10,7 @@
 
             @if (!isPrivate)@
                 @if (!rPartnership[iPartnership].isPrivate())@
-                    @include eventsSelf(rPartnership[iPartnership].getEvents())@
+                    @include eventsSelf(rPartnership[iPartnership].getEvents(), nu.mine.mosher.Util.uuid())@
                 @end if@
             @end if@
 

@@ -3,6 +3,6 @@
 <hr class="sec">
 <section>
     @if (!private)@
-        @include eventsSelf(events)@
+        @include eventsSelf(events, nu.mine.mosher.Util.uuid())@
     @end if@
 </section>

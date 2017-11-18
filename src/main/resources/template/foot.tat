@@ -2,21 +2,30 @@
 
 <footer>
     <hr class="sim">
-    <p>
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-            <img
-                alt="Creative Commons License"
-                style="border-width:0"
-                src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"
-            />
-        </a>
+    <div class="copyright">
+        <div class="badge">
+            <a
+                rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/"
+            >
+                <img
+                    alt="Creative Commons License"
+                    src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"
+                />
+            </a>
+        </div>
 
-        This work is licensed under a
-        <a
-            rel="license"
-            href="http://creativecommons.org/licenses/by-sa/4.0/"
-        >Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+        <div class="notice">
+            Copyright &copy; 1998&ndash;2017, Christopher Alan Mosher, Shelton, CT, USA.
+        </div>
 
-        Copyright © 1998, Christopher Alan Mosher, Shelton, CT, USA.
-    </p>
+        <div class="license">
+            This work is licensed under a
+            <a
+                rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/"
+            >
+                Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+        </div>
+    </div>
 </footer>

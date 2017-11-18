@@ -20,12 +20,13 @@ html {
 
 .personName,
 .sourceTitle,
+.nameList .name,
 .parents .name,
 .partnership .name {
     color: var(--sol-violet);
 }
 
-a:hover {
+.controls label:hover, a:hover {
     background-color: var(--sol-green);
     color: var(--sol-base3);
 }
