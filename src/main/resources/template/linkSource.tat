@@ -1,6 +1,6 @@
 @template linkSource(source,page,text)@
 <span class="source">
-    @if (Util.isNull(source))@
+    @if (net.sourceforge.templat.Util.isNull(source))@
         &nbsp;
     @else@
         <aside class="citation">

@@ -11,7 +11,7 @@
                 <div class="eventVitals">
                     <div class="vitalType">@rEvent[iEvent].getType()@</div>
                     <div class="vitalDate">
-                        @if (!Util.isNull(rEvent[iEvent].getDate()))@
+                        @if (!net.sourceforge.templat.Util.isNull(rEvent[iEvent].getDate()))@
                             @rEvent[iEvent].getDate().toString()@
                         @end if@
                     </div>

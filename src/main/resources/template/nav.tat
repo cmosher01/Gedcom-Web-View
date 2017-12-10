@@ -9,7 +9,7 @@
 
 
 
-        @if (!Util.isNull(otherFiles))@
+        @if (!net.sourceforge.templat.Util.isNull(otherFiles))@
             @if (!otherFiles.isEmpty())@
                 <div class="gedcomLink">
                     See also:
