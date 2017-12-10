@@ -7,15 +7,15 @@ mainClassName = 'nu.mine.mosher.gedcom.GedcomWebView'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven {
-        url 'http://mosher.mine.nu/maven'
+        url 'http://mosher.mine.nu/nexus/repository/maven-public/'
     }
 }
 
 dependencies {
     compile group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version: 'latest.integration'
+    compile group: 'nu.mine.mosher.xml', name: 'SimpleXml', version: 'latest.integration'
     compile group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
     compile group: 'org.slf4j', name: 'slf4j-jdk14', version: 'latest.release'
     compile group: 'com.sparkjava', name: 'spark-core', version: 'latest.release'

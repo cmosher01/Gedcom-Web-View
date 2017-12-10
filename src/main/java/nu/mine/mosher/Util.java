@@ -1,7 +1,23 @@
 package nu.mine.mosher;
 
+import nu.mine.mosher.xml.SimpleXml;
+import org.xml.sax.SAXParseException;
+
+import javax.xml.transform.TransformerException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Collator;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
@@ -10,7 +26,7 @@ public final class Util {
     }
 
     public static String e(final String s) {
-        return s.replace("<","&lt;");
+        return s.replace("<", "&lt;");
     }
 
     public static String q(final String s) {
@@ -21,7 +37,7 @@ public final class Util {
         if (t.isEmpty()) {
             return "";
         }
-        return "\u201c"+t+"\u201d";
+        return "\u201c" + t + "\u201d";
     }
 
     public static UUID uuidFromString(final String uuid) {
@@ -33,6 +49,19 @@ public final class Util {
     }
 
     public static String styleCitation(final String citation) {
+        try {
+            return tryStyleCitation(citation);
+        } catch (final Throwable e) {
+            e.printStackTrace();
+            /* fall back to displaying without formatting */
+            return citation;
+        }
+    }
+
+    public static String tryStyleCitation(final String citation) throws SAXParseException, IOException, TransformerException {
+        if (citation.startsWith("<bibl") || citation.startsWith("<?xml")) {
+            return teiStyle(citation);
+        }
         return period(links(italics(qq(citation))));
     }
 
@@ -61,5 +90,43 @@ public final class Util {
         collator.setStrength(Collator.PRIMARY);
         collator.setDecomposition(Collator.FULL_DECOMPOSITION);
         return collator;
+    }
+
+
+
+    public static String teiStyle(final String tei) throws SAXParseException, IOException, TransformerException {
+        if (tei.startsWith("<bibl")) {
+            return teiStyle(wrapTeiBibl(tei));
+        }
+        return new SimpleXml(tei).transform(teish());
+    }
+
+    private static String teish() throws IOException {
+        return readFromUrl(new URL("https://cdn.rawgit.com/cmosher01/teish/1.2/src/main/resources/teish.xslt"));
+    }
+
+    private static String wrapTeiBibl(final String bibl) {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//            "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>\n" +
+            "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">\n" +
+            "    <teiHeader>\n" +
+            "        <fileDesc/>\n" +
+            "        <profileDesc/>\n" +
+            "    </teiHeader>\n" +
+            "    <text xml:lang=\"en\">\n" +
+            "        <body>\n" +
+            "            <ab>\n" +
+            bibl +
+            "            </ab>\n" +
+            "        </body>\n" +
+            "    </text>\n" +
+            "</TEI>\n";
+    }
+
+    public static String readFromUrl(final URL source) throws IOException {
+        try (InputStream is = source.openConnection().getInputStream()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            return reader.lines().collect(Collectors.joining("\n"));
+        }
     }
 }
