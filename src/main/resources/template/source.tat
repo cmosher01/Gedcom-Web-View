@@ -34,7 +34,7 @@
 
         <section class="transcription">
             <blockquote>
-                @source.getText()@
+                @nu.mine.mosher.Util.teiStyle(source.getText())@
             </blockquote>
         <section>
     </article>

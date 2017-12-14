@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,6 +22,16 @@ import java.util.stream.StreamSupport;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
+    private static final URL TEISH = initTeish();
+
+    private static URL initTeish() {
+        try {
+            return new URL("https://cdn.rawgit.com/cmosher01/teish/1.3/src/main/resources/teish.xslt");
+        } catch (final Throwable e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private Util() {
         throw new IllegalStateException();
     }
@@ -98,11 +109,10 @@ public final class Util {
         if (tei.startsWith("<bibl")) {
             return teiStyle(wrapTeiBibl(tei));
         }
-        return new SimpleXml(tei).transform(teish());
-    }
-
-    private static String teish() throws IOException {
-        return readFromUrl(new URL("https://cdn.rawgit.com/cmosher01/teish/1.2/src/main/resources/teish.xslt"));
+        if (!tei.startsWith("<?xml")) {
+            return tei;
+        }
+        return new SimpleXml(tei).transform(readFromUrl(TEISH));
     }
 
     private static String wrapTeiBibl(final String bibl) {
@@ -124,9 +134,8 @@ public final class Util {
     }
 
     public static String readFromUrl(final URL source) throws IOException {
-        try (InputStream is = source.openConnection().getInputStream()) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            return reader.lines().collect(Collectors.joining("\n"));
+        try (final BufferedReader in = new BufferedReader(new InputStreamReader(source.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
+            return in.lines().collect(Collectors.joining("\n"));
         }
     }
 }
