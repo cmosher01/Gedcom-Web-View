@@ -6,19 +6,12 @@ import org.xml.sax.SAXParseException;
 import javax.xml.transform.TransformerException;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.Collator;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
@@ -109,28 +102,39 @@ public final class Util {
         if (tei.startsWith("<bibl")) {
             return teiStyle(wrapTeiBibl(tei));
         }
+        if (tei.startsWith("<text")) {
+            return teiStyle(wrapTeiText(tei));
+        }
         if (!tei.startsWith("<?xml")) {
             return tei;
         }
         return new SimpleXml(tei).transform(readFromUrl(TEISH));
     }
 
-    private static String wrapTeiBibl(final String bibl) {
+    private static String wrapTeiText(final String text) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-//            "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>\n" +
+            //            "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>\n" +
             "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">\n" +
-            "    <teiHeader>\n" +
-            "        <fileDesc/>\n" +
-            "        <profileDesc/>\n" +
-            "    </teiHeader>\n" +
-            "    <text xml:lang=\"en\">\n" +
-            "        <body>\n" +
-            "            <ab>\n" +
-            bibl +
-            "            </ab>\n" +
-            "        </body>\n" +
-            "    </text>\n" +
+            "  <teiHeader>\n" +
+            "    <fileDesc>\n" +
+            "      <titleStmt/>\n" +
+            "      <publicationStmt/>\n" +
+            "      <sourceDesc/>\n" +
+            "    </fileDesc>\n" +
+            "  </teiHeader>\n" +
+               text +
             "</TEI>\n";
+    }
+
+    private static String wrapTeiBibl(final String bibl) {
+        return wrapTeiText(
+            "<text xml:lang=\"en\">\n" +
+            "  <body>\n" +
+            "    <ab>\n" +
+                   bibl +
+            "    </ab>\n" +
+            "  </body>\n" +
+            "</text>\n");
     }
 
     public static String readFromUrl(final URL source) throws IOException {
