@@ -70,22 +70,25 @@ public final class Util {
         String date = "";
 
         m = patternName.matcher(pub);
-        if (m.matches()) {
+        if (m.find()) {
             name = safe(m.group(1));
         }
 
         m = patternLocn.matcher(pub);
-        if (m.matches()) {
+        if (m.find()) {
             location = safe(m.group(1));
         }
 
         m = patternDate.matcher(pub);
-        if (m.matches()) {
+        if (m.find()) {
             date = safe(m.group(1));
         }
 
         if (is(location) && is(date) && !is(name)) {
-            name = safe(patternFirstField.matcher(pub).group(1));
+            m = patternFirstField.matcher(pub);
+            if (m.find()) {
+                name = safe(m.group(1));
+            }
         }
 
         if (is(name) && is(date) && is(location)) {

@@ -21,7 +21,7 @@
 
             <div class="label">title</div>
             <div class="title">
-                @nu.mine.mosher.Util.styleCitation(source.getTitle())@
+                @source.getTitle()@
             </div>
 
             <div class="label">publication</div>
