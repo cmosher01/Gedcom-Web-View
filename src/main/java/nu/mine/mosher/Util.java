@@ -11,6 +11,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
@@ -50,6 +52,58 @@ public final class Util {
         } catch (final Throwable e) {
             return null;
         }
+    }
+
+    public static String stylePublication(final String pub) throws TransformerException, IOException, SAXParseException {
+        return teiStyle(parsePublication(pub));
+    }
+
+    private static final Pattern patternName = Pattern.compile("Name: (.*?)(;|$)");
+    private static final Pattern patternLocn = Pattern.compile("Location: (.*?)(;|$)");
+    private static final Pattern patternDate = Pattern.compile("Date: (.*?)(;|$)");
+    private static final Pattern patternFirstField = Pattern.compile("^(.*?)(;|$)");
+
+    private static String parsePublication(final String pub) {
+        Matcher m;
+        String name = "";
+        String location = "";
+        String date = "";
+
+        m = patternName.matcher(pub);
+        if (m.matches()) {
+            name = safe(m.group(1));
+        }
+
+        m = patternLocn.matcher(pub);
+        if (m.matches()) {
+            location = safe(m.group(1));
+        }
+
+        m = patternDate.matcher(pub);
+        if (m.matches()) {
+            date = safe(m.group(1));
+        }
+
+        if (is(location) && is(date) && !is(name)) {
+            name = safe(patternFirstField.matcher(pub).group(1));
+        }
+
+        if (is(name) && is(date) && is(location)) {
+            return location+": "+name+", "+date;
+        }
+
+        return pub;
+    }
+
+    private static boolean is (final String s) {
+        return (s != null) && !s.isEmpty();
+    }
+
+    private static String safe(final String s) {
+        if (s == null) {
+            return "";
+        }
+        return s;
     }
 
     public static String styleCitation(final String citation) {
