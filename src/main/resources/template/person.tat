@@ -23,7 +23,7 @@
             <h1 class="personName">@person.getClassedName()@</h1>
         </header>
 
-        @include events(person.getEvents(), person.isPrivate())@
+        @include events(person.getEventsWithDittoedPlaces(), person.isPrivate())@
 
         @include partnerships(person.getPartnerships(), person.isPrivate())@
     </article>

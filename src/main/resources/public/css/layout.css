@@ -92,10 +92,14 @@ nav {
 
 .eventVitals {
     display: grid;
-    grid-template-columns: minmax(min-content,10%) minmax(min-content,15%) auto;
+    grid-template-columns: 24ch minmax(min-content,40%) auto;
     grid-column-gap: 6px;
     margin-top: 3px;
     margin-bottom: 3px;
+    white-space: nowrap;
+}
+.vitalType {
+    font-weight: bold;
 }
 
 .vitalDate {

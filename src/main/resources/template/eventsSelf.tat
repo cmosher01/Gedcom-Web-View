@@ -9,13 +9,13 @@
         @loop iEvent : rEvent.size()@
             <div class="event">
                 <div class="eventVitals">
-                    <div class="vitalType">@rEvent[iEvent].getType()@</div>
                     <div class="vitalDate">
                         @if (!net.sourceforge.templat.Util.isNull(rEvent[iEvent].getDate()))@
-                            @rEvent[iEvent].getDate().toString()@
+                            @rEvent[iEvent].getDate().getTabularString()@
                         @end if@
                     </div>
                     <div class="vitalPlace">@rEvent[iEvent].getPlace()@</div>
+                    <div class="vitalType">@rEvent[iEvent].getType()@</div>
                 </div>
                 <aside class="note">@rEvent[iEvent].getNote()@</aside>
                 @loop iCit : rEvent[iEvent].getCitations().size()@
