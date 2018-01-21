@@ -117,6 +117,15 @@ nav {
     padding-left: 5em;
 }
 
+.note {
+    font-size: 80%;
+    text-align: justify;
+    text-justify: distribute;
+    margin-left: 20%;
+    margin-right: 1em;
+    padding-left: 5em;
+}
+
 .published {
     font-style: italic;
 }

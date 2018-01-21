@@ -6,7 +6,9 @@
         <aside class="citation">
             @nu.mine.mosher.Util.styleCitation(page)@
             {<a href="../sources/@source.getUuid()@">@source.getTitle()@</a>}
-            @nu.mine.mosher.Util.teiStyle(text)@
         </aside>
+        <div class="note">
+            @nu.mine.mosher.Util.teiStyle(text)@
+        </div>
     @end if@
 </span>
