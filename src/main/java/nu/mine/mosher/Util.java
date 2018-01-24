@@ -1,5 +1,6 @@
 package nu.mine.mosher;
 
+import nu.mine.mosher.gedcom.model.MultimediaReference;
 import nu.mine.mosher.xml.SimpleXml;
 import org.xml.sax.SAXParseException;
 
@@ -10,6 +11,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -198,5 +202,31 @@ public final class Util {
         try (final BufferedReader in = new BufferedReader(new InputStreamReader(source.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
             return in.lines().collect(Collectors.joining("\n"));
         }
+    }
+
+    public static String getAttLink(final MultimediaReference att) {
+        if (att.wasUri()) {
+            return att.toString();
+        }
+
+        return replaceFilePathPrefix(standardizePathCharacters(att.toString()));
+    }
+
+    private static String replaceFilePathPrefix(final String s)
+    {
+        // TODO: make prefixes configurable
+        return s.replaceFirst("^.*/Family Tree Maker/", "/ftm/");
+    }
+
+    public static String standardizePathCharacters(final String pathAnyOs) {
+        return pathAnyOs.replaceAll("\\\\", "/");
+    }
+
+    public static int size(final Collection<?> r) {
+        return r.size();
+    }
+
+    public static<T> List<T> asList(final Collection<T> r) {
+        return new ArrayList<>(r);
     }
 }

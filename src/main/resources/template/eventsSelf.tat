@@ -19,7 +19,7 @@
                 </div>
                 <aside class="note">@rEvent[iEvent].getNote()@</aside>
                 @loop iCit : rEvent[iEvent].getCitations().size()@
-                    @include linkSource(rEvent[iEvent].getCitations()[iCit].getSource(), rEvent[iEvent].getCitations()[iCit].getPage(), rEvent[iEvent].getCitations()[iCit].getExtraText())@
+                    @include linkSource(rEvent[iEvent].getCitations()[iCit])@
                 @end loop@
             </div>
         @end loop@

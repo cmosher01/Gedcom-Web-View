@@ -1,0 +1,4 @@
+@template attachments(as)@
+@loop i : nu.mine.mosher.Util.size(as)@
+    <a href="@nu.mine.mosher.Util.getAttLink(as[i])@">[img]</a>
+@end loop@
