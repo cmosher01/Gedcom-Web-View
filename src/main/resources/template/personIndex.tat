@@ -1,11 +1,11 @@
-@template personIndex(people, index, root)@
+@template personIndex(people, file, index, root)@
 
 @include header()@
 
-@include head(null, root)@
+@include head(file, root)@
 
 <body>
-    @include nav(null, null, null)@
+    @include nav(file, null, null)@
 
     <ul class="nameList">
         @loop i : people.size()@

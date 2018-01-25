@@ -79,7 +79,7 @@ public class GedcomWebView {
 
     private ModelAndView personIndex(final String gedcomName) throws IOException {
         final List<Person> people = this.files.getAllPeople(gedcomName);
-        final Object[] rArgs = { people, 0, "../.." };
+        final Object[] rArgs = { people, gedcomName, 0, "../.." };
         return new ModelAndView(rArgs, "personIndex.tat");
     }
 

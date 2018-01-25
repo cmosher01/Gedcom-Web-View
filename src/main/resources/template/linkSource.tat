@@ -1,15 +1,10 @@
 @template linkSource(cita)@
 <span class="source">
-    @if (net.sourceforge.templat.Util.isNull(cita.getSource()))@
-        &nbsp;
-    @else@
-        <aside class="citation">
-            @nu.mine.mosher.Util.styleCitation(cita.getPage())@
-            @include attachments(nu.mine.mosher.Util.asList(cita.getAttachments()))@
-            {<a href="../sources/@cita.getSource().getUuid()@">@cita.getSource().getTitle()@</a>}
-        </aside>
-        <div class="note">
-            @nu.mine.mosher.Util.teiStyle(cita.getExtraText())@
-        </div>
-    @end if@
+    <aside class="citation">
+        @nu.mine.mosher.Util.styleCitation(cita)@
+        @include attachments(nu.mine.mosher.Util.asList(cita.getAttachments()))@
+    </aside>
+    <div class="note">
+        @nu.mine.mosher.Util.styleTranscripts(cita)@
+    </div>
 </span>

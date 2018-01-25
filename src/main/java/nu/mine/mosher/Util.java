@@ -1,6 +1,8 @@
 package nu.mine.mosher;
 
+import nu.mine.mosher.gedcom.model.Citation;
 import nu.mine.mosher.gedcom.model.MultimediaReference;
+import nu.mine.mosher.gedcom.model.Source;
 import nu.mine.mosher.xml.SimpleXml;
 import org.xml.sax.SAXParseException;
 
@@ -35,19 +37,14 @@ public final class Util {
         throw new IllegalStateException();
     }
 
-    public static String e(final String s) {
-        return s.replace("<", "&lt;");
-    }
 
-    public static String q(final String s) {
-        if (s == null) {
-            return "";
-        }
-        final String t = s.trim();
-        if (t.isEmpty()) {
-            return "";
-        }
-        return "\u201c" + t + "\u201d";
+
+    public static String esc(final String s) {
+        return s
+            .replace("&", "&amp;")
+            .replace("<","&lt;")
+            .replace(">","&gt;")
+            .replace("\"","&quot;");
     }
 
     public static UUID uuidFromString(final String uuid) {
@@ -56,10 +53,6 @@ public final class Util {
         } catch (final Throwable e) {
             return null;
         }
-    }
-
-    public static String stylePublication(final String pub) throws TransformerException, IOException, SAXParseException {
-        return teiStyle(parsePublication(pub));
     }
 
     private static final Pattern patternName = Pattern.compile("Name: (.*?)(;|$)");
@@ -99,10 +92,10 @@ public final class Util {
             return location+": "+name+", "+date;
         }
 
-        return pub;
+        return noPunc(pub);
     }
 
-    private static boolean is (final String s) {
+    private static boolean is(final String s) {
         return (s != null) && !s.isEmpty();
     }
 
@@ -113,37 +106,98 @@ public final class Util {
         return s;
     }
 
-    public static String styleCitation(final String citation) {
-        try {
-            return tryStyleCitation(citation);
-        } catch (final Throwable e) {
-            e.printStackTrace();
-            /* fall back to displaying without formatting */
-            return citation;
+    public static String styleCitation(final Citation cita) {
+        final String page = cita.getPage();
+
+        /* full, TEI-style, citation */
+        if (page.startsWith("<bibl") || page.startsWith("<text") || page.startsWith("<?xml")) {
+            try {
+                return teiStyle(page);
+            } catch (final Throwable e) {
+                /* invalid XML, so display it raw */
+                e.printStackTrace();
+                return esc(page);
+            }
         }
+
+        /* legacy-style citation */
+        return buildCitation(cita);
     }
 
-    public static String tryStyleCitation(final String citation) throws SAXParseException, IOException, TransformerException {
-        if (citation.startsWith("<bibl") || citation.startsWith("<?xml")) {
-            return teiStyle(citation);
+    private static String buildCitation(final Citation cita) {
+        final StringBuilder sb = new StringBuilder(128);
+
+        final Source src = cita.getSource();
+
+        final String author = noPunc(src.getAuthor());
+        if (is(author)) {
+            sb.append(author);
         }
-        return period(links(italics(qq(citation))));
+
+        final String title = noPunc(filterTitle(src.getTitle()));
+        if (is(author) && is(title)) {
+            sb.append(", ");
+        }
+        if (is(title)) {
+            sb.append("<i>").append(title).append("</i>");
+        }
+
+        final String publ = parsePublication(src.getPublication());
+        if (is(publ)) {
+            sb.append(" (").append(publ).append(")");
+        }
+
+        final String page = links(noPunc(filterPage(safe(cita.getPage()))));
+        if (is(page)) {
+            sb.append(", ").append(page);
+        }
+
+        sb.append(".");
+
+        return sb.toString();
     }
 
-    public static String italics(final String s) {
-        return s.replaceAll("\\b_(.+?)_\\b", "<span class=\"published\">$1</span>");
+    private static String filterPage(final String page) {
+        return page
+            /* Ancestry.com tends to use semi-colons in its citations */
+            .replace(';', ',')
+            .replaceAll("Page:", "p.")
+            .replaceAll("Family History Library Film:", "FHL microfilm");
     }
 
-    public static String qq(final String s) {
-        return s.replaceAll("(^|\\W)\"(\\S.*?\\S)\"(\\W|$)", "$1\u201c$2\u201d$3");
+    private static String filterTitle(final String title) {
+        return title
+            /* remove Web: */
+            .replaceAll("Web: ", "");
     }
+
+    private static String noPunc(final String s) {
+        return s.replaceFirst("[.,;:]$","");
+    }
+
+    public static String styleTranscripts(final Citation citation) {
+        return styleTranscript(citation.getExtraText()) + styleTranscript(citation.getSource().getText());
+    }
+
+    public static String styleTranscript(final String s) {
+        if (s.startsWith("<bibl") || s.startsWith("<text") || s.startsWith("<?xml")) {
+            try {
+                return teiStyle(s);
+            } catch (final Throwable e) {
+                /* invalid XML, so display it raw */
+                e.printStackTrace();
+                return esc(s);
+            }
+        }
+        return s;
+    }
+
+//    public static String qq(final String s) {
+//        return s.replaceAll("(^|\\W)\"(\\S.*?\\S)\"(\\W|$)", "$1\u201c$2\u201d$3");
+//    }
 
     public static String links(final String s) {
         return s.replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
-    }
-
-    public static String period(final String s) {
-        return s.replaceFirst("(\\w)$", "$1.");
     }
 
     public static String uuid() {
