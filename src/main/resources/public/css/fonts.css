@@ -207,7 +207,7 @@ body {
     font-weight: bold;
 }
 
-.personName, .sourceTitle {
+.personName {
     font-size: 200%;
 }
 

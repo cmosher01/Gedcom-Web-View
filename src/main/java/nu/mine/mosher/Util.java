@@ -92,7 +92,7 @@ public final class Util {
             return location+": "+name+", "+date;
         }
 
-        return noPunc(pub);
+        return pub;
     }
 
     private static boolean is(final String s) {
@@ -110,18 +110,22 @@ public final class Util {
         final String page = cita.getPage();
 
         /* full, TEI-style, citation */
-        if (page.startsWith("<bibl") || page.startsWith("<text") || page.startsWith("<?xml")) {
-            try {
-                return teiStyle(page);
-            } catch (final Throwable e) {
-                /* invalid XML, so display it raw */
-                e.printStackTrace();
-                return esc(page);
-            }
+        if (looksLikeTei(page)) {
+            return teiStyleOrError(page);
         }
 
         /* legacy-style citation */
         return buildCitation(cita);
+    }
+
+    private static String teiStyleOrError(final String page) {
+        try {
+            return teiStyle(page);
+        } catch (final Throwable e) {
+            /* invalid XML, so display it raw */
+            e.printStackTrace();
+            return esc(page);
+        }
     }
 
     private static String buildCitation(final Citation cita) {
@@ -142,7 +146,7 @@ public final class Util {
             sb.append("<i>").append(title).append("</i>");
         }
 
-        final String publ = parsePublication(src.getPublication());
+        final String publ = links(noPunc(parsePublication(src.getPublication())));
         if (is(publ)) {
             sb.append(" (").append(publ).append(")");
         }
@@ -180,24 +184,45 @@ public final class Util {
     }
 
     public static String styleTranscript(final String s) {
-        if (s.startsWith("<bibl") || s.startsWith("<text") || s.startsWith("<?xml")) {
-            try {
-                return teiStyle(s);
-            } catch (final Throwable e) {
-                /* invalid XML, so display it raw */
-                e.printStackTrace();
-                return esc(s);
-            }
+        if (looksLikeTei(s)) {
+            return teiStyleOrError(s);
         }
-        return s;
+
+        if (looksLikeHtml(s)) {
+            return s;
+        }
+
+        return filterPlainTranscript(s);
     }
 
-//    public static String qq(final String s) {
-//        return s.replaceAll("(^|\\W)\"(\\S.*?\\S)\"(\\W|$)", "$1\u201c$2\u201d$3");
-//    }
+    private static String filterPlainTranscript(final String s) {
+        return links(qq(s));
+    }
+
+    private static boolean looksLikeHtml(final String s) {
+        final String low = s.toLowerCase();
+        return
+            low.contains("<table") ||
+            low.contains("<p>") ||
+            low.contains("<br") ||
+            low.contains("<div") ||
+            low.contains("<i>") ||
+            low.contains("<u>") ||
+            low.contains("href");
+    }
+
+    private static boolean looksLikeTei(final String s) {
+        return s.startsWith("<bibl") || s.startsWith("<text") || s.startsWith("<?xml");
+    }
+
+    public static String qq(final String s) {
+        return s.replaceAll("(^|\\W)\"(\\S.*?\\S)\"(\\W|$)", "$1\u201c$2\u201d$3");
+    }
 
     public static String links(final String s) {
-        return s.replaceAll("\\b(\\w+?://\\S+?)\\s", "<a href=\"$1\">$1</a> ");
+        return s
+            .replaceAll("\\b(\\w+?://\\S+?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"$1\">$1</a>$2")
+            .replaceAll("\\b(www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"http://$1\">$1</a>$2");
     }
 
     public static String uuid() {

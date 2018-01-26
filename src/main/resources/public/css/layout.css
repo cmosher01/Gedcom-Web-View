@@ -32,12 +32,6 @@ footer {
     margin-bottom: 2ex;
 }
 
-.gedcoms {
-    margin-top: 2ex;
-    display: grid;
-    grid-template-columns: minmax(min-content,15%) auto;
-}
-
 
 
 /* layout person index page */
@@ -126,10 +120,6 @@ nav {
     padding-left: 5em;
 }
 
-.published {
-    font-style: italic;
-}
-
 .partner {
     margin-bottom: 2ex;
 }
@@ -159,6 +149,10 @@ nav {
     display: inline;
 }
 
+
+
+
+
 .copyright {
     display: grid;
     grid-template-areas:
@@ -176,19 +170,6 @@ nav {
 
 .copyright > .license {
     grid-area: license;
-}
-
-/* layout Source page */
-.specs {
-    display: grid;
-    grid-template-columns: minmax(min-content,15%) auto;
-    grid-row-gap: 6px;
-    background-color: var(--sol-base2);
-    color: var(--sol-base01);
-}
-
-.sourceTitle {
-    text-align: center;
 }
 
 

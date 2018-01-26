@@ -3,7 +3,7 @@
 @if (!rEvent.isEmpty())@
     <input type="checkbox" class="showSources" id="@uuid@">
     <div class="controls">
-        <label for="@uuid@">[sources]</label>
+        [<label for="@uuid@">sources</label>]
     </div>
     <div class="events">
         @loop iEvent : rEvent.size()@

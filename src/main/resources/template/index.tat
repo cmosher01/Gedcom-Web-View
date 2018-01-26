@@ -8,18 +8,12 @@
     <div class="homePage">
         <p>Please choose a genealogy to explore:</p>
 
-        <div class="gedcoms">
+        <dl>
             @loop i : rGed.size()@
-                <div class="gedcomName">
-                    <a href="@rGed[i].getName()@/persons/">
-                        @rGed[i].getName()@
-                    </a>
-                </div>
-                <div class="gedcomDescription">
-                    @rGed[i].getDescription()@
-                </div>
+                <dd>{<a href="@rGed[i].getName()@/persons/">@rGed[i].getName()@</a>}</dd>
+                <dt>@rGed[i].getDescription()@</dt>
             @end loop@
-        </div>
+        </dl>
     </div>
 </body>
 
