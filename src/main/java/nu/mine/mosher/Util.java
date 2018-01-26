@@ -222,7 +222,7 @@ public final class Util {
     public static String links(final String s) {
         return s
             .replaceAll("\\b(\\w+?://\\S+?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"$1\">$1</a>$2")
-            .replaceAll("\\b(www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"http://$1\">$1</a>$2");
+            .replaceAll("([^/.]www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"http://$1\">$1</a>$2");
     }
 
     public static String uuid() {
