@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
     private static final URL TEISH = initTeish();
-    public static final String DOCTYPE = "<!DOCTYPE HTML>\n";
 
     private static URL initTeish() {
         try {
@@ -196,7 +195,7 @@ public final class Util {
         }
 
         if (looksLikeHtml(s)) {
-            return "<lb/>"+s;
+            return "<lb/>"+removeDoctype(s);
         }
 
         return "<lb/>"+filterPlainTranscript(s);
@@ -209,10 +208,14 @@ public final class Util {
     private static boolean looksLikeHtml(final String s) {
         final String low = s.toLowerCase();
         return
+            low.startsWith("<html") ||
+            low.startsWith("<!doctype html") ||
             low.contains("<table") ||
+            low.contains("<img") ||
             low.contains("<p>") ||
             low.contains("<br") ||
             low.contains("<div") ||
+            low.contains("<span") ||
             low.contains("<i>") ||
             low.contains("<u>") ||
             low.contains("href");
@@ -278,10 +281,7 @@ public final class Util {
     }
 
     private static String removeDoctype(final String html) {
-        if (html.startsWith(DOCTYPE)) {
-            return html.substring(DOCTYPE.length());
-        }
-        return html;
+        return html.replaceFirst("(?is)^\\s*<!doctype.+?>\\s*", "");
     }
 
     private static String wrapTeiText(final String text) {
