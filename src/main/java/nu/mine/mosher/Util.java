@@ -1,5 +1,6 @@
 package nu.mine.mosher;
 
+import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.Citation;
 import nu.mine.mosher.gedcom.model.MultimediaReference;
 import nu.mine.mosher.gedcom.model.Source;
@@ -226,8 +227,8 @@ public final class Util {
 
     public static String links(final String s) {
         return s
-            .replaceAll("\\b(\\w+?://\\S+?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"$1\">$1</a>$2")
-            .replaceAll("([^/.]www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^~`]|$)", "<a href=\"http://$1\">$1</a>$2");
+            .replaceAll("\\b(\\w+?://\\S+?)(\\s|[]<>{}\"|\\\\^`]|$)", "<a href=\"$1\">$1</a>$2")
+            .replaceAll("([^/.]www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^`]|$)", "<a href=\"http://$1\">$1</a>$2");
     }
 
     public static String uuid() {
@@ -330,5 +331,10 @@ public final class Util {
         // kludge assumes less than 100 footnotes total
         final int f = i+1;
         return (f < 10 ? "\u2007" : "") + f;
+    }
+
+    public static boolean isCitation(final NoteList notes, final int i) {
+        final int f = i+1;
+        return notes.note(f) instanceof Citation;
     }
 }

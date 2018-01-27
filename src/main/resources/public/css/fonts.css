@@ -195,13 +195,8 @@ body {
 
 .vitalDate, pre {
     font-family: sourcecode, monospace, /* minimal fallback set: */ sans-serif, unifont, unifont-smp;
-
-    font-weight: normal;
-    font-style: normal;
-    text-rendering: geometricPrecision;
+    font-feature-settings: "tnum";
 }
-
-
 
 .surname {
     font-weight: bold;

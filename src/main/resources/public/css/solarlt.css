@@ -30,12 +30,6 @@ footer, .gedcomLink, .parents {
     color: var(--sol-base3);
 }
 
-.events {
-    border-left : 2px solid var(--sol-base2);
-    border-right: 2px solid var(--sol-base2);
-    border-bottom: 2px solid var(--sol-base2);
-}
-
 hr.sec {
     overflow: visible;
     padding: 0;

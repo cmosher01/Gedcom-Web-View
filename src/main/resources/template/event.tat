@@ -1,19 +1,25 @@
 @template event(event, footnotes)@
 
-<div class="event">
-    <div class="eventVitals">
-        <span class="vitalDate">
-            @if (!net.sourceforge.templat.Util.isNull(event.getDate()))@
-                @event.getDate().getTabularString()@
-            @end if@
-        </span>
-        <span class="vitalPlace">@event.getPlace()@</span>
-        <span class="vitalType">@event.getType()@<!--
-        -->@loop i : event.getCitations().size()@<!--
-            --><a class="footref" href="#f@footnotes.note(event.getCitations()[i])@"><!--
-                -->@footnotes.note(event.getCitations()[i])@<!--
-            --></a><!--
-        -->@end loop@</span>
-    </div>
-    <div class="note">@event.getNote()@</div>
+<div class="vitalDate">
+    @if (!net.sourceforge.templat.Util.isNull(event.getDate()))@
+        @event.getDate().getTabularString()@
+    @end if@
+</div>
+
+<div class="vitalPlace">
+    @event.getPlace()@
+</div>
+
+<div class="vitalType"><!--
+    --><span class="vitalName">@event.getType()@</span><!--
+    -->@if (!event.getNote().isEmpty())@<!--
+        --><a class="footref" href="#f@footnotes.note(event.getNote())@"><!--
+            -->@footnotes.note(event.getNote())@<!--
+        --></a><!--
+    -->@end if@<!--
+    -->@loop i : event.getCitations().size()@<!--
+        --><a class="footref" href="#f@footnotes.note(event.getCitations()[i])@"><!--
+            -->@footnotes.note(event.getCitations()[i])@<!--
+        --></a><!--
+    -->@end loop@
 </div>

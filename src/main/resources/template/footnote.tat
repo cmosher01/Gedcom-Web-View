@@ -1,0 +1,1 @@
+@template footnote(n)@<div class="source"><div class="citation">@n@</div></div>

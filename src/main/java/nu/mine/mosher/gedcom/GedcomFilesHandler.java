@@ -93,18 +93,6 @@ public class GedcomFilesHandler {
         return person;
     }
 
-    public Source getSource(final String gedcomName, final UUID uuid) throws IOException {
-        final Loader loader = this.mapLoader.get(gedcomName);
-        if (loader == null) {
-            throw new IOException();
-        }
-        final Source source = loader.lookUpSource(uuid);
-        if (source == null) {
-            throw new IOException();
-        }
-        return source;
-    }
-
     public List<String> getXrefs(final String gedcomName, final UUID uuid) {
         final List<String> otherFiles = new ArrayList<>();
         if (this.mapPersonCrossRef.containsKey(uuid)) {
@@ -175,7 +163,12 @@ public class GedcomFilesHandler {
 
     public NoteList getFootnotesFor(final Person person) {
         final NoteList notes = new NoteList();
-        person.getEvents().forEach(e -> e.getCitations().forEach(notes::note));
+        person.getEvents().forEach(e -> {
+            if (!e.getNote().isEmpty()) {
+                notes.note(e.getNote());
+            }
+            e.getCitations().forEach(notes::note);
+        });
         person.getPartnerships().forEach(p -> p.getEvents().forEach(e -> e.getCitations().forEach(notes::note)));
         return notes;
     }

@@ -84,15 +84,21 @@ nav {
     font-size: 80%;
 }
 
-.eventVitals {
+.events {
     display: grid;
-    grid-template-columns: 24ch minmax(min-content,40%) auto;
-    grid-column-gap: 6px;
-    /*
-    margin-top: 3px;
-    margin-bottom: 3px;
-    */
-    white-space: nowrap;
+    grid-template-columns: max-content minmax(min-content,max-content) auto;
+    grid-column-gap: 8px;
+}
+.events > div:nth-child(15n+13),
+.events > div:nth-child(15n+14),
+.events > div:nth-child(15n+15)
+{
+    border-bottom: 1px dashed var(--sol-base1);
+}
+
+
+.vitalName {
+    font-weight: bold;
 }
 
 .vitalDate {
