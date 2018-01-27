@@ -2,6 +2,7 @@ package nu.mine.mosher;
 
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.Citation;
+import nu.mine.mosher.gedcom.model.Event;
 import nu.mine.mosher.gedcom.model.MultimediaReference;
 import nu.mine.mosher.gedcom.model.Source;
 import nu.mine.mosher.xml.SimpleXml;
@@ -233,6 +234,21 @@ public final class Util {
 
     public static String uuid() {
         return UUID.randomUUID().toString();
+    }
+
+    public static String unk(final String s) {
+        if (s == null || s.isEmpty()) {
+            return "\u00a0?";
+        }
+        return s;
+    }
+
+    public static String eventDate(final Event e) {
+        if (e.getDate() == null) {
+            return unk("");
+        }
+        System.out.println("non-null event date: \""+e.getDate().getTabularString()+"\"");
+        return unk(e.getDate().getTabularString());
     }
 
     public static Collator createCollator() {

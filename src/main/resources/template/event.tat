@@ -1,13 +1,11 @@
 @template event(event, footnotes)@
 
 <div class="vitalDate">
-    @if (!net.sourceforge.templat.Util.isNull(event.getDate()))@
-        @event.getDate().getTabularString()@
-    @end if@
+    @nu.mine.mosher.Util.eventDate(event)@
 </div>
 
 <div class="vitalPlace">
-    @event.getPlace()@
+    @nu.mine.mosher.Util.unk(event.getPlace())@
 </div>
 
 <div class="vitalType"><!--
