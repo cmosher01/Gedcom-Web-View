@@ -1,10 +1,9 @@
 package nu.mine.mosher.gedcom;
 
 import nu.mine.mosher.Util;
+import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
-import nu.mine.mosher.gedcom.model.Loader;
-import nu.mine.mosher.gedcom.model.Person;
-import nu.mine.mosher.gedcom.model.Source;
+import nu.mine.mosher.gedcom.model.*;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,9 +17,9 @@ import java.util.*;
 @SuppressWarnings("WeakerAccess")
 public class GedcomFilesHandler {
     /*
-    this is for the list of gedcom files
-    on the first page (index.tat)
-     */
+        this is for the list of gedcom files
+        on the first page (index.tat)
+         */
     @SuppressWarnings("unused")  /* used in templates */
     public static class GedcomFile {
         private final String name;
@@ -172,5 +171,12 @@ public class GedcomFilesHandler {
                 mapMasterUuidToLoader.put(uuid, loader);
             }
         });
+    }
+
+    public NoteList getFootnotesFor(final Person person) {
+        final NoteList notes = new NoteList();
+        person.getEvents().forEach(e -> e.getCitations().forEach(notes::note));
+        person.getPartnerships().forEach(p -> p.getEvents().forEach(e -> e.getCitations().forEach(notes::note)));
+        return notes;
     }
 }

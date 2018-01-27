@@ -1,10 +1,11 @@
-@template linkSource(cita)@
-<span class="source">
-    <aside class="citation">
-        @nu.mine.mosher.Util.styleCitation(cita)@
+@template linkSource(cita)@<!--
+
+--><div class="source"><!--
+    --><div class="citation"><!--
+        -->@nu.mine.mosher.Util.styleCitation(cita)@
         @include attachments(nu.mine.mosher.Util.asList(cita.getAttachments()))@
-    </aside>
-    <div class="note">
+    </div>
+    <div class="transcript">
         @nu.mine.mosher.Util.styleTranscripts(cita)@
     </div>
-</span>
+</div>

@@ -1,4 +1,4 @@
-@template partnerships(rPartnership, isPrivate)@
+@template partnerships(rPartnership, footnotes, isPrivate)@
 @if (!rPartnership.isEmpty())@
     @loop iPartnership : rPartnership.size()@
         <hr class="sec">
@@ -10,7 +10,7 @@
 
             @if (!isPrivate)@
                 @if (!rPartnership[iPartnership].isPrivate())@
-                    @include eventsSelf(rPartnership[iPartnership].getEvents(), nu.mine.mosher.Util.uuid())@
+                    @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes)@
                 @end if@
             @end if@
 

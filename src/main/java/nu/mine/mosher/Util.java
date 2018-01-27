@@ -24,10 +24,11 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
     private static final URL TEISH = initTeish();
+    public static final String DOCTYPE = "<!DOCTYPE HTML>\n";
 
     private static URL initTeish() {
         try {
-            return new URL("https://cdn.rawgit.com/cmosher01/teish/1.5/src/main/resources/teish.xslt");
+            return new URL("https://rawgit.com/cmosher01/teish/master/src/main/resources/teish.xslt");
         } catch (final Throwable e) {
             throw new IllegalStateException(e);
         }
@@ -184,15 +185,19 @@ public final class Util {
     }
 
     public static String styleTranscript(final String s) {
+        if (s.trim().isEmpty()) {
+            return "";
+        }
+
         if (looksLikeTei(s)) {
             return teiStyleOrError(s);
         }
 
         if (looksLikeHtml(s)) {
-            return s;
+            return "<lb/>"+s;
         }
 
-        return filterPlainTranscript(s);
+        return "<lb/>"+filterPlainTranscript(s);
     }
 
     private static String filterPlainTranscript(final String s) {
@@ -240,7 +245,7 @@ public final class Util {
 
     public static String teiStyle(final String tei) throws SAXParseException, IOException, TransformerException {
         if (tei.startsWith("<bibl")) {
-            return teiStyle(wrapTeiBibl(tei));
+            return teiStyle(wrapTeiBibl(filterBibl(tei)));
         }
         if (tei.startsWith("<text")) {
             return teiStyle(wrapTeiText(tei));
@@ -248,33 +253,45 @@ public final class Util {
         if (!tei.startsWith("<?xml")) {
             return tei;
         }
-        return new SimpleXml(tei).transform(readFromUrl(TEISH));
+        return removeDoctype(new SimpleXml(tei).transform(readFromUrl(TEISH)));
+    }
+
+    /* kludge to remove leading space on citation */
+    private static String filterBibl(final String bibl) {
+        return bibl.replaceFirst("<bibl>\\s+", "<bibl>");
+    }
+
+    private static String removeDoctype(final String html) {
+        if (html.startsWith(DOCTYPE)) {
+            return html.substring(DOCTYPE.length());
+        }
+        return html;
     }
 
     private static String wrapTeiText(final String text) {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            //            "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>\n" +
-            "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">\n" +
-            "  <teiHeader>\n" +
-            "    <fileDesc>\n" +
-            "      <titleStmt/>\n" +
-            "      <publicationStmt/>\n" +
-            "      <sourceDesc/>\n" +
-            "    </fileDesc>\n" +
-            "  </teiHeader>\n" +
-               text +
-            "</TEI>\n";
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            //"<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>" +
+            "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">" +
+            "<teiHeader>" +
+            "<fileDesc>" +
+            "<titleStmt/>" +
+            "<publicationStmt/>" +
+            "<sourceDesc/>" +
+            "</fileDesc>" +
+            "</teiHeader>" +
+            text +
+            "</TEI>";
     }
 
     private static String wrapTeiBibl(final String bibl) {
         return wrapTeiText(
-            "<text xml:lang=\"en\">\n" +
-            "  <body>\n" +
-            "    <ab>\n" +
-                   bibl +
-            "    </ab>\n" +
-            "  </body>\n" +
-            "</text>\n");
+            "<text xml:lang=\"en\">" +
+            "<body>" +
+            "<ab>" +
+            bibl +
+            "</ab>" +
+            "</body>" +
+            "</text>");
     }
 
     public static String readFromUrl(final URL source) throws IOException {
@@ -307,5 +324,11 @@ public final class Util {
 
     public static<T> List<T> asList(final Collection<T> r) {
         return new ArrayList<>(r);
+    }
+
+    public static String footnum(final int i) {
+        // kludge assumes less than 100 footnotes total
+        final int f = i+1;
+        return (f < 10 ? "\u2007" : "") + f;
     }
 }

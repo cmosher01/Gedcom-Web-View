@@ -1,6 +1,7 @@
 package nu.mine.mosher.gedcom;
 
 import nu.mine.mosher.Util;
+import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.Person;
 import nu.mine.mosher.logging.Jul;
@@ -69,20 +70,27 @@ public class GedcomWebView {
 
 
     private String index() throws IOException {
-        final Object[] rArgs = { this.files.getFiles(), "." };
-        return new TemplAtEngine().render(new ModelAndView(rArgs, "index.tat"));
+        final Object[] args = { this.files.getFiles(), "." };
+        return render(args, "index.tat");
     }
 
     private String personIndex(final String gedcomName) throws IOException {
         final List<Person> people = this.files.getAllPeople(gedcomName);
-        final Object[] rArgs = { people, gedcomName, 0, "../.." };
-        return new TemplAtEngine().render(new ModelAndView(rArgs, "personIndex.tat"));
+        final Object[] args = { people, gedcomName, 0, "../.." };
+        return render(args, "personIndex.tat");
     }
 
     private String person(final String gedcomName, final UUID uuid) throws IOException {
         final Person person = this.files.getPerson(gedcomName, uuid);
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final Object[] rArgs = { person, gedcomName, otherFiles, "../.." };
-        return new TemplAtEngine().render(new ModelAndView(rArgs, "person.tat"));
+        final NoteList footnotes = this.files.getFootnotesFor(person);
+        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../.." };
+        return render(args, "person.tat");
+    }
+
+
+
+    private static String render(final Object[] args, final String view) {
+        return new TemplAtEngine().render(new ModelAndView(args, view));
     }
 }

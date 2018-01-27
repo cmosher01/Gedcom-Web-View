@@ -1,8 +1,8 @@
-@template events(events, private)@
+@template events(events, footnotes, private)@
 
 <hr class="sec">
 <section>
     @if (!private)@
-        @include eventsSelf(events, nu.mine.mosher.Util.uuid())@
+        @include eventsSelf(events, footnotes)@
     @end if@
 </section>

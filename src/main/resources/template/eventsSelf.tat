@@ -1,27 +1,9 @@
-@template eventsSelf(rEvent, uuid)@
+@template eventsSelf(rEvent, footnotes)@
 
 @if (!rEvent.isEmpty())@
-    <input type="checkbox" class="showSources" id="@uuid@">
-    <div class="controls">
-        [<label for="@uuid@">sources</label>]
-    </div>
     <div class="events">
         @loop iEvent : rEvent.size()@
-            <div class="event">
-                <div class="eventVitals">
-                    <div class="vitalDate">
-                        @if (!net.sourceforge.templat.Util.isNull(rEvent[iEvent].getDate()))@
-                            @rEvent[iEvent].getDate().getTabularString()@
-                        @end if@
-                    </div>
-                    <div class="vitalPlace">@rEvent[iEvent].getPlace()@</div>
-                    <div class="vitalType">@rEvent[iEvent].getType()@</div>
-                </div>
-                <aside class="note">@rEvent[iEvent].getNote()@</aside>
-                @loop iCit : rEvent[iEvent].getCitations().size()@
-                    @include linkSource(rEvent[iEvent].getCitations()[iCit])@
-                @end loop@
-            </div>
+            @include event(rEvent[iEvent], footnotes)@
         @end loop@
     </div>
 @end if@

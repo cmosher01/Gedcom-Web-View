@@ -1,0 +1,19 @@
+@template event(event, footnotes)@
+
+<div class="event">
+    <div class="eventVitals">
+        <span class="vitalDate">
+            @if (!net.sourceforge.templat.Util.isNull(event.getDate()))@
+                @event.getDate().getTabularString()@
+            @end if@
+        </span>
+        <span class="vitalPlace">@event.getPlace()@</span>
+        <span class="vitalType">@event.getType()@<!--
+        -->@loop i : event.getCitations().size()@<!--
+            --><a class="footref" href="#f@footnotes.note(event.getCitations()[i])@"><!--
+                -->@footnotes.note(event.getCitations()[i])@<!--
+            --></a><!--
+        -->@end loop@</span>
+    </div>
+    <div class="note">@event.getNote()@</div>
+</div>

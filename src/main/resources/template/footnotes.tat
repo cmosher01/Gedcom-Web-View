@@ -1,0 +1,13 @@
+@template footnotes(notes)@
+
+<hr class="sec">
+<section class="footnotes">
+    <ul>
+        @loop i : notes.size()@
+            <li id="f@net.sourceforge.templat.Num.oneOrigin(i)@">
+                <span class="footnum">@nu.mine.mosher.Util.footnum(i)@</span><!--
+                -->@include linkSource(notes.note(net.sourceforge.templat.Num.oneOrigin(i)))@
+            </li>
+        @end loop@
+    </ul>
+</section>

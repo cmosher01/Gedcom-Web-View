@@ -88,12 +88,11 @@ nav {
     display: grid;
     grid-template-columns: 24ch minmax(min-content,40%) auto;
     grid-column-gap: 6px;
+    /*
     margin-top: 3px;
     margin-bottom: 3px;
+    */
     white-space: nowrap;
-}
-.vitalType {
-    font-weight: bold;
 }
 
 .vitalDate {
@@ -101,23 +100,56 @@ nav {
     font-feature-settings: "onum" off;
 }
 
-.citation {
+.footref::before {
+    content: '[';
+    font-weight: normal;
+}
+.footref::after {
+    content: ']';
+    font-weight: normal;
+}
+
+.footnotes {
     font-size: 80%;
-    text-indent: 4em;
+    text-indent: 2em;
     text-align: justify;
     text-justify: distribute;
-    margin-left: 20%;
-    margin-right: 1em;
-    padding-left: 5em;
+}
+
+/* double-space footnote list */
+.footnotes > ul > li {
+    margin-top: 2ex;
+}
+
+.footnotes > ul {
+    list-style-type: none; /* no bullets */
+    padding: 0;
+}
+
+/* highlight footnote when navigated to */
+.footnotes > ul > li:target {
+    color: var(--sol-base03);
+    background-color: var(--sol-base2);
+    border-left: 4px solid var(--sol-green);
+    padding-left: 8px;
+    position: relative;
+    left: -12px;
+    margin-right: -12px;
+}
+
+/* superscript and bold footnote numbers */
+.footnum, .footref {
+    position: relative;
+    top: -1ex;
+    font-size: 75%;
+    font-weight: bold;
 }
 
 .note {
     font-size: 80%;
     text-align: justify;
     text-justify: distribute;
-    margin-left: 20%;
     margin-right: 1em;
-    padding-left: 5em;
 }
 
 .partner {
@@ -132,24 +164,9 @@ nav {
     padding-left: 2em;
 }
 
-.controls {
-    text-align: right;
-    font-size: 65%
-}
-
-.showSources {
-    display: none;
-}
-
-.showSources ~ .events > .event > .source {
-    display: none;
-}
-
-.showSources:checked ~ .events > .event > .source {
+div.source, div.citation, div.transcript {
     display: inline;
 }
-
-
 
 
 

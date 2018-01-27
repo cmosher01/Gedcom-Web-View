@@ -189,8 +189,8 @@ body {
     font-weight: normal;
     font-style: normal;
     text-rendering: geometricPrecision;
-    font-feature-settings: "kern", "liga", "hlig", "dlig", "onum";
-
+    font-kerning: normal;
+    font-feature-settings: "kern", "liga", "hlig", /*"dlig",*/ "onum";
 }
 
 .vitalDate, pre {

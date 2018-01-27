@@ -1,4 +1,4 @@
-@template person(person, file, otherFiles, root)@
+@template person(person, file, otherFiles, footnotes, root)@
 
 @include header()@
 
@@ -23,9 +23,11 @@
             <h1 class="personName">@person.getClassedName()@</h1>
         </header>
 
-        @include events(person.getEventsWithDittoedPlaces(), person.isPrivate())@
+        @include events(person.getEventsWithDittoedPlaces(), footnotes, person.isPrivate())@
 
-        @include partnerships(person.getPartnerships(), person.isPrivate())@
+        @include partnerships(person.getPartnerships(), footnotes, person.isPrivate())@
+
+        @include footnotes(footnotes)@
     </article>
 
     @include foot()@
