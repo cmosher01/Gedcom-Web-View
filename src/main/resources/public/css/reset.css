@@ -9,3 +9,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+ul {
+    list-style-type: circle;
+}

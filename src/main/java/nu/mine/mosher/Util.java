@@ -247,7 +247,6 @@ public final class Util {
         if (e.getDate() == null) {
             return unk("");
         }
-        System.out.println("non-null event date: \""+e.getDate().getTabularString()+"\"");
         return unk(e.getDate().getTabularString());
     }
 
