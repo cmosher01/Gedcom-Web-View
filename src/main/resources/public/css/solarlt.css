@@ -5,7 +5,7 @@ html {
     color: var(--sol-base00);
 }
 
-footer, .gedcomLink, .parents {
+.gedcomLink, .parents {
     color: var(--sol-base1);
 }
 
@@ -20,9 +20,13 @@ footer, .gedcomLink, .parents {
     color: var(--sol-violet);
 }
 
-.controls label:hover, a:hover {
+a:hover {
     background-color: var(--sol-green);
     color: var(--sol-base3);
+}
+
+.copyright img {
+  filter: opacity(33%) drop-shadow(0 0 0 var(--sol-base00));
 }
 
 hr.sec {

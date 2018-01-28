@@ -3,29 +3,11 @@
 <footer>
     <hr class="sim">
     <div class="copyright">
-        <div class="badge">
-            <a
-                rel="license"
-                href="http://creativecommons.org/licenses/by-sa/4.0/"
-            >
-                <img
-                    alt="Creative Commons License"
-                    src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"
-                />
-            </a>
-        </div>
-
-        <div class="notice">
-            Copyright &copy; 1998&ndash;2018, Christopher Alan Mosher, Shelton, CT, USA.
-        </div>
-
-        <div class="license">
-            This work is licensed under a
-            <a
-                rel="license"
-                href="http://creativecommons.org/licenses/by-sa/4.0/"
-            >
-                Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-        </div>
+        <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"/>
+        Copyright&nbsp;&copy;&nbsp;1998&ndash;2018,
+        Christopher&nbsp;Alan&nbsp;Mosher, Shelton, Connecticut, USA.
+        <br>This work is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><i>Creative Commons</i>
+        Attribution Share&ndash;Alike 4.0 Int’l license</a>.
     </div>
 </footer>

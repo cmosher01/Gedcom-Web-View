@@ -121,6 +121,8 @@ nav {
     text-indent: 2em;
     text-align: justify;
     text-justify: distribute;
+    margin-left: 4rem;
+    margin-right: 4rem;
 }
 
 /* double-space footnote list */
@@ -172,24 +174,6 @@ div.source, div.citation, div.transcript {
     text-indent: 0;
 }
 
-.copyright {
-    display: grid;
-    grid-template-areas:
-        "badge notice"
-        "badge license";
-}
-
-.copyright > .badge {
-    grid-area: badge;
-}
-
-.copyright > .notice {
-    grid-area: notice;
-}
-
-.copyright > .license {
-    grid-area: license;
-}
 
 
 
