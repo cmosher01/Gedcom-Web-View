@@ -91,18 +91,19 @@ nav {
 }
 .events > div:nth-child(15n+13),
 .events > div:nth-child(15n+14),
-.events > div:nth-child(15n+15)
-{
-    border-bottom: 1px dashed var(--sol-base1);
+.events > div:nth-child(15n+15) {
+    border-bottom: 0.5px dotted var(--sol-base1);
 }
 
-
-.vitalName {
-    font-weight: bold;
+.events > div::after {
+  content: "";
+  height: 100%;
+  display: inline-block;
+  vertical-align: sub; /* why does this work? it positions the reduced-size date correctly */
 }
 
 .vitalDate {
-    white-space: nowrap;
+    font-size: 85%;
     font-feature-settings: "onum" off;
 }
 
@@ -151,13 +152,6 @@ nav {
     font-weight: bold;
 }
 
-.note {
-    font-size: 80%;
-    text-align: justify;
-    text-justify: distribute;
-    margin-right: 1em;
-}
-
 .partner {
     margin-bottom: 2ex;
 }
@@ -174,7 +168,9 @@ div.source, div.citation, div.transcript {
     display: inline;
 }
 
-
+.transcript {
+    text-indent: 0;
+}
 
 .copyright {
     display: grid;

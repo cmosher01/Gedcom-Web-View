@@ -13,11 +13,6 @@ footer, .gedcomLink, .parents {
     color: var(--sol-base00);
 }
 
-.eventVitals {
-    background-color: var(--sol-base2);
-    color: var(--sol-base01);
-}
-
 .personName,
 .nameList .name,
 .parents .name,
