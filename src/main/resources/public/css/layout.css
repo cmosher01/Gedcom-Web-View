@@ -41,6 +41,9 @@ footer {
 
     margin-top: 2ex;
     margin-bottom: 2ex;
+
+    column-width: 12em;
+    list-style-type: none;
 }
 
 
