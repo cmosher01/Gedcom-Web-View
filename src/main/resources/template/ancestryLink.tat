@@ -1,2 +1,4 @@
-@template ancestryLink(label, db, indi)@
-<a href="https://search.ancestry.com/cgi-bin/sse.dll?indiv=1&dbid=@db@&h=@indi@">@label@</a>
+@template ancestryLink(apid)@
+@if (apid.isPresent())@
+    <a href="@nu.mine.mosher.Util.getApid(apid)@">&#x1f33f;</a>
+@end if@

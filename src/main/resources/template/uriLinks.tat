@@ -1,0 +1,5 @@
+@template attachments(us)@
+
+@loop i : nu.mine.mosher.Util.size(us)@
+    <a href="@us[i].toASCIIString()@">&#x1f517;</a>
+@end loop@

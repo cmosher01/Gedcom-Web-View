@@ -4,6 +4,8 @@
     --><div class="citation"><!--
         -->@nu.mine.mosher.Util.styleCitation(cita)@
         @include attachments(nu.mine.mosher.Util.asList(cita.getAttachments()))@
+        @include uriLinks(nu.mine.mosher.Util.asList(cita.getLinks()))@
+        @include ancestryLink(cita.getApid()))@
     </div>
     <div class="transcript">
         @nu.mine.mosher.Util.styleTranscripts(cita)@

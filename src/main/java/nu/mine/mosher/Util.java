@@ -1,10 +1,7 @@
 package nu.mine.mosher;
 
 import nu.mine.mosher.collection.NoteList;
-import nu.mine.mosher.gedcom.model.Citation;
-import nu.mine.mosher.gedcom.model.Event;
-import nu.mine.mosher.gedcom.model.MultimediaReference;
-import nu.mine.mosher.gedcom.model.Source;
+import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.xml.SimpleXml;
 import org.xml.sax.SAXParseException;
 
@@ -12,13 +9,11 @@ import javax.xml.transform.TransformerException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -351,5 +346,19 @@ public final class Util {
     public static boolean isCitation(final NoteList notes, final int i) {
         final int f = i+1;
         return notes.note(f) instanceof Citation;
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public static boolean isApid(final Optional<AncestryPersona> apid) {
+        return apid.isPresent() && apid.get().getLink().isPresent();
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public static String getApid(final Optional<AncestryPersona> apid) {
+        if (!isApid(apid)) {
+            throw new IllegalStateException("invalid _APID");
+        }
+        //noinspection ConstantConditions
+        return apid.get().getLink().get().toASCIIString();
     }
 }
