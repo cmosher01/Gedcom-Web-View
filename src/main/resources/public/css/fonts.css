@@ -52,16 +52,9 @@ which shows code points for a few of the yet still missing BMP glyphs.
 */
 
 
-@import url("https://use.typekit.net/kuy2fgn.css");
 
-/* MAIN FONT */
-@font-face {
-    font-family: quant;
-    src:
-        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff2') format('woff2'),
-        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.woff') format('woff'),
-        url('http://mosher.mine.nu/font/quant/QuantTextLig-webfont.ttf') format('truetype');
-}
+/* MAIN FONTS (from TypeKit) */
+@import url("https://use.typekit.net/kuy2fgn.css");
 
 
 

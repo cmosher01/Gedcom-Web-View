@@ -1,0 +1,2 @@
+@template ancestryLink(label, db, indi)@
+<a href="https://search.ancestry.com/cgi-bin/sse.dll?indiv=1&dbid=@db@&h=@indi@">@label@</a>

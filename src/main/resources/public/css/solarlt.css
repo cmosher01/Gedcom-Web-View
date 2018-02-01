@@ -25,10 +25,6 @@ a:hover {
     color: var(--sol-base3);
 }
 
-.copyright img {
-  filter: opacity(33%) drop-shadow(0 0 0 var(--sol-base00));
-}
-
 hr.sec {
     overflow: visible;
     padding: 0;
