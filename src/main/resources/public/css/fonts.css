@@ -52,6 +52,7 @@ which shows code points for a few of the yet still missing BMP glyphs.
 */
 
 
+@import url("https://use.typekit.net/kuy2fgn.css");
 
 /* MAIN FONT */
 @font-face {
@@ -178,6 +179,7 @@ which shows code points for a few of the yet still missing BMP glyphs.
 
 body {
     font-family:
+        adobe-garamond-pro,
         quant,
         freefont, code2000, code2001, code2002,
         abydos, aegean, symbola,
