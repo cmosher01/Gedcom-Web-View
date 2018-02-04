@@ -2,10 +2,14 @@
 
 html {
     background-color: var(--sol-base3);
-    color: var(--sol-base00);
+    color: var(--sol-base03);
 }
 
-.gedcomLink, .parents {
+.footnotes {
+    color: var(--sol-base01);
+}
+
+nav, .gedcomLink, .parents, .relation, .copyright {
     color: var(--sol-base1);
 }
 
