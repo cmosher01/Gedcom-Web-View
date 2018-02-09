@@ -193,14 +193,14 @@ body {
     font-feature-settings: "tnum";
 }
 
-.surname {
-    font-weight: bold;
-}
-
 .personName {
     font-size: 200%;
 }
 
 footer {
     font-size: 80%;
+}
+
+h1 {
+    font-weight: normal;
 }
