@@ -11,11 +11,11 @@
         <section class="parents">
             <div class="father">
                 <span class="relation">father:</span>
-                @include link(person.getFather())@
+                @include linkUp(person.getFather())@
             </div>
             <div class="mother">
                 <span class="relation">mother:</span>
-                @include link(person.getMother())@
+                @include linkUp(person.getMother())@
             </div>
         </section>
         <header>

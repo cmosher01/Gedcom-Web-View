@@ -110,6 +110,20 @@ nav {
     font-feature-settings: "onum" off;
 }
 
+.hasLineage::before {
+    content: '\2442';
+    position: relative;
+    top: -1.2ex;
+    font-size: 50%;
+}
+
+.hasIssue::before {
+    content: '\2443';
+    position: relative;
+    top: -1.2ex;
+    font-size: 50%;
+}
+
 .footref::before {
     content: '[';
     font-weight: normal;

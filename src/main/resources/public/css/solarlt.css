@@ -20,7 +20,9 @@ nav, .gedcomLink, .parents, .relation, .copyright {
 .personName,
 .nameList .name,
 .parents .name,
-.partnership .name {
+.partnership .name,
+.hasIssue,
+.hasLineage {
     color: var(--sol-violet);
 }
 

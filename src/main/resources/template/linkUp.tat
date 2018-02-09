@@ -1,0 +1,11 @@
+@template linkUp(person)@
+<span class="name">
+    @if (net.sourceforge.templat.Util.isNull(person))@
+        [unknown]
+    @else@
+        <a href="@person.getUuid()@">@person.getNameSortedDisplay()@</a><!--
+        -->@if (nu.mine.mosher.Util.hasLineage(person))@<!--
+            --><span class="hasLineage" /><!--
+        -->@end if@
+    @end if@
+</span>

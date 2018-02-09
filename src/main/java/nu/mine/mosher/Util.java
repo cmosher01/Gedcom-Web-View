@@ -361,4 +361,17 @@ public final class Util {
         //noinspection ConstantConditions
         return apid.get().getLink().get().toASCIIString();
     }
+
+    public static boolean hasIssue(final Person person) {
+        for (Partnership part : person.getPartnerships()) {
+            if (part.getChildren().size() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasLineage(final Person person) {
+        return person.getFather() != null || person.getMother() != null;
+    }
 }

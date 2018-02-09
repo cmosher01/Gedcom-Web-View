@@ -1,0 +1,11 @@
+@template linkDown(person)@
+<span class="name">
+    @if (net.sourceforge.templat.Util.isNull(person))@
+        [unknown]
+    @else@
+        <a href="@person.getUuid()@">@person.getNameSortedDisplay()@</a><!--
+        -->@if (nu.mine.mosher.Util.hasIssue(person))@<!--
+            --><span class="hasIssue" /><!--
+        -->@end if@
+    @end if@
+</span>
