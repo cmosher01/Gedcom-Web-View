@@ -19,7 +19,7 @@
                     <span class="relation">children:</span>
                     <ul class="childrenList">
                         @loop iChild : rPartnership[iPartnership].getChildren().size()@
-                            <li>@include link(rPartnership[iPartnership].getChildren().get(iChild))@</li>
+                            <li>@include linkDown(rPartnership[iPartnership].getChildren().get(iChild))@</li>
                         @end loop@
                     </ul>
                 </div>
