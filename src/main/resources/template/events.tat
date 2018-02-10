@@ -2,7 +2,7 @@
 
 <hr class="sec">
 <section>
-    @if (!private)@
+    @if (!nu.mine.mosher.Util.prv(private))@
         @include eventsSelf(events, footnotes)@
     @end if@
 </section>

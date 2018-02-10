@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 public final class Util {
     private static final URL TEISH = initTeish();
 
+    // TODO: make this an option:
+    private static final boolean EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY = true;
+
     private static URL initTeish() {
         try {
             return new URL("https://rawgit.com/cmosher01/teish/master/src/main/resources/teish.xslt");
@@ -236,13 +239,13 @@ public final class Util {
 
     public static String unk(final String s) {
         if (s == null || s.isEmpty()) {
-            return "\u00a0?";
+            return "\u00a0\u2e3a";
         }
         return s;
     }
 
     public static String eventDate(final Event e) {
-        if (e.getDate() == null) {
+        if (e.getDate() == null || e.getDate().getTabularString().equals("?")) {
             return unk("");
         }
         return unk(e.getDate().getTabularString());
@@ -373,5 +376,12 @@ public final class Util {
 
     public static boolean hasLineage(final Person person) {
         return person.getFather() != null || person.getMother() != null;
+    }
+
+    public static boolean prv(final boolean prv) {
+        if (EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY) {
+            return false;
+        }
+        return prv;
     }
 }

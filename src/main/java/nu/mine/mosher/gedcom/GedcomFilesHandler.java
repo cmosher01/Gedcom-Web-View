@@ -88,7 +88,7 @@ public class GedcomFilesHandler {
         }
         final Person person = loader.lookUpPerson(uuid);
         if (person == null) {
-            throw new IOException();
+            throw new IOException(); // TODO: fix (when person not found, show nice error)
         }
         return person;
     }

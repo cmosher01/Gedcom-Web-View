@@ -8,8 +8,8 @@
                 @include link(rPartnership[iPartnership].getPartner())@
             </div>
 
-            @if (!isPrivate)@
-                @if (!rPartnership[iPartnership].isPrivate())@
+            @if (!nu.mine.mosher.Util.prv(isPrivate))@
+                @if (!nu.mine.mosher.Util.prv(rPartnership[iPartnership].isPrivate()))@
                     @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes)@
                 @end if@
             @end if@
