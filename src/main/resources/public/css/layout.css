@@ -31,7 +31,9 @@ footer {
     margin-top: 2ex;
     margin-bottom: 2ex;
 }
-
+dt {
+    margin: 0 0 1ex 2em;
+}
 
 
 /* layout person index page */

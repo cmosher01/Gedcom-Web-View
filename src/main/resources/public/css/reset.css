@@ -13,3 +13,11 @@ a {
 ul {
     list-style-type: circle;
 }
+
+ol {
+  -webkit-padding-start: 0; /* reset chrome */
+}
+
+dd {
+  -webkit-margin-start: 0; /* reset chrome */
+}
