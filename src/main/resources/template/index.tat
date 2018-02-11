@@ -11,7 +11,7 @@
         <dl>
             @loop i : rGed.size()@
                 <dd>{<a href="@rGed[i].getName()@/persons/">@rGed[i].getName()@</a>}</dd>
-                <dt>@rGed[i].getDescription()@</dt>
+                <dt>@nu.mine.mosher.Util.esc(rGed[i].getDescription())@</dt>
             @end loop@
         </dl>
     </div>

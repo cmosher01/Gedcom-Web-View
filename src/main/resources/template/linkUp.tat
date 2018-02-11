@@ -3,7 +3,7 @@
     @if (net.sourceforge.templat.Util.isNull(person))@
         [unknown]
     @else@
-        <a href="@person.getUuid()@">@person.getNameSortedDisplay()@</a><!--
+        <a href="@person.getUuid()@">@nu.mine.mosher.Util.esc(person.getNameSortedDisplay())@</a><!--
         -->@if (nu.mine.mosher.Util.hasLineage(person))@<!--
             --><span class="hasLineage" /><!--
         -->@end if@

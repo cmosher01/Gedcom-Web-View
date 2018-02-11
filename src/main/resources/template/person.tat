@@ -20,7 +20,7 @@
         </section>
         <header>
             <hr class="sim">
-            <h1 class="personName">@person.getClassedName()@</h1>
+            <h1 class="personName">@nu.mine.mosher.Util.esc(person.toString())@</h1>
         </header>
 
         @include events(person.getEventsWithDittoedPlaces(), footnotes, person.isPrivate())@

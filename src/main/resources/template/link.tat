@@ -4,7 +4,7 @@
         [unknown]
     @else@
         <a href="@person.getUuid()@">
-            @person.getNameSortedDisplay()@
+            @nu.mine.mosher.Util.esc(person.getNameSortedDisplay())@
         </a>
     @end if@
 </span>
