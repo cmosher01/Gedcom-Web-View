@@ -1,48 +1,23 @@
 /* General margins */
 header, section, footer {
-    margin-left: 2rem;
-    margin-right: 2rem;
-
-    margin-top: 2ex;
-    margin-bottom: 2ex;
-}
-
-
-
-/* Make copyright stick to the bottom */
-body {
-    margin: 0 0 120px;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 100px;
+    margin: 2ex 2rem 2ex 2rem;
 }
 
 
 
 /* layout Index.html page */
 .homePage {
-    margin-left: 2rem;
-    margin-right: 2rem;
-
-    margin-top: 2ex;
-    margin-bottom: 2ex;
+    margin: 2ex 2rem 2ex 2rem;
 }
 dt {
     margin: 0 0 1ex 2em;
 }
 
 
+
 /* layout person index page */
 .nameList {
-    margin-left: 2rem;
-    margin-right: 2rem;
-
-    margin-top: 2ex;
-    margin-bottom: 2ex;
+    margin: 2ex 2rem 2ex 2rem;
 
     column-width: 12em;
     list-style-type: none;
@@ -101,10 +76,10 @@ nav {
 }
 
 .events > div::after {
-  content: "";
-  height: 100%;
-  display: inline-block;
-  vertical-align: sub; /* why does this work? it positions the reduced-size date correctly */
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: sub; /* why does this work? it positions the reduced-size date correctly */
 }
 
 .vitalDate {

@@ -60,7 +60,7 @@ window.onload = function() {
     svgPanZoom(svgdoc, {
         zoomEnabled: true,
         minZoom: 0.1,
-        maxZoom: 100,
+        maxZoom: 500,
         zoomScaleSensitivity: 0.2,
         fit: true,
         contain: true,

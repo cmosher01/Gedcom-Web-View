@@ -4,7 +4,7 @@
     <nav>
         <div class="home">
             {<a href="../../">home</a>}
-            {<a href="./">@file@</a>}
+            {<a href="../persons/">@file@</a>}
         </div>
 
 

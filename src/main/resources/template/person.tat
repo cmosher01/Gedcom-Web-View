@@ -29,8 +29,6 @@
 
         @include footnotes(footnotes)@
     </article>
-
-    @include foot()@
 </body>
 
 @include footer()@

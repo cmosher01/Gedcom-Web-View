@@ -6,10 +6,6 @@ html {
     height: 100vh;
 }
 
-body {
-    height: 100vh;
-}
-
 a {
     text-decoration: none;
     color: inherit;
@@ -20,9 +16,9 @@ ul {
 }
 
 ol {
-  -webkit-padding-start: 0; /* reset chrome */
+    -webkit-padding-start: 0; /* reset chrome */
 }
 
 dd {
-  -webkit-margin-start: 0; /* reset chrome */
+    -webkit-margin-start: 0; /* reset chrome */
 }

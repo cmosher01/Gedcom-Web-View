@@ -12,8 +12,6 @@
             <li>@include link(people[i])@</li>
         @end loop@
     </ul>
-
-    @include foot()@
 </body>
 
 @include footer()@
