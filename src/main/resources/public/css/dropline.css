@@ -1,0 +1,32 @@
+@font-face {
+    font-family: adobe-garamond-pro;
+    src:
+        url('http://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
+        url('http://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
+}
+@font-face {
+    font-family: freefont;
+    src: url('http://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
+}
+
+svg {
+    font-family: adobe-garamond-pro, freefont, serif;
+    font-size: 8pt;
+    text-rendering: geometricPrecision;
+    font-kerning: normal;
+    font-feature-settings: "kern", "liga", "hlig", "onum";
+}
+
+.fullName {
+    fill: #6c71c4;
+    stroke: none;
+}
+
+.birth, .death {
+    fill: #586e75;
+    stroke: none;
+}
+
+line {
+    stroke: #93a1a1;
+}

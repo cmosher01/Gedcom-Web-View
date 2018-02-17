@@ -1,0 +1,19 @@
+@template personChart(file, root)@
+
+@include header()@
+
+@include head(file, root)@
+
+<body style="min-height: 100vh; position: relative; box-sizing: border-box; overflow: hidden;">
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@@3.5.2/dist/svg-pan-zoom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <script src="@root@/js/dropline.js"></script>
+
+    @include nav(file, null, null)@
+
+    <object id="svgObject" data="data" type="image/svg+xml">
+        Your browser doesn't support SVG
+    </object>
+</body>
+
+@include footer()@

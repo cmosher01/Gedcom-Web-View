@@ -2,13 +2,25 @@ package nu.mine.mosher.gedcom;
 
 import nu.mine.mosher.Util;
 import nu.mine.mosher.collection.NoteList;
+import nu.mine.mosher.gedcom.dropline.Dropline;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.*;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 
@@ -48,18 +60,27 @@ public class GedcomFilesHandler {
 
     private final List<GedcomFile> rFile;
     private final Map<String, Loader> mapLoader = new TreeMap<>();
+    private final Map<String, String> mapChart = new TreeMap<>();
     private final Map<UUID, Set<Loader>> mapPersonCrossRef = new HashMap<>(32);
 
     public GedcomFilesHandler() throws IOException, InvalidLevel {
         final Map<UUID, Loader> mapMasterUuidToLoader = new HashMap<>(1024);
         final List<GedcomFile> files = new ArrayList<>(32);
         for (final File fileGedcom : getGedcomFiles()) {
-            final Loader loader = parseGedcomFile(fileGedcom);
+            final GedcomTree gt = parseGedcom(fileGedcom);
+            final Loader loader = new Loader(gt, fileGedcom.getName());
+            loader.parse();
 
             this.mapLoader.put(loader.getName(), loader);
             files.add(new GedcomFile(loader.getName(), loader.getDescription()));
 
             buildPersonCrossReferences(loader, mapMasterUuidToLoader);
+
+            try {
+                this.mapChart.put(loader.getName(), docToString(Dropline.build(gt)));
+            } catch (final Exception e) {
+                e.printStackTrace();
+            }
         }
 
         final Collator collator = Util.createCollator();
@@ -67,6 +88,25 @@ public class GedcomFilesHandler {
         this.rFile = Collections.unmodifiableList(files);
     }
 
+    private String docToString(final Document doc) throws TransformerException {
+        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+
+        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        final StringWriter sw = new StringWriter();
+        transformer.transform(new DOMSource(doc), new StreamResult(sw));
+        return sw.toString();
+    }
+
+    private GedcomTree parseGedcom(final File fileGedcom) throws IOException, InvalidLevel
+    {
+        final GedcomTree gt = Gedcom.readFile(new BufferedInputStream(new FileInputStream(fileGedcom)));
+        new GedcomConcatenator(gt).concatenate();
+        return gt;
+    }
 
 
     public List<GedcomFile> getFiles() {
@@ -105,23 +145,12 @@ public class GedcomFilesHandler {
         return otherFiles;
     }
 
-
-
-    /**
-     * Parses the given GEDCOM file.
-     *
-     * @param fileGedcom GEDCOM file to read
-     * @return Loader representing the GEDCOM file (and model)
-     * @throws IOException if I/O error
-     * @throws InvalidLevel if GEDCOM level number is invalid
-     */
-    private static Loader parseGedcomFile(final File fileGedcom) throws IOException, InvalidLevel {
-        final GedcomTree gt = Gedcom.readFile(new BufferedInputStream(new FileInputStream(fileGedcom)));
-        new GedcomConcatenator(gt).concatenate();
-        final Loader loader = new Loader(gt, fileGedcom.getName());
-        loader.parse();
-        return loader;
+    public String getChartData(final String gedcomName) {
+        return this.mapChart.get(gedcomName);
     }
+
+
+
 
     /**
      * Gets all readable *.ged files in the "gedcom" sub-directory

@@ -6,6 +6,7 @@ import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.Person;
 import nu.mine.mosher.logging.Jul;
 import spark.ModelAndView;
+import spark.Response;
 import template.TemplAtEngine;
 
 import java.io.IOException;
@@ -64,6 +65,12 @@ public class GedcomWebView {
                 get("/", (req, res) -> personIndex(req.params(":ged")));
                 get("/:id", (req, res) -> person(req.params(":ged"), Util.uuidFromString(req.params(":id"))));
             });
+            path("/chart", () -> {
+                redirect.get("", "chart/");
+                get("/", (req, res) -> personChart(req.params(":ged")));
+                get("/data", (req, res) -> personChartData(req.params(":ged"), res));
+                redirect.get("/dropline.css", "../../css/dropline.css");
+            });
         });
     }
 
@@ -78,6 +85,16 @@ public class GedcomWebView {
         final List<Person> people = this.files.getAllPeople(gedcomName);
         final Object[] args = { people, gedcomName, 0, "../.." };
         return render(args, "personIndex.tat");
+    }
+
+    private String personChart(final String gedcomName) {
+        final Object[] args = { gedcomName, "../.." };
+        return render(args, "personChart.tat");
+    }
+
+    private String personChartData(final String gedcomName, Response res) {
+        res.type("image/svg+xml");
+        return this.files.getChartData(gedcomName);
     }
 
     private String person(final String gedcomName, final UUID uuid) throws IOException {
