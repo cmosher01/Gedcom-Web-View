@@ -27,3 +27,10 @@ USER gradle
 
 RUN gradle build >build.log 2>&1
 RUN tar xf build/distributions/*.tar --strip-components=1 -C /usr/local
+
+USER root
+ADD http://mosher.mine.nu/font/garamond/Garamond.ttf /usr/share/fonts/garamond/
+RUN chmod a+r /usr/share/fonts/garamond/*
+RUN apk update
+RUN apk add fontconfig
+USER gradle
