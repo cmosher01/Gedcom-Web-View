@@ -94,7 +94,10 @@ public class GedcomWebView {
 
     private String personChartData(final String gedcomName, Response res) {
         res.type("image/svg+xml");
-        return this.files.getChartData(gedcomName);
+        final String svg = this.files.getChartData(gedcomName);
+        log().info("svg beginning with: "+svg.substring(0,20));
+        log().info("svg length: "+svg.length());
+        return svg;
     }
 
     private String person(final String gedcomName, final UUID uuid) throws IOException {
