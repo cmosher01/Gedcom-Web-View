@@ -20,7 +20,7 @@ import static spark.Spark.*;
  * Created 2006-09-24.
  */
 public class GedcomWebView {
-    private static final boolean VERBOSE = false;
+    private static final boolean VERBOSE = true;
 
     public static void main(final String... args) {
         Jul.verbose(VERBOSE);
