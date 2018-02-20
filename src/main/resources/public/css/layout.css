@@ -31,6 +31,10 @@ nav {
     grid-template-columns: 50% 50%;
 }
 
+.indextab {
+    margin: 2ex 2rem 2ex 2rem;
+}
+
 .home {
     text-align: left;
 }

@@ -7,6 +7,7 @@
 <body>
     @include nav(file, null, null)@
 
+    <div class="indextab">[list] [<a href= "../chart/">chart</a>]</div>
     <ul class="nameList">
         @loop i : people.size()@
             <li>@include link(people[i])@</li>

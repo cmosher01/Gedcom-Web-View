@@ -9,7 +9,7 @@ html {
     color: var(--sol-base01);
 }
 
-nav, .gedcomLink, .parents, .relation, .copyright {
+nav, .gedcomLink, .parents, .relation, .copyright, .indextab {
     color: var(--sol-base1);
 }
 

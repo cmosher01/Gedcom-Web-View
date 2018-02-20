@@ -11,6 +11,7 @@
 
     @include nav(file, null, null)@
 
+    <div class="indextab">[<a href= "../persons/">list</a>] [chart]</div>
     <object id="svgObject" data="data" type="image/svg+xml">
         Your browser doesn't support SVG
     </object>

@@ -20,7 +20,7 @@ import static spark.Spark.*;
  * Created 2006-09-24.
  */
 public class GedcomWebView {
-    private static final boolean VERBOSE = true;
+    private static final boolean VERBOSE = false;
 
     public static void main(final String... args) {
         Jul.verbose(VERBOSE);
@@ -68,7 +68,7 @@ public class GedcomWebView {
             path("/chart", () -> {
                 redirect.get("", "chart/");
                 get("/", (req, res) -> personChart(req.params(":ged")));
-                get("/data", "image/svg+xml", (req, res) -> personChartData(req.params(":ged"), res));
+                get("/data", (req, res) -> personChartData(req.params(":ged"), res));
                 redirect.get("/dropline.css", "../../css/dropline.css");
             });
         });
@@ -95,8 +95,6 @@ public class GedcomWebView {
     private String personChartData(final String gedcomName, Response res) {
         res.type("image/svg+xml");
         final String svg = this.files.getChartData(gedcomName);
-        log().info("svg beginning with: "+svg.substring(0,20));
-        log().info("svg length: "+svg.length());
         return svg;
     }
 

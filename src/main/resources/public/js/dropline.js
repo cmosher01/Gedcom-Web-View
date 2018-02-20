@@ -48,6 +48,20 @@ window.onload = function() {
 
         // Prevent moving the page on some devices when panning over SVG
         options.svgElement.addEventListener('touchmove', function(e){ e.preventDefault(); });
+
+        options.svgElement.addEventListener('dblclick', function(e) {
+            var pt = options.svgElement.createSVGRect();
+            pt.x = e.x;
+            pt.y = e.y;
+            pt.width = pt.height = 1;
+            var hits = options.svgElement.getIntersectionList(pt,null);
+            if (hits.length > 0) {
+                const hit = hits[0];
+                if (hit.dataset.refn) {
+                    window.location.href = "../persons/"+hit.dataset.refn;
+                }
+            }
+        });
       },
 
       destroy: function() {
@@ -65,6 +79,7 @@ window.onload = function() {
         fit: true,
         contain: true,
         center: true,
+        dblClickZoomEnabled: false,
         customEventsHandler: eventsHandler
     });
 };
