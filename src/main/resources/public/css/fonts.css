@@ -11,8 +11,8 @@ order, downloading them as needed.
 
 
 
-First, we use the serif font "Quant" http://www.hoftype.de/Quant/
-for most usual latin characters. The "Light" face was free at this time (2017).
+First, we use the serif font "Garamond" from Adobe.
+It's a free font, it looks nice, and it's relatively ubiquitous.
 
 And we use "Source Code Pro" https://github.com/adobe-fonts/source-code-pro/
 for monospaced characters (dates and <PRE></PRE>).
@@ -53,8 +53,13 @@ which shows code points for a few of the yet still missing BMP glyphs.
 
 
 
-/* MAIN FONTS (from TypeKit) */
-@import url("https://use.typekit.net/kuy2fgn.css");
+/* MAIN FONT */
+@font-face {
+    font-family: adobe-garamond-pro;
+    src:
+        url('http://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
+        url('http://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
+}
 
 
 
@@ -173,7 +178,6 @@ which shows code points for a few of the yet still missing BMP glyphs.
 body {
     font-family:
         adobe-garamond-pro,
-        quant,
         freefont, code2000, code2001, code2002,
         abydos, aegean, symbola,
         tibetan,
