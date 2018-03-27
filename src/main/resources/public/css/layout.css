@@ -87,8 +87,9 @@ nav {
 }
 
 .vitalDate {
-    font-size: 85%;
+    font-size: 80%;
     font-feature-settings: "onum" off;
+    padding-bottom: 4px;
 }
 
 .hasLineage::before {

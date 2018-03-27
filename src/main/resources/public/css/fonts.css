@@ -14,7 +14,7 @@ order, downloading them as needed.
 First, we use the serif font "Garamond" from Adobe.
 It's a free font, it looks nice, and it's relatively ubiquitous.
 
-And we use "Source Code Pro" https://github.com/adobe-fonts/source-code-pro/
+And we use Bigelow and Holmes's "Luxi Mono" https://ctan.org/tex-archive/fonts/LuxiMono/
 for monospaced characters (dates and <PRE></PRE>).
 
 Next in priority are "GNU FreeFont" https://www.gnu.org/software/freefont/
@@ -65,10 +65,9 @@ which shows code points for a few of the yet still missing BMP glyphs.
 
 /* MONOSPACED FONT for dates and PRE-formatted text */
 @font-face {
-    font-family: sourcecode;
+    font-family: luxi;
     src:
-        url('http://mosher.mine.nu/font/sourcecode/SourceCodePro-Regular.woff') format('woff'),
-        url('http://mosher.mine.nu/font/sourcecode/SourceCodePro-Regular.otf') format('opentype');
+        url('http://mosher.mine.nu/font/luxi/Luxi.woff') format('woff');
 }
 
 
@@ -193,7 +192,7 @@ body {
 }
 
 .vitalDate, pre {
-    font-family: sourcecode, monospace, /* minimal fallback set: */ sans-serif, unifont, unifont-smp;
+    font-family: luxi, monospace, /* minimal fallback set: */ sans-serif, unifont, unifont-smp;
     font-feature-settings: "tnum";
 }
 
