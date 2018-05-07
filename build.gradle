@@ -4,7 +4,7 @@ apply plugin: 'application'
 group = 'nu.mine.mosher.gedcom.webview'
 version = '1.0.0-SNAPSHOT'
 mainClassName = 'nu.mine.mosher.gedcom.GedcomWebView'
-sourceCompatibility = 1.8
+sourceCompatibility = 1.9
 
 repositories {
     mavenCentral()

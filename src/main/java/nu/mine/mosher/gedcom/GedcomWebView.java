@@ -3,15 +3,16 @@ package nu.mine.mosher.gedcom;
 import nu.mine.mosher.Util;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
+import nu.mine.mosher.gedcom.model.Loader;
 import nu.mine.mosher.gedcom.model.Person;
 import nu.mine.mosher.logging.Jul;
-import spark.ModelAndView;
-import spark.Response;
+import spark.*;
 import template.TemplAtEngine;
 
 import java.io.IOException;
 import java.util.*;
 
+import static javax.servlet.http.HttpServletResponse.SC_MOVED_PERMANENTLY;
 import static nu.mine.mosher.logging.Jul.log;
 import static spark.Spark.*;
 
@@ -48,11 +49,12 @@ public class GedcomWebView {
 
 
     @SuppressWarnings("CodeBlock2Expr")
-    private void run() throws IOException {
+    private void run() {
         staticFiles.location("/public");
         staticFiles.expireTime(600);
 
 
+        before(this::backwardCompatibility);
 
         redirect.get("", "/");
         get("/", (req, res) -> index());
@@ -74,9 +76,23 @@ public class GedcomWebView {
         });
     }
 
+    private void backwardCompatibility(final Request req, final Response res) {
+        final String sUuidPerson = req.queryParamOrDefault("person_uuid", "");
+        if (!sUuidPerson.isEmpty()) {
+            try {
+                final UUID uuidPerson = UUID.fromString(sUuidPerson);
+                System.err.println("Searching for old uuid: "+uuidPerson);
+                final Optional<Loader> loader= this.files.findLoaderForPerson(uuidPerson);
+                loader.ifPresent(l -> res.redirect("../" + l.getName() + "/persons/" + uuidPerson, SC_MOVED_PERMANENTLY));
+            } catch (final Throwable bad) {
+                // bad UUID format, OK just ignore it
+            }
+        }
+    }
 
 
-    private String index() throws IOException {
+
+    private String index() {
         final Object[] args = { this.files.getFiles(), "." };
         return render(args, "index.tat");
     }
@@ -94,8 +110,7 @@ public class GedcomWebView {
 
     private String personChartData(final String gedcomName, Response res) {
         res.type("image/svg+xml");
-        final String svg = this.files.getChartData(gedcomName);
-        return svg;
+        return this.files.getChartData(gedcomName);
     }
 
     private String person(final String gedcomName, final UUID uuid) throws IOException {

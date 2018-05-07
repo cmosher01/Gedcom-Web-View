@@ -7,10 +7,8 @@ import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.*;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -24,14 +22,16 @@ import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 
+import static java.util.Optional.*;
+
 
 
 @SuppressWarnings("WeakerAccess")
 public class GedcomFilesHandler {
     /*
-        this is for the list of gedcom files
-        on the first page (index.tat)
-         */
+            this is for the list of gedcom files
+            on the first page (index.tat)
+     */
     @SuppressWarnings("unused")  /* used in templates */
     public static class GedcomFile {
         private final String name;
@@ -61,10 +61,10 @@ public class GedcomFilesHandler {
     private final List<GedcomFile> rFile;
     private final Map<String, Loader> mapLoader = new TreeMap<>();
     private final Map<String, String> mapChart = new TreeMap<>();
+    private final Map<UUID, Loader> mapMasterUuidToLoader = new HashMap<>(1024);
     private final Map<UUID, Set<Loader>> mapPersonCrossRef = new HashMap<>(32);
 
     public GedcomFilesHandler() throws IOException, InvalidLevel {
-        final Map<UUID, Loader> mapMasterUuidToLoader = new HashMap<>(1024);
         final List<GedcomFile> files = new ArrayList<>(32);
         for (final File fileGedcom : getGedcomFiles()) {
             final GedcomTree gt = parseGedcom(fileGedcom);
@@ -74,7 +74,7 @@ public class GedcomFilesHandler {
             this.mapLoader.put(loader.getName(), loader);
             files.add(new GedcomFile(loader.getName(), loader.getDescription()));
 
-            buildPersonCrossReferences(loader, mapMasterUuidToLoader);
+            buildPersonCrossReferences(loader);
 
             try {
                 this.mapChart.put(loader.getName(), docToString(Dropline.build(gt)));
@@ -108,6 +108,20 @@ public class GedcomFilesHandler {
         return gt;
     }
 
+    public Optional<Loader> findLoaderForPerson(final UUID uuidPerson) {
+        if (this.mapMasterUuidToLoader.containsKey(uuidPerson)) {
+            return ofNullable(this.mapMasterUuidToLoader.get(uuidPerson));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Person> findPerson(final UUID uuidPerson) {
+        final Optional<Loader> loader = findLoaderForPerson(uuidPerson);
+        if (loader.isPresent()) {
+            return ofNullable(loader.get().lookUpPerson(uuidPerson));
+        }
+        return Optional.empty();
+    }
 
     public List<GedcomFile> getFiles() {
         return this.rFile;
@@ -171,21 +185,21 @@ public class GedcomFilesHandler {
         return Collections.unmodifiableList(Arrays.asList(rFile));
     }
 
-    private void buildPersonCrossReferences(final Loader loader, final Map<UUID, Loader> mapMasterUuidToLoader) {
+    private void buildPersonCrossReferences(final Loader loader) {
         final Set<UUID> uuids = new HashSet<>(256);
         loader.appendAllUuids(uuids);
         uuids.forEach(uuid -> {
-            if (mapMasterUuidToLoader.containsKey(uuid)) {
+            if (this.mapMasterUuidToLoader.containsKey(uuid)) {
                 Set<Loader> loaders = this.mapPersonCrossRef.get(uuid);
                 if (loaders == null) {
                     loaders = new HashSet<>(2);
                     this.mapPersonCrossRef.put(uuid, loaders);
 
-                    loaders.add(mapMasterUuidToLoader.get(uuid));
+                    loaders.add(this.mapMasterUuidToLoader.get(uuid));
                 }
                 loaders.add(loader);
             } else {
-                mapMasterUuidToLoader.put(uuid, loader);
+                this.mapMasterUuidToLoader.put(uuid, loader);
             }
         });
     }
