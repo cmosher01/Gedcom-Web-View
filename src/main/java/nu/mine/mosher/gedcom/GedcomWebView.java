@@ -83,7 +83,7 @@ public class GedcomWebView {
                 final UUID uuidPerson = UUID.fromString(sUuidPerson);
                 System.err.println("Searching for old uuid: "+uuidPerson);
                 final Optional<Loader> loader= this.files.findLoaderForPerson(uuidPerson);
-                loader.ifPresent(l -> res.redirect("../" + l.getName() + "/persons/" + uuidPerson, SC_MOVED_PERMANENTLY));
+                loader.ifPresent(l -> res.redirect(l.getName() + "/persons/" + uuidPerson, SC_MOVED_PERMANENTLY));
             } catch (final Throwable bad) {
                 // bad UUID format, OK just ignore it
             }
