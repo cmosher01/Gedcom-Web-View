@@ -1,12 +1,12 @@
 @font-face {
     font-family: adobe-garamond-pro;
     src:
-        url('http://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
-        url('http://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
+        url('https://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
 }
 @font-face {
     font-family: freefont;
-    src: url('http://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
+    src: url('https://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
 }
 
 svg {

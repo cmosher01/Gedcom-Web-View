@@ -57,8 +57,8 @@ which shows code points for a few of the yet still missing BMP glyphs.
 @font-face {
     font-family: adobe-garamond-pro;
     src:
-        url('http://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
-        url('http://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/garamond/Garamond.woff') format('woff'),
+        url('https://mosher.mine.nu/font/garamond/Garamond.ttf') format('truetype');
 }
 
 
@@ -67,7 +67,7 @@ which shows code points for a few of the yet still missing BMP glyphs.
 @font-face {
     font-family: luxi;
     src:
-        url('http://mosher.mine.nu/font/luxi/Luxi.woff') format('woff');
+        url('https://mosher.mine.nu/font/luxi/Luxi.woff') format('woff');
 }
 
 
@@ -76,35 +76,35 @@ which shows code points for a few of the yet still missing BMP glyphs.
 @font-face {
     font-family: freefont;
     src:
-        url('http://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
+        url('https://mosher.mine.nu/font/freefont/FreeSerif.woff') format('woff');
 }
 
 @font-face {
     font-family: code2000;
     src:
-        url('http://mosher.mine.nu/font/code2000/code2000.woff') format('woff'),
-        url('http://mosher.mine.nu/font/code2000/code2000.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/code2000/code2000.woff') format('woff'),
+        url('https://mosher.mine.nu/font/code2000/code2000.ttf') format('truetype');
 }
 
 @font-face {
     font-family: code2001;
     src:
-        url('http://mosher.mine.nu/font/code2000/code2001.woff') format('woff'),
-        url('http://mosher.mine.nu/font/code2000/code2001.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/code2000/code2001.woff') format('woff'),
+        url('https://mosher.mine.nu/font/code2000/code2001.ttf') format('truetype');
 }
 
 @font-face {
     font-family: code2002;
     src:
-        url('http://mosher.mine.nu/font/code2000/code2002.woff') format('woff'),
-        url('http://mosher.mine.nu/font/code2000/code2002.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/code2000/code2002.woff') format('woff'),
+        url('https://mosher.mine.nu/font/code2000/code2002.ttf') format('truetype');
 }
 
 @font-face {
     font-family: tibetan;
     src:
-        url('http://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.woff') format('woff'),
-        url('http://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.woff') format('woff'),
+        url('https://mosher.mine.nu/font/noto/NotoSansTibetan-Regular.ttf') format('truetype');
 }
 
 
@@ -113,22 +113,22 @@ which shows code points for a few of the yet still missing BMP glyphs.
 @font-face {
     font-family: abydos;
     src:
-        url('http://mosher.mine.nu/font/abydos/AbydosR_hint.woff2') format('woff2'),
-        url('http://mosher.mine.nu/font/abydos/AbydosR_hint.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/abydos/AbydosR_hint.woff2') format('woff2'),
+        url('https://mosher.mine.nu/font/abydos/AbydosR_hint.ttf') format('truetype');
 }
 
 @font-face {
     font-family: aegean;
     src:
-        url('http://mosher.mine.nu/font/aegean/Aegean_hint.woff') format('woff'),
-        url('http://mosher.mine.nu/font/aegean/Aegean_hint.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/aegean/Aegean_hint.woff') format('woff'),
+        url('https://mosher.mine.nu/font/aegean/Aegean_hint.ttf') format('truetype');
 }
 
 @font-face {
     font-family: symbola;
     src:
-        url('http://mosher.mine.nu/font/symbola/Symbola_hint.woff') format('woff'),
-        url('http://mosher.mine.nu/font/symbola/Symbola_hint.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/symbola/Symbola_hint.woff') format('woff'),
+        url('https://mosher.mine.nu/font/symbola/Symbola_hint.ttf') format('truetype');
 }
 
 
@@ -137,36 +137,36 @@ which shows code points for a few of the yet still missing BMP glyphs.
 @font-face {
     font-family: unifont;
     src:
-        url('http://mosher.mine.nu/font/unifont/unifont-10.0.06.woff') format('woff'),
-        url('http://mosher.mine.nu/font/unifont/unifont-10.0.06.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/unifont/unifont-10.0.06.woff') format('woff'),
+        url('https://mosher.mine.nu/font/unifont/unifont-10.0.06.ttf') format('truetype');
 }
 
 @font-face {
     font-family: unifont-smp;
     src:
-        url('http://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.woff') format('woff'),
-        url('http://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.woff') format('woff'),
+        url('https://mosher.mine.nu/font/unifont/unifont_upper-10.0.06.ttf') format('truetype');
 }
 
 @font-face {
     font-family: unifont-pua;
     src:
-        url('http://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.woff') format('woff'),
-        url('http://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.woff') format('woff'),
+        url('https://mosher.mine.nu/font/unifont/unifont_csur-10.0.06.ttf') format('truetype');
 }
 
 @font-face {
     font-family: lastresort;
     src:
-        url('http://mosher.mine.nu/font/lastresort/LastResort.woff') format('woff'),
-        url('http://mosher.mine.nu/font/lastresort/LastResort.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/lastresort/LastResort.woff') format('woff'),
+        url('https://mosher.mine.nu/font/lastresort/LastResort.ttf') format('truetype');
 }
 
 @font-face {
     font-family: silbmp;
     src:
-        url('http://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.woff') format('woff'),
-        url('http://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.ttf') format('truetype');
+        url('https://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.woff') format('woff'),
+        url('https://mosher.mine.nu/font/silbmp/UnicodeBMPFallback.ttf') format('truetype');
 }
 
 
