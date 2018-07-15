@@ -71,7 +71,7 @@ public class GedcomWebView {
                 redirect.get("", "chart/");
                 get("/", (req, res) -> personChart(req.params(":ged")));
                 get("/data", (req, res) -> personChartData(req.params(":ged"), res));
-                redirect.get("/dropline.css", "../../css/dropline.css");
+                redirect.get("/dropline.css", "/genealogy/css/dropline.css");
             });
         });
     }
