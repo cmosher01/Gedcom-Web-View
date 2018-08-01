@@ -68,28 +68,21 @@ nav {
     font-size: 80%;
 }
 
-.events {
-    display: grid;
-    grid-template-columns: max-content auto auto;
-    grid-column-gap: 8px;
-}
-.events > div:nth-child(15n+13),
-.events > div:nth-child(15n+14),
-.events > div:nth-child(15n+15) {
-    border-bottom: 0.5px dotted var(--sol-base1);
-}
-
-.events > div::after {
-    content: "";
-    height: 100%;
-    display: inline-block;
-    vertical-align: sub; /* why does this work? it positions the reduced-size date correctly */
-}
-
 .vitalDate {
-    font-size: 80%;
-    font-feature-settings: "onum" off;
-    padding-bottom: 2px;
+    white-space: nowrap;
+    font-size: 75%;
+}
+
+.events,
+.vitalDate,
+.vitalPlace,
+.vitalType {
+    border: none;
+    padding: 0 3px; 0 3px;
+}
+
+.events > tbody > tr:nth-child(5n+4) {
+    border-bottom: 0.5px dotted var(--sol-base1);
 }
 
 .hasLineage::before {
@@ -190,12 +183,6 @@ div.source, div.citation, div.transcript {
 
 
 /* styles for html in gedcom files */
-table {
-    border-collapse: collapse;
+table, td, th {
     border: 1px solid var(--sol-base1);
-}
-
-td, th {
-    border: 1px solid var(--sol-base1);
-    padding: 3px;
 }

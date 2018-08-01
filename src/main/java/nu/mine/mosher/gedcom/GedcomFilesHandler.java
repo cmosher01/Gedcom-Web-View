@@ -204,7 +204,7 @@ public class GedcomFilesHandler {
         });
     }
 
-    public NoteList getFootnotesFor(final Person person) {
+    public static NoteList getFootnotesFor(final Person person) {
         final NoteList notes = new NoteList();
         person.getEvents().forEach(e -> {
             if (!e.getNote().isEmpty()) {

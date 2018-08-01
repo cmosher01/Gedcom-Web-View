@@ -1,9 +1,11 @@
 @template eventsSelf(rEvent, footnotes)@
 
 @if (!rEvent.isEmpty())@
-    <div class="events">
-        @loop iEvent : rEvent.size()@
-            @include event(rEvent[iEvent], footnotes)@
-        @end loop@
-    </div>
+    <table class="events">
+        <tbody>
+            @loop iEvent : rEvent.size()@
+                @include event(rEvent[iEvent], footnotes)@
+            @end loop@
+        </tbody>
+    </table>
 @end if@

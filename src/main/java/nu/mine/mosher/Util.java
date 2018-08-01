@@ -348,7 +348,7 @@ public final class Util {
 
     public static boolean isCitation(final NoteList notes, final int i) {
         final int f = i+1;
-        return notes.note(f) instanceof Citation;
+        return notes.getNote(f) instanceof Citation;
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")

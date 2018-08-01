@@ -22,3 +22,12 @@ ol {
 dd {
     -webkit-margin-start: 0; /* reset chrome */
 }
+
+pre {
+    display: inline;
+    margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+}

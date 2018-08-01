@@ -1,14 +1,15 @@
 @template event(event, footnotes)@
 
-<div class="vitalDate">
-    @nu.mine.mosher.Util.eventDate(event)@
-</div>
+<tr>
+<td class="vitalDate">
+    <pre>@nu.mine.mosher.Util.eventDate(event)@</pre>
+</td>
 
-<div class="vitalPlace">
+<td class="vitalPlace">
     @nu.mine.mosher.Util.unk(event.getPlace())@
-</div>
+</td>
 
-<div class="vitalType"><!--
+<td class="vitalType"><!--
     --><span class="vitalName">@event.getType()@</span><!--
     -->@if (!event.getNote().isEmpty())@<!--
         --><a class="footref" href="#f@footnotes.note(event.getNote())@"><!--
@@ -20,4 +21,6 @@
             -->@footnotes.note(event.getCitations()[i])@<!--
         --></a><!--
     -->@end loop@
-</div>
+</td>
+
+</tr>
