@@ -81,7 +81,7 @@ nav {
     padding: 0 3px; 0 3px;
 }
 
-.events > tbody > tr:nth-child(5n+4) {
+.events > tbody > tr:nth-child(5n) {
     border-bottom: 0.5px dotted var(--sol-base1);
 }
 
