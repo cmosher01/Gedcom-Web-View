@@ -124,6 +124,12 @@ nav {
     margin-right: 4rem;
 }
 
+div.tei-TEI,
+div.tei-text,
+div.tei-body {
+    display: inline;
+}
+
 /* double-space footnote list */
 .footnotes > ul > li {
     margin-top: 2ex;
