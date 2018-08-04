@@ -1,6 +1,70 @@
-/* General margins */
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/reset.css");
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/fonts.css");
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/solarized.css");
+@import url("https://rawgit.com/cmosher01/teish/master/src/main/resources/teish.css");
+
+/* General */
 header, section, footer {
     margin: 2ex 2rem 2ex 2rem;
+}
+
+footer {
+    font-size: 80%;
+}
+
+.personName {
+    font-size: 200%;
+}
+
+.footnotes {
+    color: var(--sol-base0);
+}
+
+nav, .gedcomLink, .parents, .relation, .copyright, .indextab {
+    color: var(--sol-base1);
+}
+
+.personName,
+.nameList .name,
+.parents .name,
+.partnership .name,
+.hasIssue,
+.hasLineage {
+    color: var(--sol-violet);
+}
+
+a:hover {
+    background-color: var(--sol-base2);
+    color: var(--sol-orange);
+}
+
+hr.sec {
+    overflow: visible;
+    padding: 0;
+    border: none;
+    border-top: medium double var(--sol-base1);
+    color: var(--sol-base1);
+    text-align: center;
+    margin-top: 3ex;
+    margin-bottom: 0;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+hr.sec:after {
+    content: "§";
+    display: inline-block;
+    position: relative;
+    top: -0.62em;
+    padding: 0 0.25em;
+    background: var(--sol-base3);
+}
+
+hr.sim {
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+    border: none;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--sol-base2), var(--sol-base1), var(--sol-base2));
 }
 
 
