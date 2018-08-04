@@ -1,6 +1,7 @@
 package nu.mine.mosher;
 
 import nu.mine.mosher.collection.NoteList;
+import nu.mine.mosher.gedcom.GedcomTag;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.xml.SimpleXml;
 import org.xml.sax.SAXParseException;
@@ -17,6 +18,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static nu.mine.mosher.gedcom.GedcomTag.*;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
@@ -249,6 +252,56 @@ public final class Util {
             return unk("");
         }
         return unk(e.getDate().getTabularString());
+    }
+
+    private static final Set<String> setPrimaryEventTypes = new HashSet<>();
+    static {
+        setPrimaryEventTypes.add(EventNames.getName(BIRT));
+        setPrimaryEventTypes.add(EventNames.getName(DEAT));
+        setPrimaryEventTypes.add(EventNames.getName(MARR));
+        setPrimaryEventTypes.add(EventNames.getName(DIV));
+        setPrimaryEventTypes.add(EventNames.getName(ANUL));
+        setPrimaryEventTypes.add("name");
+    }
+    private static final Set<String> setSecondaryEventTypes = new HashSet<>();
+    static {
+        setSecondaryEventTypes.add(EventNames.getName(CHR));
+        setSecondaryEventTypes.add(EventNames.getName(BAPM));
+        setSecondaryEventTypes.add(EventNames.getName(BURI));
+        setSecondaryEventTypes.add(EventNames.getName(CREM));
+        setSecondaryEventTypes.add(EventNames.getName(RESI));
+        setSecondaryEventTypes.add(EventNames.getName(CENS));
+        setSecondaryEventTypes.add(EventNames.getName(PROB));
+        setSecondaryEventTypes.add(EventNames.getName(MARB));
+        setSecondaryEventTypes.add(EventNames.getName(MARC));
+        setSecondaryEventTypes.add(EventNames.getName(MARL));
+        setSecondaryEventTypes.add(EventNames.getName(MARS));
+    }
+    private static final Pattern LABELLED_EVENT_TYPE = Pattern.compile("([A-Za-z \\[\\]]+)(: .*)");
+    public static String eventType(final Event e) {
+        final String fullType = e.getType();
+        final Matcher match = LABELLED_EVENT_TYPE.matcher(fullType);
+
+        String label;
+        String value;
+        if (match.matches()) {
+            label = match.group(1);
+            value = match.group(2);
+        } else {
+            label = fullType;
+            value = "";
+        }
+
+        final String cls;
+        if (setPrimaryEventTypes.contains(label)) {
+            cls = " vitalTypePrimaryLabel";
+        } else if (setSecondaryEventTypes.contains(label)) {
+            cls = " vitalTypeSecondaryLabel";
+        } else {
+            cls = "vitalTypeLabel";
+        }
+
+        return "<span class=\""+cls+"\">"+label+"</span>"+value;
     }
 
     public static Collator createCollator() {

@@ -1,26 +1,22 @@
 @template event(event, footnotes)@
-
 <tr>
-<td class="vitalDate">
-    <pre>@nu.mine.mosher.Util.eventDate(event)@</pre>
-</td>
-
-<td class="vitalPlace">
-    @nu.mine.mosher.Util.unk(event.getPlace())@
-</td>
-
-<td class="vitalType"><!--
-    --><span class="vitalName">@event.getType()@</span><!--
-    -->@if (!event.getNote().isEmpty())@<!--
-        --><a class="footref" href="#f@footnotes.note(event.getNote())@"><!--
-            -->@footnotes.note(event.getNote())@<!--
-        --></a><!--
-    -->@end if@<!--
-    -->@loop i : event.getCitations().size()@<!--
-        --><a class="footref" href="#f@footnotes.note(event.getCitations()[i])@"><!--
-            -->@footnotes.note(event.getCitations()[i])@<!--
-        --></a><!--
-    -->@end loop@
-</td>
-
+    <td class="vitalDate">
+        <pre>@nu.mine.mosher.Util.eventDate(event)@</pre>
+    </td>
+    <td class="vitalPlace">
+        @nu.mine.mosher.Util.unk(event.getPlace())@
+    </td>
+    <td class="vitalType"><!--
+        -->@nu.mine.mosher.Util.eventType(event)@<!--
+        -->@if (!event.getNote().isEmpty())@<!--
+            --><a class="footref" href="#f@footnotes.note(event.getNote())@"><!--
+                -->@footnotes.note(event.getNote())@<!--
+            --></a><!--
+        -->@end if@<!--
+        -->@loop i : event.getCitations().size()@<!--
+            --><a class="footref" href="#f@footnotes.note(event.getCitations()[i])@"><!--
+                -->@footnotes.note(event.getCitations()[i])@<!--
+            --></a><!--
+        -->@end loop@<!--
+    --></td>
 </tr>

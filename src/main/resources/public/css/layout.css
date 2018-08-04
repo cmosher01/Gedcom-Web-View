@@ -73,6 +73,18 @@ nav {
     font-size: 75%;
 }
 
+.vitalTypePrimaryLabel {
+    color: var(--sol-magenta);
+}
+
+.vitalTypeSecondaryLabel {
+    color: var(--sol-cyan);
+}
+
+.vitalTypeLabel {
+    color: var(--sol-yellow);
+}
+
 .events,
 .vitalDate,
 .vitalPlace,
@@ -81,8 +93,8 @@ nav {
     padding: 0 3px; 0 3px;
 }
 
-.events > tbody > tr:nth-child(5n) {
-    border-bottom: 0.5px dotted var(--sol-base1);
+.events > tbody > tr:nth-child(odd) {
+    background-color: var(--sol-base2);
 }
 
 .hasLineage::before {
