@@ -1,0 +1,12 @@
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/reset.css");
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/fonts.css");
+@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/solarized.css");
+
+a:hover {
+    background-color: var(--sol-base2);
+    color: var(--sol-orange);
+}
+
+html {
+    margin: 3rem;
+}
