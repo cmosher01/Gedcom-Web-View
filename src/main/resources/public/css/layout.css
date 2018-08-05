@@ -187,8 +187,6 @@ nav {
 .footnotes {
     font-size: 80%;
     text-indent: 2em;
-    text-align: justify;
-    text-justify: distribute;
     margin-left: 4rem;
     margin-right: 4rem;
 }
