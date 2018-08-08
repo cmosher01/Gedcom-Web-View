@@ -77,7 +77,7 @@ public class GedcomWebView {
     }
 
     private void backwardCompatibility(final Request req, final Response res) {
-        final String sUuidPerson = req.queryParamOrDefault("person_uuid", "");
+        final String sUuidPerson = getOldFormatPersonUuidOrEmpty(req);
         if (!sUuidPerson.isEmpty()) {
             try {
                 final UUID uuidPerson = UUID.fromString(sUuidPerson);
@@ -90,6 +90,13 @@ public class GedcomWebView {
         }
     }
 
+    private static String getOldFormatPersonUuidOrEmpty(final Request req) {
+        String uuidOrEmpty = req.queryParamOrDefault("person_uuid", "");
+        if (uuidOrEmpty.isEmpty()) {
+            uuidOrEmpty =req.queryParamOrDefault("personfam_uuid", "");
+        }
+        return uuidOrEmpty;
+    }
 
 
     private String index() {
@@ -116,7 +123,7 @@ public class GedcomWebView {
     private String person(final String gedcomName, final UUID uuid) throws IOException {
         final Person person = this.files.getPerson(gedcomName, uuid);
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final NoteList footnotes = this.files.getFootnotesFor(person);
+        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
         final Object[] args = { person, gedcomName, otherFiles, footnotes, "../.." };
         return render(args, "person.tat");
     }
