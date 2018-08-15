@@ -272,6 +272,7 @@ public final class Util {
         setSecondaryEventTypes.add(EventNames.getName(RESI));
         setSecondaryEventTypes.add(EventNames.getName(CENS));
         setSecondaryEventTypes.add(EventNames.getName(PROB));
+        setSecondaryEventTypes.add(EventNames.getName(WILL));
         setSecondaryEventTypes.add(EventNames.getName(MARB));
         setSecondaryEventTypes.add(EventNames.getName(MARC));
         setSecondaryEventTypes.add(EventNames.getName(MARL));
