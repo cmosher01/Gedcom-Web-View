@@ -218,7 +218,7 @@ div.tei-body {
 
 /* superscript footnote numbers */
 .footnum, .footref {
-    font-feature-settings: "sups";
+    font-feature-settings: "sups", "kern", "liga", "clig", "dlig";
 }
 
 .partner {
@@ -261,7 +261,7 @@ Override subscript and superscript to use
 the features from EB Garamond font.
 */
 [rend~=sup], [type=turnover] {
-    font-feature-settings: "sups";
+    font-feature-settings: "sups", "kern", "liga", "clig", "dlig";
     /* turn off teish settings: */
     position: static;
     font-size: 100%;
@@ -269,7 +269,7 @@ the features from EB Garamond font.
 }
 
 [rend~=sub], [type=turnunder] {
-    font-feature-settings: "subs";
+    font-feature-settings: "subs", "kern", "liga", "clig", "dlig";
     /* turn off teish settings: */
     position: static;
     font-size: 100%;
