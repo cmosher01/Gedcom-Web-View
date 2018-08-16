@@ -262,8 +262,16 @@ the features from EB Garamond font.
 */
 [rend~=sup], [type=turnover] {
     font-feature-settings: "sups";
+    /* turn off teish settings: */
+    position: static;
+    font-size: 100%;
+    top: 0;
 }
 
 [rend~=sub], [type=turnunder] {
     font-feature-settings: "subs";
+    /* turn off teish settings: */
+    position: static;
+    font-size: 100%;
+    top: 0;
 }
