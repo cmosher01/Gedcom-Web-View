@@ -177,11 +177,9 @@ nav {
 
 .footref::before {
     content: '[';
-    font-weight: normal;
 }
 .footref::after {
     content: ']';
-    font-weight: normal;
 }
 
 .footnotes {
@@ -218,12 +216,9 @@ div.tei-body {
     margin-right: -12px;
 }
 
-/* superscript and bold footnote numbers */
+/* superscript footnote numbers */
 .footnum, .footref {
-    position: relative;
-    top: -1.6ex;
-    font-size: 60%;
-    font-weight: bold;
+    font-feature-settings: "sups";
 }
 
 .partner {
@@ -259,4 +254,16 @@ div.source, div.citation, div.transcript {
 /* styles for html in gedcom files */
 table, td, th {
     border: 1px solid var(--sol-base1);
+}
+
+/*
+Override subscript and superscript to use
+the features from EB Garamond font.
+*/
+[rend~=sup], [type=turnover] {
+    font-feature-settings: "sups";
+}
+
+[rend~=sub], [type=turnunder] {
+    font-feature-settings: "subs";
 }
