@@ -1,29 +1,35 @@
-@template partnerships(rPartnership, footnotes, isPrivate)@
+@template partnerships(rPartnership, footnotes, isPrivate, auth)@
 @if (!rPartnership.isEmpty())@
     @loop iPartnership : rPartnership.size()@
-        <hr class="sec">
-        <section class="partnership">
-            <div class="partner">
-                <span class="relation">partnership:</span>
-                @include link(rPartnership[iPartnership].getPartner())@
-            </div>
-
-            @if (!nu.mine.mosher.Util.prv(isPrivate))@
-                @if (!nu.mine.mosher.Util.prv(rPartnership[iPartnership].isPrivate()))@
-                    @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes)@
-                @end if@
-            @end if@
-
-            @if (!rPartnership[iPartnership].getChildren().isEmpty())@
-                <div class="children">
-                    <span class="relation">children:</span>
-                    <ul class="childrenList">
-                        @loop iChild : rPartnership[iPartnership].getChildren().size()@
-                            <li>@include linkDown(rPartnership[iPartnership].getChildren().get(iChild))@</li>
-                        @end loop@
-                    </ul>
+        @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership], auth))@
+            <hr class="sec">
+            <section class="partnership">
+                <div class="partner">
+                    <span class="relation">partnership:</span>
+                    @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getPartner(), auth))@
+                        @include link(rPartnership[iPartnership].getPartner())@
+                    @end if@
                 </div>
-            @end if@
-        </section>
+
+                @if (!nu.mine.mosher.Util.prv(isPrivate))@
+                    @if (!nu.mine.mosher.Util.prv(rPartnership[iPartnership].isPrivate()))@
+                        @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes, auth)@
+                    @end if@
+                @end if@
+
+                @if (!rPartnership[iPartnership].getChildren().isEmpty())@
+                    <div class="children">
+                        <span class="relation">children:</span>
+                        <ul class="childrenList">
+                            @loop iChild : rPartnership[iPartnership].getChildren().size()@
+                                @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getChildren().get(iChild), auth))@
+                                    <li>@include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@</li>
+                                @end if@
+                            @end loop@
+                        </ul>
+                    </div>
+                @end if@
+            </section>
+        @end if@
     @end loop@
 @end if@

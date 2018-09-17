@@ -1,16 +1,18 @@
-@template personIndex(people, file, index, root)@
+@template personIndex(people, file, index, root, auth)@
 
 @include header()@
 
 @include head(file, root)@
 
 <body>
-    @include nav(file, null, null)@
+    @include nav(file, null, null, auth)@
 
-    <div class="indextab">[list] [<a href= "../chart/">chart</a>]</div>
+    <!-- <div class="indextab">[list] [<a href= "../chart/">chart</a>]</div> -->
     <ul class="nameList">
         @loop i : people.size()@
-            <li>@include link(people[i])@</li>
+            @if (!nu.mine.mosher.Util.privatize(people[i], auth))@
+                <li>@include link(people[i])@</li>
+            @end if@
         @end loop@
     </ul>
 </body>

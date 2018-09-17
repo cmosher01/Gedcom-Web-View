@@ -1,8 +1,6 @@
-@template events(events, footnotes, private)@
+@template events(events, footnotes, auth)@
 
 <hr class="sec">
 <section>
-    @if (!nu.mine.mosher.Util.prv(private))@
-        @include eventsSelf(events, footnotes)@
-    @end if@
+    @include eventsSelf(events, footnotes, auth)@
 </section>

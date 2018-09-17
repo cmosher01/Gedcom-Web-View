@@ -1,5 +1,7 @@
 package nu.mine.mosher.gedcom;
 
+import nu.mine.mosher.Credentials;
+import nu.mine.mosher.GuestStoreImpl;
 import nu.mine.mosher.Util;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
@@ -12,7 +14,7 @@ import template.TemplAtEngine;
 import java.io.IOException;
 import java.util.*;
 
-import static javax.servlet.http.HttpServletResponse.SC_MOVED_PERMANENTLY;
+import static javax.servlet.http.HttpServletResponse.*;
 import static nu.mine.mosher.logging.Jul.log;
 import static spark.Spark.*;
 
@@ -22,6 +24,7 @@ import static spark.Spark.*;
  */
 public class GedcomWebView {
     private static final boolean VERBOSE = false;
+    private static final Credentials.Store credentialsStore = GuestStoreImpl.instance();
 
     public static void main(final String... args) {
         Jul.verbose(VERBOSE);
@@ -61,19 +64,36 @@ public class GedcomWebView {
 
         get("/favicon.ico", (req, res) -> null);
 
+        get("/login", this::logIn);
+
         path("/:ged", () -> {
             path("/persons", () -> {
                 redirect.get("", "persons/");
-                get("/", (req, res) -> personIndex(req.params(":ged")));
-                get("/:id", (req, res) -> person(req.params(":ged"), Util.uuidFromString(req.params(":id"))));
+                get("/", (req, res) -> personIndex(auth(req), req.params(":ged")));
+                get("/:id", (req, res) -> person(res, auth(req), req.params(":ged"), Util.uuidFromString(req.params(":id"))));
             });
-            path("/chart", () -> {
-                redirect.get("", "chart/");
-                get("/", (req, res) -> personChart(req.params(":ged")));
-                get("/data", (req, res) -> personChartData(req.params(":ged"), res));
-                redirect.get("/dropline.css", "/genealogy/css/dropline.css");
-            });
+            //TODO: privatize dropline chart:
+//            path("/chart", () -> {
+//                redirect.get("", "chart/");
+//                get("/", (req, res) -> personChart(auth(req), req.params(":ged")));
+//                get("/data", (req, res) -> personChartData(auth(req), req.params(":ged"), res));
+//                redirect.get("/dropline.css", "/genealogy/css/dropline.css");
+//            });
         });
+    }
+
+    private String logIn(final Request req, final Response res) {
+        if (auth(req)) {
+            res.redirect(req.headers("Referer"), SC_MOVED_TEMPORARILY);
+        } else {
+            res.status(SC_UNAUTHORIZED);
+            res.header("WWW-Authenticate", "Basic realm=\"web site\"");
+        }
+        return "Unauthorized. Please quit your browser.";
+    }
+
+    private static boolean auth(final Request req) {
+        return Credentials.fromSession(req, credentialsStore).valid();
     }
 
     private void backwardCompatibility(final Request req, final Response res) {
@@ -101,36 +121,40 @@ public class GedcomWebView {
 
     private String index() {
         final Object[] args = { this.files.getFiles(), "." };
-        return render(args, "index.tat");
+        return render("index.tat", args);
     }
 
-    private String personIndex(final String gedcomName) throws IOException {
+    private String personIndex(final boolean auth, final String gedcomName) throws IOException {
         final List<Person> people = this.files.getAllPeople(gedcomName);
-        final Object[] args = { people, gedcomName, 0, "../.." };
-        return render(args, "personIndex.tat");
+        final Object[] args = { people, gedcomName, 0, "../..", auth };
+        return render("personIndex.tat", args);
     }
 
-    private String personChart(final String gedcomName) {
-        final Object[] args = { gedcomName, "../.." };
-        return render(args, "personChart.tat");
-    }
+//    private String personChart(final boolean auth, final String gedcomName) {
+//        final Object[] args = { gedcomName, "../.." };
+//        return render("personChart.tat", args);
+//    }
+//
+//    private String personChartData(final boolean auth, final String gedcomName, Response res) {
+//        res.type("image/svg+xml");
+//        return this.files.getChartData(gedcomName);
+//    }
 
-    private String personChartData(final String gedcomName, Response res) {
-        res.type("image/svg+xml");
-        return this.files.getChartData(gedcomName);
-    }
-
-    private String person(final String gedcomName, final UUID uuid) throws IOException {
+    private String person(Response res, final boolean auth, final String gedcomName, final UUID uuid) throws IOException {
         final Person person = this.files.getPerson(gedcomName, uuid);
+        if (Objects.isNull(person) || Util.privatize(person, auth)) {
+            res.status(SC_NOT_FOUND);
+            return "";
+        }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
-        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../.." };
-        return render(args, "person.tat");
+        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person, auth);
+        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth };
+        return render("person.tat", args);
     }
 
 
 
-    private static String render(final Object[] args, final String view) {
+    private static String render(final String view, final Object[] args) {
         return new TemplAtEngine().render(new ModelAndView(args, view));
     }
 }

@@ -76,11 +76,11 @@ public class GedcomFilesHandler {
 
             buildPersonCrossReferences(loader);
 
-            try {
-                this.mapChart.put(loader.getName(), docToString(Dropline.build(gt)));
-            } catch (final Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                this.mapChart.put(loader.getName(), docToString(Dropline.build(gt)));
+//            } catch (final Exception e) {
+//                e.printStackTrace();
+//            }
         }
 
         final Collator collator = Util.createCollator();
@@ -140,11 +140,7 @@ public class GedcomFilesHandler {
         if (loader == null) {
             throw new IOException();
         }
-        final Person person = loader.lookUpPerson(uuid);
-        if (person == null) {
-            throw new IOException(); // TODO: fix (when person not found, show nice error)
-        }
-        return person;
+        return loader.lookUpPerson(uuid);
     }
 
     public List<String> getXrefs(final String gedcomName, final UUID uuid) {
@@ -204,7 +200,7 @@ public class GedcomFilesHandler {
         });
     }
 
-    public static NoteList getFootnotesFor(final Person person) {
+    public static NoteList getFootnotesFor(final Person person, final boolean auth) {
         final NoteList notes = new NoteList();
         person.getEvents().forEach(e -> {
             if (!e.getNote().isEmpty()) {

@@ -1,4 +1,5 @@
-@template event(event, footnotes)@
+@template event(event, footnotes, auth)@
+@if (!nu.mine.mosher.Util.privatize(event, auth))@
 <tr>
     <td class="vitalDate">
         <pre>@nu.mine.mosher.Util.eventDate(event)@</pre>
@@ -20,3 +21,4 @@
         -->@end loop@<!--
     --></td>
 </tr>
+@end if@

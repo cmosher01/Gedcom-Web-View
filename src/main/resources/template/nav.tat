@@ -1,8 +1,13 @@
-@template nav(file, otherFiles, person)@
+@template nav(file, otherFiles, person, auth)@
 
 <header>
     <nav>
         <div class="home">
+            @if (auth)@
+                [logged in]
+            @else@
+                {<a href="../../login">log in</a>}
+            @end if@
             {<a href="../../">home</a>}
             {<a href="../persons/">@file@</a>}
         </div>

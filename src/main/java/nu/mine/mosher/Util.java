@@ -26,7 +26,7 @@ public final class Util {
     private static final URL TEISH = initTeish();
 
     // TODO: make this an option:
-    private static final boolean EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY = true;
+    private static final boolean EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY = false;
 
     private static URL initTeish() {
         try {
@@ -430,6 +430,14 @@ public final class Util {
 
     public static boolean hasLineage(final Person person) {
         return person.getFather() != null || person.getMother() != null;
+    }
+
+    public static boolean privatize(final Privatizable p, final boolean hasAuthorization) {
+        return prv(p.isPrivate()) && !hasAuthorization;
+    }
+
+    public static boolean privatizeParents(final Person p, final boolean hasAuthorization) {
+        return prv(p.isPrivateParentage()) && !hasAuthorization;
     }
 
     public static boolean prv(final boolean prv) {

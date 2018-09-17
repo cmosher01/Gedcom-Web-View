@@ -1,21 +1,21 @@
-@template person(person, file, otherFiles, footnotes, root)@
+@template person(person, file, otherFiles, footnotes, root, auth)@
 
 @include header()@
 
 @include head(person, root)@
 
 <body>
-    @include nav(file, otherFiles, person)@
+    @include nav(file, otherFiles, person, auth)@
 
     <article class="person">
         <section class="parents">
             <div class="father">
                 <span class="relation">father:</span>
-                @include linkUp(person.getFather())@
+                @include linkUp(person.getFather(), person, auth)@
             </div>
             <div class="mother">
                 <span class="relation">mother:</span>
-                @include linkUp(person.getMother())@
+                @include linkUp(person.getMother(), person, auth)@
             </div>
         </section>
         <header>
@@ -23,9 +23,9 @@
             <h1 class="personName">@nu.mine.mosher.Util.esc(person.toString())@</h1>
         </header>
 
-        @include events(person.getEventsWithDittoedPlaces(), footnotes, person.isPrivate())@
+        @include events(person.getEventsWithDittoedPlaces(), footnotes, auth)@
 
-        @include partnerships(person.getPartnerships(), footnotes, person.isPrivate())@
+        @include partnerships(person.getPartnerships(), footnotes, person.isPrivate(), auth)@
 
         @include footnotes(footnotes)@
     </article>

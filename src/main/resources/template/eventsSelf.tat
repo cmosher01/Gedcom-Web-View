@@ -1,10 +1,12 @@
-@template eventsSelf(rEvent, footnotes)@
+@template eventsSelf(rEvent, footnotes, auth)@
 
 @if (!rEvent.isEmpty())@
     <table class="events">
         <tbody>
             @loop iEvent : rEvent.size()@
-                @include event(rEvent[iEvent], footnotes)@
+                @if (!nu.mine.mosher.Util.privatize(rEvent[iEvent], auth))@
+                    @include event(rEvent[iEvent], footnotes, auth)@
+                @end if@
             @end loop@
         </tbody>
     </table>
