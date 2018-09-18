@@ -23,7 +23,7 @@ import java.text.Collator;
 import java.util.*;
 
 import static java.util.Optional.*;
-
+import static nu.mine.mosher.logging.Jul.log;
 
 
 @SuppressWarnings("WeakerAccess")
@@ -67,6 +67,7 @@ public class GedcomFilesHandler {
     public GedcomFilesHandler() throws IOException, InvalidLevel {
         final List<GedcomFile> files = new ArrayList<>(32);
         for (final File fileGedcom : getGedcomFiles()) {
+            log().info("Reading GEDCOM file: "+fileGedcom.getCanonicalPath());
             final GedcomTree gt = parseGedcom(fileGedcom);
             final Loader loader = new Loader(gt, fileGedcom.getName());
             loader.parse();

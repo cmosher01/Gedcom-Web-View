@@ -13,6 +13,7 @@ import template.TemplAtEngine;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 import static javax.servlet.http.HttpServletResponse.*;
 import static nu.mine.mosher.logging.Jul.log;
@@ -23,11 +24,10 @@ import static spark.Spark.*;
  * Created 2006-09-24.
  */
 public class GedcomWebView {
-    private static final boolean VERBOSE = false;
     private static final Credentials.Store credentialsStore = GuestStoreImpl.instance();
 
     public static void main(final String... args) {
-        Jul.verbose(VERBOSE);
+        Jul.setLevel(Level.INFO);
         log().entering("Main", "main");
 
         try {
