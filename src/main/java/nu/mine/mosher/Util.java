@@ -433,10 +433,16 @@ public final class Util {
     }
 
     public static boolean privatize(final Privatizable p, final boolean hasAuthorization) {
+        if (Objects.isNull(p)) {
+            return false;
+        }
         return prv(p.isPrivate()) && !hasAuthorization;
     }
 
     public static boolean privatizeParents(final Person p, final boolean hasAuthorization) {
+        if (Objects.isNull(p)) {
+            return false;
+        }
         return prv(p.isPrivateParentage()) && !hasAuthorization;
     }
 
