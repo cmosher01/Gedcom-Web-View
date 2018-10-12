@@ -2,7 +2,7 @@
 @if (!nu.mine.mosher.Util.privatize(event, auth))@
 <tr>
     <td class="vitalDate">
-        <pre>@nu.mine.mosher.Util.eventDate(event)@</pre>
+        <pre class="unicodeMono">@nu.mine.mosher.Util.eventDate(event)@</pre>
     </td>
     <td class="vitalPlace">
         @nu.mine.mosher.Util.unk(event.getPlace())@

@@ -1,4 +1,4 @@
 @template header()@
 
 <!doctype html>
-<html lang="en" class="solarizedLight">
+<html lang="en" class="fontFeatures unicodeWebFonts solarizedLight">
