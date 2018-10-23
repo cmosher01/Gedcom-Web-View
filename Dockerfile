@@ -1,4 +1,4 @@
-FROM gradle:jdk10
+FROM gradle:jdk9
 
 MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
