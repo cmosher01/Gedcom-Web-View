@@ -195,6 +195,10 @@ div.tei-body {
     display: inline;
 }
 
+.citation>.tei-TEI>.tei-teiHeader {
+    display: none;
+}
+
 /* double-space footnote list */
 .footnotes > ul > li {
     margin-top: 2ex;

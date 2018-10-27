@@ -169,7 +169,8 @@ public final class Util {
             /* Ancestry.com tends to use semi-colons in its citations */
             .replace(';', ',')
             .replaceAll("Page:", "p.")
-            .replaceAll("Family History Library Film:", "FHL microfilm");
+            .replaceAll("Family History Library Film", "FHL microfilm")
+            .replaceAll("Family History Film", "FHL microfilm");
     }
 
     private static String filterTitle(final String title) {
