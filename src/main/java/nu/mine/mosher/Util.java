@@ -243,9 +243,15 @@ public final class Util {
 
     public static String unk(final String s) {
         if (s == null || s.isEmpty()) {
-            return "\u00a0\u2e3a";
+            return "\u00a0<span class=\"placeholder\">\u2e3a</span>";
         }
-        return s;
+        return markupUnknownDateFields(s);
+    }
+
+    private static String markupUnknownDateFields(String s) {
+        return s
+            .replace("XXXX", "<span class=\"placeholder\">XXXX</span>")
+            .replace("XX", "<span class=\"placeholder\">XX</span>");
     }
 
     public static String eventDate(final Event e) {

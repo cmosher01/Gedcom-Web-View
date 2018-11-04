@@ -20,7 +20,7 @@ footer {
     color: var(--sol-base0);
 }
 
-nav, .gedcomLink, .parents, .relation, .copyright, .indextab {
+nav, .gedcomLink, .parents, .relation, .copyright, .indextab, .placeholder {
     color: var(--sol-base1);
 }
 
