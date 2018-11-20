@@ -11,11 +11,7 @@
                     @end if@
                 </div>
 
-                @if (!nu.mine.mosher.Util.prv(isPrivate))@
-                    @if (!nu.mine.mosher.Util.prv(rPartnership[iPartnership].isPrivate()))@
-                        @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes, auth)@
-                    @end if@
-                @end if@
+                @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes, auth)@
 
                 @if (!rPartnership[iPartnership].getChildren().isEmpty())@
                     <div class="children">
