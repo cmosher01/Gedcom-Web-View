@@ -1,8 +1,7 @@
 package template;
 
 import net.sourceforge.templat.Templat;
-import spark.ModelAndView;
-import spark.TemplateEngine;
+import spark.*;
 
 import java.net.URL;
 

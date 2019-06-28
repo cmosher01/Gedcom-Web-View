@@ -1,22 +1,17 @@
 package nu.mine.mosher;
 
 import nu.mine.mosher.collection.NoteList;
-import nu.mine.mosher.gedcom.GedcomTag;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.xml.SimpleXml;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.transform.TransformerException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 import java.util.stream.Collectors;
 
 import static nu.mine.mosher.gedcom.GedcomTag.*;

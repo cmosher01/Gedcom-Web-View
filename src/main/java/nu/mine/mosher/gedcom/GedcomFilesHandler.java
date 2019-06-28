@@ -2,27 +2,19 @@ package nu.mine.mosher.gedcom;
 
 import nu.mine.mosher.Util;
 import nu.mine.mosher.collection.NoteList;
-import nu.mine.mosher.gedcom.dropline.Dropline;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.*;
 import org.w3c.dom.Document;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 
-import static java.util.Optional.*;
+import static java.util.Optional.ofNullable;
 import static nu.mine.mosher.logging.Jul.log;
 
 

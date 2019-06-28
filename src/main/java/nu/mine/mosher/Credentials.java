@@ -1,11 +1,9 @@
 package nu.mine.mosher;
 
-import nu.mine.mosher.security.password.HashedString;
-import nu.mine.mosher.security.password.StrongHash;
+import nu.mine.mosher.security.password.*;
 import spark.Request;
 
-import java.util.Base64;
-import java.util.Objects;
+import java.util.*;
 
 public class Credentials {
     private static final String BASIC = "Basic ";

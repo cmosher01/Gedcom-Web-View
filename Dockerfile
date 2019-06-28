@@ -1,4 +1,4 @@
-FROM gradle:jdk10
+FROM gradle:jdk12
 
 MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
@@ -7,10 +7,11 @@ VOLUME /home/gradle/gedcom
 
 
 
-USER root
-RUN chmod -R a+w /usr/local
-
 RUN echo "org.gradle.daemon=false" >gradle.properties
+
+USER root
+
+RUN chown -R gradle: /usr/local
 
 COPY docker-run.sh ./
 RUN chmod a+x docker-run.sh
@@ -22,11 +23,8 @@ COPY src/ ./src/
 
 RUN chown -R gradle: ./
 
-ADD http://mosher.mine.nu/font/garamond/Garamond.ttf /usr/share/fonts/garamond/
-RUN chmod a+r /usr/share/fonts/garamond/*
 USER gradle
 
 RUN gradle build
-USER root
+
 RUN tar xf /home/gradle/build/distributions/*.tar --strip-components=1 -C /usr/local
-USER gradle
