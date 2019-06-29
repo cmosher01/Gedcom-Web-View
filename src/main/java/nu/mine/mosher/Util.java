@@ -25,7 +25,7 @@ public final class Util {
 
     private static URL initTeish() {
         try {
-            return new URL("https://rawgit.com/cmosher01/teish/master/src/main/resources/teish.xslt");
+            return new URL("https://cdn.jsdelivr.net/gh/cmosher01/teish@master/src/main/resources/teish.xslt");
         } catch (final Throwable e) {
             throw new IllegalStateException(e);
         }

@@ -1,7 +1,8 @@
-@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/reset.css");
-@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/fonts.css");
-@import url("https://rawgit.com/cmosher01/PlainWebCss/master/src/main/resources/css/solarized.css");
-@import url("https://rawgit.com/cmosher01/teish/master/src/main/resources/teish.css");
+@import url("https://cdn.jsdelivr.net/gh/cmosher01/PlainWebCss@master/src/main/resources/css/reset.css");
+@import url("https://cdn.jsdelivr.net/gh/cmosher01/PlainWebCss@master/src/main/resources/css/fonts.css");
+@import url("https://cdn.jsdelivr.net/gh/cmosher01/PlainWebCss@master/src/main/resources/css/solarized.css");
+
+@import url("https://cdn.jsdelivr.net/gh/cmosher01/teish@/master/src/main/resources/teish.css");
 
 /* General */
 header, section, footer {
