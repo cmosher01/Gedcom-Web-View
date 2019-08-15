@@ -155,7 +155,7 @@ nav {
 .vitalPlace,
 .vitalType {
     border: none;
-    padding: 0 3px; 0 3px;
+    padding: 0 3px 0 3px;
 }
 
 .events > tbody > tr:nth-child(odd) {
