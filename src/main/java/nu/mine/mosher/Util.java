@@ -250,7 +250,7 @@ public final class Util {
     }
 
     public static String eventDate(final Event e) {
-        if (e.getDate() == null || e.getDate().getTabularString().equals("?")) {
+        if (e == null || e.getDate() == null || e.getDate().getTabularString().equals("?")) {
             return unk("");
         }
         return unk(e.getDate().getTabularString());
@@ -453,5 +453,15 @@ public final class Util {
             return false;
         }
         return prv;
+    }
+
+    public static String getBirthdate(final Person person) {
+        Event birth = null;
+        for (final Event event : person.getEvents()) {
+            if (event.getType().equals("birth")) {
+                birth = event;
+            }
+        }
+        return Util.eventDate(birth);
     }
 }

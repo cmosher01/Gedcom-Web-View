@@ -17,5 +17,4 @@ dependencies {
 
 group = 'nu.mine.mosher.gedcom.webview'
 mainClassName = 'nu.mine.mosher.gedcom.GedcomWebView'
-sourceCompatibility = 1.9
 version = '1.0.0'

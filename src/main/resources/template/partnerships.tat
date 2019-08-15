@@ -19,7 +19,10 @@
                         <ul class="childrenList">
                             @loop iChild : rPartnership[iPartnership].getChildren().size()@
                                 @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getChildren().get(iChild), auth))@
-                                    <li>@include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@</li>
+                                    <li>
+                                        <pre class="vitalDate unicodeMono">@nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@</pre>
+                                        @include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@
+                                    </li>
                                 @end if@
                             @end loop@
                         </ul>
