@@ -1,7 +1,7 @@
 @template footnotes(notes)@
 
-<hr class="sec">
 <section class="footnotes">
+    <hr class="sec">
     <ul>
         @loop i : notes.size()@
             <li id="f@net.sourceforge.templat.Num.oneOrigin(i)@">

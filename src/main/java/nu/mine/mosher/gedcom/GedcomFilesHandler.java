@@ -4,13 +4,8 @@ import nu.mine.mosher.Util;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.*;
-import org.w3c.dom.Document;
 
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 
@@ -52,7 +47,7 @@ public class GedcomFilesHandler {
 
     private final List<GedcomFile> rFile;
     private final Map<String, Loader> mapLoader = new TreeMap<>();
-    private final Map<String, String> mapChart = new TreeMap<>();
+//    private final Map<String, String> mapChart = new TreeMap<>();
     private final Map<UUID, Loader> mapMasterUuidToLoader = new HashMap<>(1024);
     private final Map<UUID, Set<Loader>> mapPersonCrossRef = new HashMap<>(32);
 
@@ -81,18 +76,18 @@ public class GedcomFilesHandler {
         this.rFile = Collections.unmodifiableList(files);
     }
 
-    private String docToString(final Document doc) throws TransformerException {
-        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-
-        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        final StringWriter sw = new StringWriter();
-        transformer.transform(new DOMSource(doc), new StreamResult(sw));
-        return sw.toString();
-    }
+//    private String docToString(final Document doc) throws TransformerException {
+//        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//
+//        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+//        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+//        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//
+//        final StringWriter sw = new StringWriter();
+//        transformer.transform(new DOMSource(doc), new StreamResult(sw));
+//        return sw.toString();
+//    }
 
     private GedcomTree parseGedcom(final File fileGedcom) throws IOException, InvalidLevel
     {
@@ -108,30 +103,32 @@ public class GedcomFilesHandler {
         return Optional.empty();
     }
 
-    public Optional<Person> findPerson(final UUID uuidPerson) {
-        final Optional<Loader> loader = findLoaderForPerson(uuidPerson);
-        if (loader.isPresent()) {
-            return ofNullable(loader.get().lookUpPerson(uuidPerson));
-        }
-        return Optional.empty();
-    }
+//    public Optional<Person> findPerson(final UUID uuidPerson) {
+//        final Optional<Loader> loader = findLoaderForPerson(uuidPerson);
+//        if (loader.isPresent()) {
+//            return ofNullable(loader.get().lookUpPerson(uuidPerson));
+//        }
+//        return Optional.empty();
+//    }
 
     public List<GedcomFile> getFiles() {
         return this.rFile;
     }
 
-    public List<Person> getAllPeople(final String gedcomName) throws IOException {
+    public List<Person> getAllPeople(final String gedcomName) {
         final Loader loader = this.mapLoader.get(gedcomName);
         if (loader == null) {
-            throw new IOException();
+            log().info("Request for non-existent gedcom (all people).");
+            return null;
         }
         return loader.getAllPeople();
     }
 
-    public Person getPerson(final String gedcomName, final UUID uuid) throws IOException {
+    public Person getPerson(final String gedcomName, final UUID uuid) {
         final Loader loader = this.mapLoader.get(gedcomName);
         if (loader == null) {
-            throw new IOException();
+            log().info("Request for non-existent gedcom (person).");
+            return null;
         }
         return loader.lookUpPerson(uuid);
     }
@@ -148,9 +145,9 @@ public class GedcomFilesHandler {
         return otherFiles;
     }
 
-    public String getChartData(final String gedcomName) {
-        return this.mapChart.get(gedcomName);
-    }
+//    public String getChartData(final String gedcomName) {
+//        return this.mapChart.get(gedcomName);
+//    }
 
 
 
@@ -171,7 +168,7 @@ public class GedcomFilesHandler {
             throw new IOException("Cannot find any readable files in " + dirGedcom);
         }
 
-        return Collections.unmodifiableList(Arrays.asList(rFile));
+        return List.of(rFile);
     }
 
     private void buildPersonCrossReferences(final Loader loader) {
@@ -193,7 +190,7 @@ public class GedcomFilesHandler {
         });
     }
 
-    public static NoteList getFootnotesFor(final Person person, final boolean auth) {
+    public static NoteList getFootnotesFor(final Person person) {
         final NoteList notes = new NoteList();
         person.getEvents().forEach(e -> {
             if (!e.getNote().isEmpty()) {

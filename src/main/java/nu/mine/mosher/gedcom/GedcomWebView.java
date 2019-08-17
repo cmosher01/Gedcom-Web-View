@@ -48,7 +48,6 @@ public class GedcomWebView {
 
 
 
-    @SuppressWarnings("CodeBlock2Expr")
     private void run() {
         staticFiles.location("/public");
         staticFiles.expireTime(600);
@@ -66,7 +65,7 @@ public class GedcomWebView {
         path("/:ged", () -> {
             path("/persons", () -> {
                 redirect.get("", "persons/");
-                get("/", (req, res) -> personIndex(auth(req), req.params(":ged")));
+                get("/", (req, res) -> personIndex(res, auth(req), req.params(":ged")));
                 get("/:id", (req, res) -> person(res, auth(req), req.params(":ged"), Util.uuidFromString(req.params(":id"))));
             });
             //TODO: privatize dropline chart:
@@ -98,11 +97,17 @@ public class GedcomWebView {
         if (!sUuidPerson.isEmpty()) {
             try {
                 final UUID uuidPerson = UUID.fromString(sUuidPerson);
-                System.err.println("Searching for old uuid: "+uuidPerson);
+                log().info("Searching for old uuid: "+uuidPerson);
                 final Optional<Loader> loader= this.files.findLoaderForPerson(uuidPerson);
-                loader.ifPresent(l -> res.redirect(l.getName() + "/persons/" + uuidPerson, SC_MOVED_PERMANENTLY));
+                if (loader.isPresent()) {
+                    log().info("found in "+loader.get().getName());
+                    res.redirect(loader.get().getName() + "/persons/" + uuidPerson, SC_MOVED_PERMANENTLY);
+                } else {
+                    log().info("not found; ignoring");
+                }
             } catch (final Throwable bad) {
                 // bad UUID format, OK just ignore it
+                log().info("Invalid uuid value on person_uuid or personfam_uuid query parameter; ignoring.");
             }
         }
     }
@@ -121,8 +126,12 @@ public class GedcomWebView {
         return render("index.tat", args);
     }
 
-    private String personIndex(final boolean auth, final String gedcomName) throws IOException {
+    private String personIndex(final Response res, final boolean auth, final String gedcomName) {
         final List<Person> people = this.files.getAllPeople(gedcomName);
+        if (Objects.isNull(people)) {
+            res.status(SC_NOT_FOUND);
+            return "";
+        }
         final Object[] args = { people, gedcomName, 0, "../..", auth };
         return render("personIndex.tat", args);
     }
@@ -137,14 +146,14 @@ public class GedcomWebView {
 //        return this.files.getChartData(gedcomName);
 //    }
 
-    private String person(Response res, final boolean auth, final String gedcomName, final UUID uuid) throws IOException {
+    private String person(final Response res, final boolean auth, final String gedcomName, final UUID uuid) {
         final Person person = this.files.getPerson(gedcomName, uuid);
         if (Objects.isNull(person) || Util.privatize(person, auth)) {
             res.status(SC_NOT_FOUND);
             return "";
         }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person, auth);
+        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
         final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth };
         return render("person.tat", args);
     }

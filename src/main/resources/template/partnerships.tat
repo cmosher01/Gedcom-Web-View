@@ -2,8 +2,8 @@
 @if (!rPartnership.isEmpty())@
     @loop iPartnership : rPartnership.size()@
         @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership], auth))@
-            <hr class="sec">
             <section class="partnership">
+                <hr class="sec">
                 <div class="partner">
                     <span class="relation">partnership:</span>
                     @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getPartner(), auth))@
@@ -16,16 +16,24 @@
                 @if (!rPartnership[iPartnership].getChildren().isEmpty())@
                     <div class="children">
                         <span class="relation">children:</span>
-                        <ul class="childrenList">
+
+                        <table class="childrenList">
+                        <tbody>
                             @loop iChild : rPartnership[iPartnership].getChildren().size()@
                                 @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getChildren().get(iChild), auth))@
-                                    <li>
-                                        <pre class="vitalDate unicodeMono">@nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@</pre>
+                                    <tr>
+                                    <td class="vitalDate">
+                                        <pre class="unicodeMono">@nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@</pre>
+                                    </td>
+                                    <td class="childName">
                                         @include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@
-                                    </li>
+                                    </td>
+                                    </tr>
                                 @end if@
                             @end loop@
-                        </ul>
+                        </tbody>
+                        </table>
+
                     </div>
                 @end if@
             </section>

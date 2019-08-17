@@ -417,7 +417,7 @@ public final class Util {
         if (!isApid(apid)) {
             throw new IllegalStateException("invalid _APID");
         }
-        //noinspection ConstantConditions
+        //noinspection OptionalGetWithoutIsPresent
         return apid.get().getLink().get().toASCIIString();
     }
 

@@ -10,7 +10,7 @@ final public class GuestStoreImpl implements Credentials.Store {
     private static final String GUEST_USERNAME = "guest";
     private static final String GUEST_PASSWORD_HASH;
     static {
-        String h = "";
+        String h;
         try {
             h = StrongHash.hash(System.getenv("GUEST_PASSWORD"));
         } catch (final Throwable e) {
