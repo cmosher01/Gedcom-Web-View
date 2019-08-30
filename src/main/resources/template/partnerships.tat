@@ -23,7 +23,7 @@
                                 @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getChildren().get(iChild), auth))@
                                     <tr>
                                     <td class="vitalDate">
-                                        <pre class="unicodeMono">@nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@</pre>
+                                        @nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@
                                     </td>
                                     <td class="childName">
                                         @include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@
