@@ -297,9 +297,9 @@ public final class Util {
 
         final String cls;
         if (setPrimaryEventTypes.contains(label)) {
-            cls = " vitalTypePrimaryLabel";
+            cls = "vitalTypePrimaryLabel";
         } else if (setSecondaryEventTypes.contains(label)) {
-            cls = " vitalTypeSecondaryLabel";
+            cls = "vitalTypeSecondaryLabel";
         } else {
             cls = "vitalTypeLabel";
         }

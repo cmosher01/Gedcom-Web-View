@@ -115,7 +115,7 @@ public class GedcomWebView {
     private static String getOldFormatPersonUuidOrEmpty(final Request req) {
         String uuidOrEmpty = req.queryParamOrDefault("person_uuid", "");
         if (uuidOrEmpty.isEmpty()) {
-            uuidOrEmpty =req.queryParamOrDefault("personfam_uuid", "");
+            uuidOrEmpty = req.queryParamOrDefault("personfam_uuid", "");
         }
         return uuidOrEmpty;
     }
