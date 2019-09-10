@@ -120,7 +120,6 @@ public class GedcomWebView {
         return uuidOrEmpty;
     }
 
-
     private String index() {
         final Object[] args = { this.files.getFiles(), "." };
         return render("index.tat", args);

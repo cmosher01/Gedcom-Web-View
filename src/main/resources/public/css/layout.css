@@ -141,6 +141,14 @@ nav {
     background-color: var(--sol-base2);
 }
 
+.personNameEvent {
+    font-weight: 700;
+}
+
+.personSurnameEvent {
+    font-weight: 400;
+}
+
 .hasLineage::before {
     content: '\2442';
     position: relative;

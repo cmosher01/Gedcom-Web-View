@@ -280,7 +280,7 @@ public final class Util {
         setSecondaryEventTypes.add(EventNames.getName(MARL));
         setSecondaryEventTypes.add(EventNames.getName(MARS));
     }
-    private static final Pattern LABELLED_EVENT_TYPE = Pattern.compile("([A-Za-z \\[\\]]+)(: .*)");
+    private static final Pattern LABELLED_EVENT_TYPE = Pattern.compile("([A-Za-z \\[\\]]+)(: *.*)");
     public static String eventType(final Event e) {
         final String fullType = e.getType();
         final Matcher match = LABELLED_EVENT_TYPE.matcher(fullType);
@@ -290,6 +290,12 @@ public final class Util {
         if (match.matches()) {
             label = match.group(1);
             value = match.group(2);
+            if (label.equalsIgnoreCase("name")) {
+                if (value.startsWith(": ")) {
+                    value = value.substring(2); // remove ": "
+                }
+                value = ": "+markupPersonName(value);
+            }
         } else {
             label = fullType;
             value = "";
@@ -305,6 +311,41 @@ public final class Util {
         }
 
         return "<span class=\""+cls+"\">"+label+"</span>"+value;
+    }
+
+    private static String markupPersonName(String value) {
+        return "<span class=\"personNameEvent\">"+markupSurname(value)+"</span>";
+    }
+
+    private static String markupSurname(String value) {
+        final StringBuilder sb = new StringBuilder(value.length()+40);
+        boolean inSurname = false;
+        for(int cp : value.codePoints().toArray()) {
+            if (Character.isBmpCodePoint(cp)) {
+                final char c = (char)cp;
+                if (c == '/') {
+                    if (inSurname) {
+                        inSurname = false;
+                        sb.append("</span>");
+                    } else {
+                        inSurname = true;
+                        sb.append("<span class=\"personSurnameEvent\">");
+                    }
+                } else {
+                    sb.append(c);
+                }
+            } else if (Character.isValidCodePoint(cp)) {
+                sb.append(Character.highSurrogate(cp));
+                sb.append(Character.lowSurrogate(cp));
+            } else {
+                sb.append('?');
+            }
+        }
+        if (inSurname) {
+            // the case of the missing closing slash
+            sb.append("</span>");
+        }
+        return sb.toString();
     }
 
     public static Collator createCollator() {
