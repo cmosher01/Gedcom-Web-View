@@ -1,10 +1,10 @@
 @template link(person)@
-<span class="name">
-    @if (net.sourceforge.templat.Util.isNull(person))@
-        [unknown]
-    @else@
-        <a href="@person.getUuid()@">
+@if (net.sourceforge.templat.Util.isNull(person))@
+    [unknown]
+@else@
+    <a href="@person.getUuid()@">
+        <span class="name">
             @include personLinkName(person)@
-        </a>
-    @end if@
-</span>
+        </span>
+    </a>
+@end if@

@@ -1,4 +1,4 @@
-@template partnerships(rPartnership, footnotes, isPrivate, auth)@
+@template partnerships(rPartnership, footnotes, auth)@
 @if (!rPartnership.isEmpty())@
     @loop iPartnership : rPartnership.size()@
         @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership], auth))@
@@ -6,6 +6,7 @@
                 <hr class="sec">
                 <div class="partner">
                     <span class="relation">partnership:</span>
+
                     @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getPartner(), auth))@
                         @include link(rPartnership[iPartnership].getPartner())@
                     @end if@
@@ -13,27 +14,17 @@
 
                 @include eventsSelf(rPartnership[iPartnership].getEvents(), footnotes, auth)@
 
-                @if (!rPartnership[iPartnership].getChildren().isEmpty())@
+                @if (!rPartnership[iPartnership].getChildRelations().isEmpty())@
                     <div class="children">
                         <span class="relation">children:</span>
 
                         <table class="childrenList">
-                        <tbody>
-                            @loop iChild : rPartnership[iPartnership].getChildren().size()@
-                                @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership].getChildren().get(iChild), auth))@
-                                    <tr>
-                                    <td class="vitalDate">
-                                        @nu.mine.mosher.Util.getBirthdate(rPartnership[iPartnership].getChildren().get(iChild))@
-                                    </td>
-                                    <td class="childName">
-                                        @include linkDown(rPartnership[iPartnership].getChildren().get(iChild), auth)@
-                                    </td>
-                                    </tr>
-                                @end if@
-                            @end loop@
-                        </tbody>
+                            <tbody>
+                                @loop iChild : rPartnership[iPartnership].getChildRelations().size()@
+                                    @include child(rPartnership[iPartnership].getChildRelations().get(iChild), auth)@
+                                @end loop@
+                            </tbody>
                         </table>
-
                     </div>
                 @end if@
             </section>

@@ -9,14 +9,42 @@
 
     <article class="person">
         <section class="parents">
-            <div class="father">
-                <span class="relation">father:</span>
-                @include linkUp(person.getFather(), person, auth)@
-            </div>
-            <div class="mother">
-                <span class="relation">mother:</span>
-                @include linkUp(person.getMother(), person, auth)@
-            </div>
+            <table class="parentsList">
+            <tbody>
+            @loop iFather : person.getFathers().size()@
+                @if (!person.getFathers().get(iFather).getRelation().isPresent())@
+                    <tr>
+                        <td class="relation">father:</td>
+                        <td>@include linkUp(person.getFathers().get(iFather), auth)@</td>
+                    </tr>
+                @end if@
+            @end loop@
+            @loop iMother : person.getMothers().size()@
+                @if (!person.getMothers().get(iMother).getRelation().isPresent())@
+                    <tr>
+                        <td class="relation">mother:</td>
+                        <td>@include linkUp(person.getMothers().get(iMother), auth)@</td>
+                    </tr>
+                @end if@
+            @end loop@
+            @loop iFather : person.getFathers().size()@
+                @if (person.getFathers().get(iFather).getRelation().isPresent())@
+                    <tr>
+                        <td class="relation">father:</td>
+                        <td>@include linkUp(person.getFathers().get(iFather), auth)@</td>
+                    </tr>
+                @end if@
+            @end loop@
+            @loop iMother : person.getMothers().size()@
+                @if (person.getMothers().get(iMother).getRelation().isPresent())@
+                    <tr>
+                        <td class="relation">mother:</td>
+                        <td>@include linkUp(person.getMothers().get(iMother), auth)@</td>
+                    </tr>
+                @end if@
+            @end loop@
+            </tbody>
+            </table>
         </section>
         <header>
             <hr class="sim">
@@ -25,7 +53,7 @@
 
         @include events(person.getEventsWithDittoedPlaces(), footnotes, auth)@
 
-        @include partnerships(person.getPartnerships(), footnotes, person.isPrivate(), auth)@
+        @include partnerships(person.getPartnerships(), footnotes, auth)@
 
         @include footnotes(footnotes)@
     </article>

@@ -1,0 +1,11 @@
+@template child(child, auth)@
+@if (!nu.mine.mosher.Util.privatize(child, auth))@
+    <tr>
+        <td class="vitalDate">
+            @nu.mine.mosher.Util.getBirthdate(child.getOther())@
+        </td>
+        <td class="childName">
+            @include linkDown(child, auth)@
+        </td>
+    </tr>
+@end if@

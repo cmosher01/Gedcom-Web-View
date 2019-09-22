@@ -464,7 +464,7 @@ public final class Util {
 
     public static boolean hasIssue(final Person person) {
         for (Partnership part : person.getPartnerships()) {
-            if (part.getChildren().size() > 0) {
+            if (part.getChildRelations().size() > 0) {
                 return true;
             }
         }
@@ -472,7 +472,7 @@ public final class Util {
     }
 
     public static boolean hasLineage(final Person person) {
-        return person.getFather() != null || person.getMother() != null;
+        return 0 < person.getFathers().size() + person.getMothers().size();
     }
 
     public static boolean privatize(final Privatizable p, final boolean hasAuthorization) {
@@ -480,13 +480,6 @@ public final class Util {
             return false;
         }
         return prv(p.isPrivate()) && !hasAuthorization;
-    }
-
-    public static boolean privatizeParents(final Person p, final boolean hasAuthorization) {
-        if (Objects.isNull(p)) {
-            return false;
-        }
-        return prv(p.isPrivateParentage()) && !hasAuthorization;
     }
 
     public static boolean prv(final boolean prv) {

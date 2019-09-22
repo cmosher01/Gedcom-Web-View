@@ -1,13 +1,14 @@
-@template linkDown(person, auth)@
-<span class="name">
-    @if (net.sourceforge.templat.Util.isNull(person))@
-        [unknown]
-    @else@
-        @if (!nu.mine.mosher.Util.privatizeParents(person, auth))@
-            <a href="@person.getUuid()@">@include personLinkName(person)@</a><!--
-            -->@if (nu.mine.mosher.Util.hasIssue(person))@<!--
-                --><span class="hasIssue" /><!--
-            -->@end if@
+@template linkDown(rel, auth)@
+@if (net.sourceforge.templat.Util.isNull(rel.getOther()))@
+    [unknown]
+@else@
+    @if (!nu.mine.mosher.Util.privatize(rel, auth))@
+        @if (rel.getRelation().isPresent())@
+            (@rel.getRelation().get()@)
         @end if@
+        <a href="@rel.getOther().getUuid()@"><span class="name">@include personLinkName(rel.getOther())@</span></a><!--
+        -->@if (nu.mine.mosher.Util.hasIssue(rel.getOther()))@<!--
+            --><span class="hasIssue"></span><!--
+        -->@end if@
     @end if@
-</span>
+@end if@

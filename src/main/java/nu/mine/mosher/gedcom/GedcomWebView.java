@@ -131,7 +131,8 @@ public class GedcomWebView {
             res.status(SC_NOT_FOUND);
             return "";
         }
-        final Object[] args = { people, gedcomName, 0, "../..", auth };
+        final String copyright = this.files.getCopyright(gedcomName);
+        final Object[] args = { people, gedcomName, copyright, "../..", auth };
         return render("personIndex.tat", args);
     }
 

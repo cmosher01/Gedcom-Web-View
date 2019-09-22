@@ -86,19 +86,6 @@ nav {
     text-align: right;
 }
 
-.parents {
-    display: grid;
-    grid-template-columns: 50% 50%;
-}
-
-.father {
-    text-align: left;
-}
-
-.mother {
-    text-align: right;
-}
-
 .personName {
     text-align: center;
 }
@@ -127,12 +114,9 @@ nav {
     color: var(--sol-yellow);
 }
 
-.events,
-.vitalDate,
-.vitalPlace,
-.vitalType,
-.childrenList,
-.childName {
+.events, .events > tbody > tr > td,
+.childrenList, .childrenList > tbody > tr > td,
+.parentsList, .parentsList > tbody > tr > td {
     border: none;
     padding: 0 3px 0 3px;
 }

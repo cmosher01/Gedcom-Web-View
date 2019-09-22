@@ -1,15 +1,14 @@
-@template linkUp(person, subj, auth)@
-<span class="name">
-    @if (net.sourceforge.templat.Util.isNull(person))@
-        [unknown]
-    @else@
-        @if (!nu.mine.mosher.Util.privatizeParents(subj, auth))@
-            @if (!nu.mine.mosher.Util.privatize(person, auth))@
-                <a href="@person.getUuid()@">@include personLinkName(person)@</a><!--
-                -->@if (nu.mine.mosher.Util.hasLineage(person))@<!--
-                    --><span class="hasLineage" /><!--
-                -->@end if@
-            @end if@
+@template linkUp(rel, auth)@
+@if (net.sourceforge.templat.Util.isNull(rel.getOther()))@
+    [unknown]
+@else@
+    @if (!nu.mine.mosher.Util.privatize(rel, auth))@
+        @if (rel.getRelation().isPresent())@
+            (@rel.getRelation().get()@)
         @end if@
+        <a href="@rel.getOther().getUuid()@"><span class="name">@include personLinkName(rel.getOther())@</span></a><!--
+        -->@if (nu.mine.mosher.Util.hasLineage(rel.getOther()))@<!--
+            --><span class="hasLineage"></span><!--
+        -->@end if@
     @end if@
-</span>
+@end if@

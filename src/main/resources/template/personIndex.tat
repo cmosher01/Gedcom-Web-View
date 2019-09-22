@@ -1,4 +1,4 @@
-@template personIndex(people, file, index, root, auth)@
+@template personIndex(people, file, copyright, root, auth)@
 
 @include header()@
 
@@ -15,6 +15,7 @@
             @end if@
         @end loop@
     </ul>
+    @include foot(copyright)@
 </body>
 
 @include footer()@

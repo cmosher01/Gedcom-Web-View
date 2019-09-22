@@ -16,9 +16,9 @@ import static nu.mine.mosher.logging.Jul.log;
 @SuppressWarnings("WeakerAccess")
 public class GedcomFilesHandler {
     /*
-            this is for the list of gedcom files
-            on the first page (index.tat)
-     */
+                this is for the list of gedcom files
+                on the first page (index.tat)
+         */
     @SuppressWarnings("unused")  /* used in templates */
     public static class GedcomFile {
         private final String name;
@@ -113,6 +113,15 @@ public class GedcomFilesHandler {
 
     public List<GedcomFile> getFiles() {
         return this.rFile;
+    }
+
+    public String getCopyright(String gedcomName) {
+        final Loader loader = this.mapLoader.get(gedcomName);
+        if (loader == null) {
+            log().info("Request for non-existent gedcom (all people).");
+            return "";
+        }
+        return loader.getCopyright();
     }
 
     public List<Person> getAllPeople(final String gedcomName) {

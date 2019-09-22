@@ -15,8 +15,6 @@
             @end loop@
         </dl>
     </div>
-
-    @include foot()@
 </body>
 
 @include footer()@
