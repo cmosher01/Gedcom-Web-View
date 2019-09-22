@@ -178,8 +178,17 @@ public final class Util {
         return s.replaceFirst("[.,;:]$","");
     }
 
+    private static String joinWords(final String a, final String b) {
+        if (b.isEmpty()) {
+            return a;
+        }
+        if (a.isEmpty()) {
+            return b;
+        }
+        return a + " " + b;
+    }
     public static String styleTranscripts(final Citation citation) {
-        return styleTranscript(citation.getExtraText()) + styleTranscript(citation.getSource().getText());
+        return joinWords(styleTranscript(citation.getExtraText()), styleTranscript(citation.getSource().getText()));
     }
 
     public static String styleTranscript(final String s) {
@@ -192,10 +201,10 @@ public final class Util {
         }
 
         if (looksLikeHtml(s)) {
-            return "<lb/>"+removeDoctype(s);
+            return removeDoctype(s);
         }
 
-        return "<lb/>"+filterPlainTranscript(s);
+        return filterPlainTranscript(s);
     }
 
     private static String filterPlainTranscript(final String s) {
