@@ -62,6 +62,11 @@ public class GedcomWebView {
 
         get("/login", this::logIn);
 
+        path("/persons", () -> {
+            redirect.get("", "persons/");
+            get("/:id", (req, res) -> findGedcom(res, Util.uuidFromString(req.params(":id"))));
+        });
+
         path("/:ged", () -> {
             path("/persons", () -> {
                 redirect.get("", "persons/");
@@ -76,6 +81,16 @@ public class GedcomWebView {
 //                redirect.get("/dropline.css", "/genealogy/css/dropline.css");
 //            });
         });
+    }
+
+    private String findGedcom(final Response res, final UUID uuid) {
+        final Optional<Loader> loader= this.files.findLoaderForPerson(uuid);
+        if (loader.isPresent()) {
+            res.redirect("../"+loader.get().getName() + "/persons/" + uuid);
+        } else {
+            res.status(SC_NOT_FOUND);
+        }
+        return "";
     }
 
     private String logIn(final Request req, final Response res) {
@@ -146,7 +161,7 @@ public class GedcomWebView {
 //        return this.files.getChartData(gedcomName);
 //    }
 
-    private String person(final Response res, final boolean auth, final String gedcomName, final UUID uuid) {
+    private String person(final Response res, final boolean auth, String gedcomName, final UUID uuid) {
         final Person person = this.files.getPerson(gedcomName, uuid);
         if (Objects.isNull(person) || Util.privatize(person, auth)) {
             res.status(SC_NOT_FOUND);
