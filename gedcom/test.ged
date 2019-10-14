@@ -1,0 +1,43 @@
+0 HEAD
+1 CHAR UTF-8
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 SUBM @M0@
+1 SOUR Gedcom-Lib
+1 DEST Gedcom-Lib
+0 @M0@ SUBM
+1 NAME Alice Public
+2 WWW https://github.com/cmosher01/Gedcom-Web-View
+1 LANG English
+0 @I0@ INDI
+1 REFN e8257d2c-5d74-431f-af3f-dae5ad83f760
+1 NAME Alice /Public/
+1 SEX F
+1 BIRT
+2 DATE 4 JUL 1776
+2 PLAC Philadelphia, Philadelphia, Pennsylvania, USA
+1 DEAT
+2 DATE 31 DEC 1876
+2 PLAC Anytown, USA
+2 SOUR @S0@
+3 PAGE <bibl> <author>Town of Westminster (Vermont, USA)</author>
+4 CONC , <title level="m">Westminster early vital registrations, lo
+4 CONC ose papers</title>, <citedRange>p. 4</citedRange>; digital i
+4 CONC mages, <title level="u">Vital records, early to 1857</title>
+4 CONC , FHL microfilm 29,257, DGS 4032888, item 1, images 82, 92 o
+4 CONC f 389; images 80–9 are alternate filmings of the following p
+4 CONC ages, images 90–127 appear to be the contents of a file fold
+4 CONC er of loose old papers numbered 1–96 (with some missing). </
+4 CONC bibl>
+0 @I1@ INDI
+1 REFN b6082556-e4d0-4dd2-b628-f5904d87d6e9
+1 NAME Bob /Private/
+1 SEX F
+1 BIRT
+2 DATE 1 JAN 2019
+2 PLAC Badville, USA
+0 @S0@ SOUR
+1 AUTH USA. Vermont. Westminster.
+1 TITL Westminster early vital registrations
+0 TRLR

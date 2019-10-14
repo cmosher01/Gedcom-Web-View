@@ -3,16 +3,13 @@
 <header>
     <nav>
         <div class="home">
-            @if (auth)@
-                [logged in]
-            @else@
-                {<a href="../../login">log in</a>}
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            @if (auth.signedIn())@
+                {<a onclick="signOut();">Sign out</a>}
             @end if@
             {<a href="../../">home</a>}
             {<a href="../persons/">@file@</a>}
         </div>
-
-
 
         @if (!net.sourceforge.templat.Util.isNull(otherFiles))@
             @if (!otherFiles.isEmpty())@

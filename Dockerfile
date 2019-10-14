@@ -16,6 +16,7 @@ RUN chown -R gradle: /usr/local
 COPY docker-run.sh ./
 RUN chmod a+x docker-run.sh
 ENTRYPOINT ["/home/gradle/docker-run.sh"]
+CMD ["gedcom-web-view"]
 
 COPY settings.gradle ./
 COPY build.gradle ./

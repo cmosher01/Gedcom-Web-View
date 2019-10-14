@@ -1,5 +1,8 @@
 package nu.mine.mosher.gedcom;
 
+import com.google.api.client.googleapis.auth.oauth2.*;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import nu.mine.mosher.*;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.exception.InvalidLevel;
@@ -9,8 +12,11 @@ import spark.*;
 import template.TemplAtEngine;
 
 import java.io.IOException;
+import java.nio.file.*;
+import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
 import static nu.mine.mosher.logging.Jul.log;
@@ -21,7 +27,8 @@ import static spark.Spark.*;
  * Created 2006-09-24.
  */
 public class GedcomWebView {
-    private static final Credentials.Store credentialsStore = GuestStoreImpl.instance();
+    private static final NetHttpTransport TRANSPORT = new NetHttpTransport();
+    private static final JacksonFactory JACKSON = JacksonFactory.getDefaultInstance();
 
     public static void main(final String... args) {
         Jul.setLevel(Level.INFO);
@@ -60,8 +67,6 @@ public class GedcomWebView {
 
         get("/favicon.ico", (req, res) -> null);
 
-        get("/login", this::logIn);
-
         path("/persons", () -> {
             redirect.get("", "persons/");
             get("/:id", (req, res) -> findGedcom(res, Util.uuidFromString(req.params(":id"))));
@@ -73,13 +78,6 @@ public class GedcomWebView {
                 get("/", (req, res) -> personIndex(res, auth(req), req.params(":ged")));
                 get("/:id", (req, res) -> person(res, auth(req), req.params(":ged"), Util.uuidFromString(req.params(":id"))));
             });
-            //TODO: privatize dropline chart:
-//            path("/chart", () -> {
-//                redirect.get("", "chart/");
-//                get("/", (req, res) -> personChart(auth(req), req.params(":ged")));
-//                get("/data", (req, res) -> personChartData(auth(req), req.params(":ged"), res));
-//                redirect.get("/dropline.css", "/genealogy/css/dropline.css");
-//            });
         });
     }
 
@@ -93,18 +91,46 @@ public class GedcomWebView {
         return "";
     }
 
-    private String logIn(final Request req, final Response res) {
-        if (auth(req)) {
-            res.redirect(req.headers("Referer"), SC_MOVED_TEMPORARILY);
-        } else {
-            res.status(SC_UNAUTHORIZED);
-            res.header("WWW-Authenticate", "Basic realm=\"web site\"");
+    private static RbacRole auth(final Request req) {
+        try {
+            final String idStringOrNull = req.cookie("idtoken");
+            if (idStringOrNull == null || idStringOrNull.isEmpty()) {
+                throw new GeneralSecurityException("error");
+            }
+            final GoogleIdToken idTokenOrNull = tokenVerifier().verify(idStringOrNull);
+            if (idTokenOrNull == null) {
+                throw new GeneralSecurityException("error");
+            }
+            final String email = idTokenOrNull.getPayload().getEmail();
+            return new RbacRole(true, emailIsAuthorized(email));
+        } catch (Throwable e) {
+            return new RbacRole(false, false);
         }
-        return "Unauthorized. Please quit your browser.";
     }
 
-    private static boolean auth(final Request req) {
-        return Credentials.fromSession(req, credentialsStore).valid();
+    private static GoogleIdTokenVerifier tokenVerifier() {
+        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(List.of(System.getenv("CLIENT_ID"))).build();
+    }
+
+    private static boolean emailIsAuthorized(final String email) {
+        if (Objects.isNull(email) || email.isEmpty()) {
+            return false;
+        }
+
+        final boolean authorized = emailIsInFile(email);
+        if (authorized) {
+            log().warning("Authorizing user: " + email);
+        }
+        return authorized;
+    }
+
+    private static boolean emailIsInFile(String email) {
+        try {
+            return Files.lines(Paths.get("gedcom/SERVE_PUBLIC_GED_FILES")).collect(Collectors.toSet()).contains(email);
+        } catch (final Throwable e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void backwardCompatibility(final Request req, final Response res) {
@@ -135,33 +161,25 @@ public class GedcomWebView {
         return uuidOrEmpty;
     }
 
+
+
     private String index() {
-        final Object[] args = { this.files.getFiles(), "." };
+        final Object[] args = { this.files.getFiles(), ".", System.getenv("CLIENT_ID") };
         return render("index.tat", args);
     }
 
-    private String personIndex(final Response res, final boolean auth, final String gedcomName) {
+    private String personIndex(final Response res, final RbacRole auth, final String gedcomName) {
         final List<Person> people = this.files.getAllPeople(gedcomName);
         if (Objects.isNull(people)) {
             res.status(SC_NOT_FOUND);
             return "";
         }
         final String copyright = this.files.getCopyright(gedcomName);
-        final Object[] args = { people, gedcomName, copyright, "../..", auth };
+        final Object[] args = { people, gedcomName, copyright, "../..", auth, System.getenv("CLIENT_ID") };
         return render("personIndex.tat", args);
     }
 
-//    private String personChart(final boolean auth, final String gedcomName) {
-//        final Object[] args = { gedcomName, "../.." };
-//        return render("personChart.tat", args);
-//    }
-//
-//    private String personChartData(final boolean auth, final String gedcomName, Response res) {
-//        res.type("image/svg+xml");
-//        return this.files.getChartData(gedcomName);
-//    }
-
-    private String person(final Response res, final boolean auth, String gedcomName, final UUID uuid) {
+    private String person(final Response res, final RbacRole auth, String gedcomName, final UUID uuid) {
         final Person person = this.files.getPerson(gedcomName, uuid);
         if (Objects.isNull(person) || Util.privatize(person, auth)) {
             res.status(SC_NOT_FOUND);
@@ -169,7 +187,7 @@ public class GedcomWebView {
         }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
         final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
-        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth };
+        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth, System.getenv("CLIENT_ID") };
         return render("person.tat", args);
     }
 

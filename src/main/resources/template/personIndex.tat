@@ -1,13 +1,12 @@
-@template personIndex(people, file, copyright, root, auth)@
+@template personIndex(people, file, copyright, root, auth, client_id)@
 
 @include header()@
 
-@include head(file, root)@
+@include head(file, root, client_id)@
 
 <body>
     @include nav(file, null, null, auth)@
 
-    <!-- <div class="indextab">[list] [<a href= "../chart/">chart</a>]</div> -->
     <ul class="nameList">
         @loop i : people.size()@
             @if (!nu.mine.mosher.Util.privatize(people[i], auth))@

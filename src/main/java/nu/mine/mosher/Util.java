@@ -20,9 +20,6 @@ import static nu.mine.mosher.gedcom.GedcomTag.*;
 public final class Util {
     private static final URL TEISH = initTeish();
 
-    // TODO: make this an option:
-    private static final boolean EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY = false;
-
     private static URL initTeish() {
         try {
             return new URL("https://cdn.jsdelivr.net/gh/cmosher01/teish@master/src/main/resources/teish.xslt");
@@ -484,18 +481,11 @@ public final class Util {
         return 0 < person.getFathers().size() + person.getMothers().size();
     }
 
-    public static boolean privatize(final Privatizable p, final boolean hasAuthorization) {
+    public static boolean privatize(final Privatizable p, final RbacRole role) {
         if (Objects.isNull(p)) {
             return false;
         }
-        return prv(p.isPrivate()) && !hasAuthorization;
-    }
-
-    public static boolean prv(final boolean prv) {
-        if (EXPOSE_ALL_PRIVATE_INFORMATION_PUBLICLY) {
-            return false;
-        }
-        return prv;
+        return p.isPrivate() && !role.authorized();
     }
 
     public static String getBirthdate(final Person person) {

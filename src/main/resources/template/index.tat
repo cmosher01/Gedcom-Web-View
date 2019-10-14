@@ -1,8 +1,8 @@
-@template index(rGed, root)@
+@template index(rGed, root, client_id)@
 
 @include header()@
 
-@include head(null, root)@
+@include head(null, root, client_id)@
 
 <body>
     <div class="homePage">

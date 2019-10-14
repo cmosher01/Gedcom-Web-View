@@ -1,8 +1,37 @@
-@template head(title, root)@
+@template head(title, root, client_id)@
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
     <title>@title@</title>
+
     <link rel="stylesheet" href="@root@/css/layout.css">
+
+    <meta name="google-signin-client_id" content="@client_id@">
+    <meta name="google-signin-scope" content="profile email">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@@beta/dist/js.cookie.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            var c = Cookies.get('idtoken');
+            if (c===undefined) {
+                console.log("signing in google...");
+                document.cookie = "idtoken="+googleUser.getAuthResponse().id_token+" ; path=/";
+                console.log("signed in google.");
+                window.location.reload(true);
+            }
+        }
+        function signOut() {
+            console.log("signing out google...");
+            gapi.auth2.getAuthInstance().signOut();
+            console.log("signed out google.");
+
+            console.log("deleting cookie...");
+            document.cookie = "idtoken= ; path=/ ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+            console.log("deleted cookie.");
+
+            window.location.reload(true);
+        }
+    </script>
 </head>
