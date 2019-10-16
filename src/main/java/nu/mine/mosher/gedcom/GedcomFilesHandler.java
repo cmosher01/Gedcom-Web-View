@@ -6,6 +6,7 @@ import nu.mine.mosher.gedcom.exception.InvalidLevel;
 import nu.mine.mosher.gedcom.model.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.text.Collator;
 import java.util.*;
 
@@ -169,12 +170,31 @@ public class GedcomFilesHandler {
      * @throws IOException if no files found
      */
     private static List<File> getGedcomFiles() throws IOException {
-        final File dirGedcom = new File(GEDCOM_DIR_NAME).getCanonicalFile();
+        final Path pathGedcom = Paths.get(GEDCOM_DIR_NAME);
+        int timesChecked = 0;
+        while (!pathGedcom.toFile().exists()) {
+            if (++timesChecked < 10) {
+                log().warning("Cannot find './gedcom' directory. Will try again in 3 seconds...");
+                try {
+                    Thread.sleep(3000);
+                } catch (final InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                throw new IOException("Cannot find directory " + pathGedcom.toFile().getCanonicalPath());
+            }
+        }
+        // wait a little longer, just for good measure
+        try {
+            Thread.sleep(2000);
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
 
-        final File[] rFile = dirGedcom.listFiles(file -> file.isFile() && file.canRead() && (file.getName().endsWith(".ged") || file.getName().endsWith(".GED")));
+        final File[] rFile = pathGedcom.toFile().listFiles(file -> file.isFile() && file.canRead() && (file.getName().endsWith(".ged") || file.getName().endsWith(".GED")));
 
         if (rFile == null || rFile.length == 0) {
-            throw new IOException("Cannot find any readable files in " + dirGedcom);
+            throw new IOException("Cannot find any readable files in " + pathGedcom.toFile().getCanonicalPath());
         }
 
         return List.of(rFile);
