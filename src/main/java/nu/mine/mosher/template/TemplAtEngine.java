@@ -1,4 +1,4 @@
-package template;
+package nu.mine.mosher.template;
 
 import net.sourceforge.templat.Templat;
 import spark.*;
