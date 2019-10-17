@@ -27,6 +27,10 @@ import static spark.Spark.*;
  * Created 2006-09-24.
  */
 public class GedcomWebView {
+    private static String googleClientID() {
+        return System.getenv("CLIENT_ID");
+    }
+
     private static final NetHttpTransport TRANSPORT = new NetHttpTransport();
     private static final JacksonFactory JACKSON = JacksonFactory.getDefaultInstance();
 
@@ -109,7 +113,7 @@ public class GedcomWebView {
     }
 
     private static GoogleIdTokenVerifier tokenVerifier() {
-        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(List.of(System.getenv("CLIENT_ID"))).build();
+        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(List.of(googleClientID())).build();
     }
 
     private static boolean emailIsAuthorized(final String email) {
@@ -164,7 +168,7 @@ public class GedcomWebView {
 
 
     private String index() {
-        final Object[] args = { this.files.getFiles(), ".", System.getenv("CLIENT_ID") };
+        final Object[] args = { this.files.getFiles(), ".", googleClientID()};
         return render("index.tat", args);
     }
 
@@ -175,7 +179,7 @@ public class GedcomWebView {
             return "";
         }
         final String copyright = this.files.getCopyright(gedcomName);
-        final Object[] args = { people, gedcomName, copyright, "../..", auth, System.getenv("CLIENT_ID") };
+        final Object[] args = { people, gedcomName, copyright, "../..", auth, googleClientID()};
         return render("personIndex.tat", args);
     }
 
@@ -187,7 +191,7 @@ public class GedcomWebView {
         }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
         final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
-        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth, System.getenv("CLIENT_ID") };
+        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth, googleClientID()};
         return render("person.tat", args);
     }
 

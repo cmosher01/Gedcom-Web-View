@@ -17,9 +17,9 @@ import static nu.mine.mosher.logging.Jul.log;
 @SuppressWarnings("WeakerAccess")
 public class GedcomFilesHandler {
     /*
-                this is for the list of gedcom files
-                on the first page (index.tat)
-         */
+     *  This is for the list of gedcom files
+     *  on the first page (index.tat)
+     */
     @SuppressWarnings("unused")  /* used in templates */
     public static class GedcomFile {
         private final String name;
@@ -48,7 +48,6 @@ public class GedcomFilesHandler {
 
     private final List<GedcomFile> rFile;
     private final Map<String, Loader> mapLoader = new TreeMap<>();
-//    private final Map<String, String> mapChart = new TreeMap<>();
     private final Map<UUID, Loader> mapMasterUuidToLoader = new HashMap<>(1024);
     private final Map<UUID, Set<Loader>> mapPersonCrossRef = new HashMap<>(32);
 
@@ -64,31 +63,12 @@ public class GedcomFilesHandler {
             files.add(new GedcomFile(loader.getName(), loader.getDescription()));
 
             buildPersonCrossReferences(loader);
-
-//            try {
-//                this.mapChart.put(loader.getName(), docToString(Dropline.build(gt)));
-//            } catch (final Exception e) {
-//                e.printStackTrace();
-//            }
         }
 
         final Collator collator = Util.createCollator();
         files.sort((f1, f2) -> collator.compare(f1.getName(), f2.getName()));
         this.rFile = Collections.unmodifiableList(files);
     }
-
-//    private String docToString(final Document doc) throws TransformerException {
-//        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//
-//        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
-//        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-//        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//
-//        final StringWriter sw = new StringWriter();
-//        transformer.transform(new DOMSource(doc), new StreamResult(sw));
-//        return sw.toString();
-//    }
 
     private GedcomTree parseGedcom(final File fileGedcom) throws IOException, InvalidLevel
     {
@@ -103,14 +83,6 @@ public class GedcomFilesHandler {
         }
         return Optional.empty();
     }
-
-//    public Optional<Person> findPerson(final UUID uuidPerson) {
-//        final Optional<Loader> loader = findLoaderForPerson(uuidPerson);
-//        if (loader.isPresent()) {
-//            return ofNullable(loader.get().lookUpPerson(uuidPerson));
-//        }
-//        return Optional.empty();
-//    }
 
     public List<GedcomFile> getFiles() {
         return this.rFile;
@@ -155,15 +127,8 @@ public class GedcomFilesHandler {
         return otherFiles;
     }
 
-//    public String getChartData(final String gedcomName) {
-//        return this.mapChart.get(gedcomName);
-//    }
-
-
-
-
     /**
-     * Gets all readable *.ged files in the "gedcom" sub-directory
+     * Gets all readable *.ged files in the "gedcom" sub-directory (non-recursively)
      * of the current default directory.
      *
      * @return list of files

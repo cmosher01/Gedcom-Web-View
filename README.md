@@ -34,3 +34,11 @@ add their email address to a file named `SERVE_PUBLIC_GED_FILES` in the same dir
 ```shell script
 echo "uncle.vito@gmail.com" >SERVE_PUBLIC_GED_FILES
 ```
+
+Set up [Google OAuth 2.0 web application credentials](https://console.developers.google.com/apis/credentials)
+for your web site, and add your web URLs as Authorized JavaScript origins and redirect URIs. Pass the Client
+ID in the `CLIENT_ID` environment variable. For example:
+
+```shell script
+CLIENT_ID=1234567890-afnrivao9wr89y3jnwr.apps.googleusercontent.com /opt/gedcom-web-view-1.2.0/bin/gedcom-web-view
+```
