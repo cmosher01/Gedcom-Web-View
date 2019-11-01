@@ -113,7 +113,7 @@ public class GedcomWebView {
     }
 
     private static GoogleIdTokenVerifier tokenVerifier() {
-        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(List.of(googleClientID())).build();
+        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(Collections.singleton(googleClientID())).build();
     }
 
     private static boolean emailIsAuthorized(final String email) {
@@ -168,36 +168,33 @@ public class GedcomWebView {
 
 
     private String index() {
-        final Object[] args = { this.files.getFiles(), ".", googleClientID()};
-        return render("index.tat", args);
+        return render("index.tat", this.files.getFiles(), ".", googleClientID());
     }
 
     private String personIndex(final Response res, final RbacRole auth, final String gedcomName) {
         final List<Person> people = this.files.getAllPeople(gedcomName);
-        if (Objects.isNull(people)) {
+        if (people.isEmpty()) {
             res.status(SC_NOT_FOUND);
             return "";
         }
         final String copyright = this.files.getCopyright(gedcomName);
-        final Object[] args = { people, gedcomName, copyright, "../..", auth, googleClientID()};
-        return render("personIndex.tat", args);
+        return render("personIndex.tat", people, gedcomName, copyright, "../..", auth, googleClientID());
     }
 
     private String person(final Response res, final RbacRole auth, String gedcomName, final UUID uuid) {
-        final Person person = this.files.getPerson(gedcomName, uuid);
-        if (Objects.isNull(person) || Util.privatize(person, auth)) {
+        final Optional<Person> person = this.files.getPerson(gedcomName, uuid);
+        if (!person.isPresent() || Util.privatize(person.get(), auth)) {
             res.status(SC_NOT_FOUND);
             return "";
         }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
-        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person);
-        final Object[] args = { person, gedcomName, otherFiles, footnotes, "../..", auth, googleClientID()};
-        return render("person.tat", args);
+        final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person.get());
+        return render("person.tat", person, gedcomName, otherFiles, footnotes, "../..", auth, googleClientID());
     }
 
 
 
-    private static String render(final String view, final Object[] args) {
+    private static String render(final String view, final Object... args) {
         return new TemplAtEngine().render(new ModelAndView(args, view));
     }
 }

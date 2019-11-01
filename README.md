@@ -10,7 +10,7 @@ Copyright © 2004–2019, Christopher Alan Mosher, Shelton, Connecticut, USA, <c
 
 ## Usage
 
-Requires Java JDK version 12 installed. Build and install manually.
+Requires Java JDK version 8 (or higher) installed. Build and install manually:
 
 ```shell script
 ./gradlew build

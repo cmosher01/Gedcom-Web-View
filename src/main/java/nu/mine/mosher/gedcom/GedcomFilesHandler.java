@@ -101,18 +101,18 @@ public class GedcomFilesHandler {
         final Loader loader = this.mapLoader.get(gedcomName);
         if (loader == null) {
             log().info("Request for non-existent gedcom (all people).");
-            return null;
+            return Collections.emptyList();
         }
         return loader.getAllPeople();
     }
 
-    public Person getPerson(final String gedcomName, final UUID uuid) {
+    public Optional<Person> getPerson(final String gedcomName, final UUID uuid) {
         final Loader loader = this.mapLoader.get(gedcomName);
         if (loader == null) {
             log().info("Request for non-existent gedcom (person).");
-            return null;
+            return Optional.empty();
         }
-        return loader.lookUpPerson(uuid);
+        return Optional.ofNullable(loader.lookUpPerson(uuid));
     }
 
     public List<String> getXrefs(final String gedcomName, final UUID uuid) {
@@ -162,7 +162,7 @@ public class GedcomFilesHandler {
             throw new IOException("Cannot find any readable files in " + pathGedcom.toFile().getCanonicalPath());
         }
 
-        return List.of(rFile);
+        return Arrays.asList(rFile);
     }
 
     private void buildPersonCrossReferences(final Loader loader) {
