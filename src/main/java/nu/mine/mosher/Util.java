@@ -22,7 +22,7 @@ public final class Util {
 
     private static URL initTeish() {
         try {
-            return new URL("https://cdn.jsdelivr.net/gh/cmosher01/teish@master/src/main/resources/teish.xslt");
+            return new URL("https://raw.githack.com/cmosher01/Tei-Server/master/src/main/resources/teish.xslt");
         } catch (final Throwable e) {
             throw new IllegalStateException(e);
         }
