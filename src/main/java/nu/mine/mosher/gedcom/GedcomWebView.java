@@ -106,8 +106,11 @@ public class GedcomWebView {
                 throw new GeneralSecurityException("error");
             }
             final String email = idTokenOrNull.getPayload().getEmail();
+            log().info("authorized: "+email);
             return new RbacRole(true, emailIsAuthorized(email));
         } catch (Throwable e) {
+            log().info("authorized: "+e.getMessage());
+            log().throwing("GedcomWebView", "auth", e);
             return new RbacRole(false, false);
         }
     }

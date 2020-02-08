@@ -4,9 +4,7 @@
     <nav>
         <div class="home">
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            @if (auth.signedIn())@
-                {<a onclick="signOut();">Sign out</a>}
-            @end if@
+            {<a onclick="signOut();">Sign out</a>}
             {<a href="../../">home</a>}
             {<a href="../persons/">@file@</a>}
         </div>
