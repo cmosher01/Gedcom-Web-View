@@ -35,7 +35,7 @@ public class GedcomWebView {
     private static final JacksonFactory JACKSON = JacksonFactory.getDefaultInstance();
 
     public static void main(final String... args) {
-        Jul.setLevel(Level.INFO);
+        Jul.setLevel(Level.FINER);
         log().entering("Main", "main");
 
         try {
@@ -106,6 +106,9 @@ public class GedcomWebView {
                 throw new GeneralSecurityException("error");
             }
             final String email = idTokenOrNull.getPayload().getEmail();
+            if (email.equals("error")) {
+                throw new GeneralSecurityException("error");
+            }
             log().info("authorized: "+email);
             return new RbacRole(true, emailIsAuthorized(email));
         } catch (Throwable e) {
@@ -135,7 +138,7 @@ public class GedcomWebView {
         try {
             return Files.lines(Paths.get("gedcom/SERVE_PUBLIC_GED_FILES")).collect(Collectors.toSet()).contains(email);
         } catch (final Throwable e) {
-            e.printStackTrace();
+            log().throwing("GedcomWebView", "emailIsInFile", e);
             return false;
         }
     }
