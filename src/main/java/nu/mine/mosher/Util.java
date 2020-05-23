@@ -2,10 +2,14 @@ package nu.mine.mosher;
 
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.*;
-import nu.mine.mosher.xml.SimpleXml;
-import org.xml.sax.SAXParseException;
+import nu.mine.mosher.gedcom.model.Source;
+import org.w3c.dom.Document;
+import org.xml.sax.*;
 
-import javax.xml.transform.TransformerException;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +26,7 @@ public final class Util {
 
     private static URL initTeish() {
         try {
-            return new URL("https://raw.githack.com/cmosher01/Tei-Server/master/src/main/resources/teish.xslt");
+            return Util.class.getResource("teish.xslt");
         } catch (final Throwable e) {
             throw new IllegalStateException(e);
         }
@@ -363,7 +367,7 @@ public final class Util {
 
 
 
-    public static String teiStyle(final String tei) throws SAXParseException, IOException, TransformerException {
+    public static String teiStyle(final String tei) throws SAXException, IOException, TransformerException, ParserConfigurationException {
         if (tei.startsWith("<bibl")) {
             return teiStyle(wrapTeiBibl(filterBibl(tei)));
         }
@@ -373,7 +377,9 @@ public final class Util {
         if (!tei.startsWith("<?xml")) {
             return tei;
         }
-        return removeDoctype(new SimpleXml(tei).transform(readFromUrl(TEISH)));
+
+        // TODO: extract tei processor from Tei-Server into a library, and use that instead of XSTL here:
+        return removeDoctype(transform(tei, new StringReader(readFromUrl(TEISH))));
     }
 
     /* kludge to remove leading space on citation */
@@ -496,5 +502,21 @@ public final class Util {
             }
         }
         return Util.eventDate(birth);
+    }
+
+    private static String transform(final String xml, final Reader xslt) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        factory.setNamespaceAware(true);
+        //factory.setValidating(true);
+
+        final InputStream streamXml = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        final Document document = factory.newDocumentBuilder().parse(streamXml);
+
+        final Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(xslt));
+
+        final StringWriter out = new StringWriter(1024);
+        transformer.transform(new DOMSource(document), new StreamResult(out));
+        return out.toString();
     }
 }

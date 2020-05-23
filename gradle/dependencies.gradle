@@ -6,9 +6,10 @@ repositories {
 
 dependencies {
     implementation group: 'nu.mine.mosher.gedcom', name: 'gedcom-lib', version: 'latest.integration'
-    implementation group: 'nu.mine.mosher.xml', name: 'SimpleXml', version: 'latest.integration'
     implementation group: 'net.sourceforge.templat', name: 'templat', version:'latest.integration'
-    implementation group: 'org.slf4j', name: 'slf4j-jdk14', version: 'latest.release'
+
     implementation group: 'com.google.api-client', name: 'google-api-client', version: 'latest.release'
     implementation group: 'com.sparkjava', name: 'spark-core', version: 'latest.release'
+    implementation group: 'net.sf.saxon', name: 'Saxon-HE', version: 'latest.release'
+    implementation group: 'org.slf4j', name: 'slf4j-jdk14', version: 'latest.release'
 }
