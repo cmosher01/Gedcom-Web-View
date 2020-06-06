@@ -1,4 +1,4 @@
-@template person(person, file, otherFiles, footnotes, root, auth, client_id)@
+@template person(person, file, otherFiles, footnotes, root, auth, client_id, copyright)@
 
 @include header()@
 
@@ -46,8 +46,9 @@
             </tbody>
             </table>
         </section>
+
         <header>
-            <hr class="sim">
+            <hr>
             <h1 class="personName">@nu.mine.mosher.Util.esc(person.toString())@</h1>
         </header>
 
@@ -57,6 +58,8 @@
 
         @include footnotes(footnotes)@
     </article>
+
+    @include foot(copyright)@
 </body>
 
 @include footer()@

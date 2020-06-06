@@ -195,7 +195,8 @@ public class GedcomWebView {
         }
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
         final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person.get());
-        return render("person.tat", person.get(), gedcomName, otherFiles, footnotes, "../..", auth, googleClientID());
+        final String copyright = this.files.getCopyright(gedcomName);
+        return render("person.tat", person.get(), gedcomName, otherFiles, footnotes, "../..", auth, googleClientID(), copyright);
     }
 
 

@@ -7,6 +7,7 @@
 <body>
     @include nav(file, null, null, auth)@
 
+    <hr>
     <ul class="nameList">
         @loop i : people.size()@
             @if (!nu.mine.mosher.Util.privatize(people[i], auth))@
@@ -14,6 +15,7 @@
             @end if@
         @end loop@
     </ul>
+
     @include foot(copyright)@
 </body>
 

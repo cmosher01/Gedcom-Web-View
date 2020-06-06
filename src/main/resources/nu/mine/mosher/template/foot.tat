@@ -1,7 +1,7 @@
 @template foot(copyright)@
 
 <footer>
-    <hr class="sim">
+    <hr>
     <div class="copyright">
         @copyright@
     </div>

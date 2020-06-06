@@ -1,6 +1,6 @@
 @template events(events, footnotes, auth)@
 
 <section>
-    <hr class="sec">
+    <hr>
     @include eventsSelf(events, footnotes, auth)@
 </section>
