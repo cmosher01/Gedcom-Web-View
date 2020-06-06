@@ -4,7 +4,7 @@
 @import url("https://mosher.mine.nu/tei/teish.css");
 
 /* General */
-header, article, section, footer {
+header, section, footer {
     margin: 2ex 2rem 2ex 2rem;
 }
 
