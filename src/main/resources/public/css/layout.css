@@ -66,6 +66,10 @@ dt {
     list-style-type: none;
 }
 
+.nameList > li {
+    text-indent: -1em;
+    padding-left: 1em;
+}
 
 
 /* layout Person page */
