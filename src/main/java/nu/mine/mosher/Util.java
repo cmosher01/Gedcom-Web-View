@@ -3,7 +3,7 @@ package nu.mine.mosher;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.gedcom.model.Source;
-import org.w3c.dom.Document;
+import org.w3c.dom.*;
 import org.xml.sax.*;
 
 import javax.xml.parsers.*;
@@ -383,8 +383,51 @@ public final class Util {
     }
 
     /* kludge to remove leading space on citation */
-    private static String filterBibl(final String bibl) {
-        return bibl.replaceFirst("<bibl>\\s+", "<bibl>");
+    private static String filterBibl(final String bibl) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final InputStream streamXml = new ByteArrayInputStream(bibl.getBytes(StandardCharsets.UTF_8));
+        final Document document = factory.newDocumentBuilder().parse(streamXml);
+
+        final NodeList titles = document.getElementsByTagName("title");
+
+        for (int i = 0; i < titles.getLength(); ++i) {
+            final Node node = titles.item(i);
+            if (node instanceof Element) {
+                final String level = ((Element)node).getAttribute("level");
+                if (level.equalsIgnoreCase("u") || level.equalsIgnoreCase("a")) {
+                    {
+                        final Node before = node.getPreviousSibling();
+                        if (Objects.isNull(before) || !(before instanceof Text)) {
+                            node.getParentNode().insertBefore(document.createTextNode("\u201C"), node);
+                        } else {
+                            final String t = ((Text)before).getWholeText();
+                            if (!(t.endsWith("\u201C") || t.endsWith("\""))) {
+                                node.getParentNode().insertBefore(document.createTextNode("\u201C"), node);
+                            }
+                        }
+                    }
+
+                    {
+                        final Node after = node.getNextSibling();
+                        if (Objects.isNull(after) || !(after instanceof Text)) {
+                            node.getParentNode().appendChild(document.createTextNode("\u201D"));
+                        } else {
+                            final String t = ((Text)after).getWholeText();
+                            if (!(t.startsWith("\u201D") || t.startsWith("\""))) {
+                                node.getParentNode().insertBefore(document.createTextNode("\u201D"), after);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, Boolean.TRUE.toString());
+        final StringWriter out = new StringWriter(1024);
+        transformer.transform(new DOMSource(document), new StreamResult(out));
+
+        return out.toString().replaceFirst("<bibl>\\s+", "<bibl>");
     }
 
     private static String removeDoctype(final String html) {
