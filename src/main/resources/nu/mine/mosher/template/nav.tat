@@ -3,7 +3,7 @@
 <header>
     <nav>
         <div class="home">
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <div class="g-signin2" data-onsuccess="onSignIn" style="float:left;margin-right:0.5em;"></div>
             {<a onclick="signOut();">Sign out</a>}
             {<a href="../../">home</a>}
             {<a href="../persons/">@file@</a>}
