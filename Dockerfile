@@ -1,4 +1,4 @@
-FROM amazoncorretto:8 AS build
+FROM amazoncorretto:11 AS build
 
 MAINTAINER Christopher A. Mosher <cmosher01@gmail.com>
 
@@ -20,7 +20,7 @@ RUN ./gradlew build
 
 
 
-FROM amazoncorretto:8
+FROM amazoncorretto:11
 
 USER root
 ENV HOME /root
