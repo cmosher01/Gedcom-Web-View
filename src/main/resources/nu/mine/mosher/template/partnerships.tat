@@ -3,7 +3,7 @@
     @loop iPartnership : rPartnership.size()@
         @if (!nu.mine.mosher.Util.privatize(rPartnership[iPartnership], auth))@
             <section class="partnership">
-                <hr>
+                <hr/>
                 <div class="partner">
                     <span class="relation">partnership:</span>
 

@@ -1,5 +1,4 @@
-@template attachments(us)@
-
+@template uriLinks(us)@
 @loop i : nu.mine.mosher.Util.size(us)@
-    <a href="@us[i].toASCIIString()@">&#x1f517;</a>
+    <a href="@nu.mine.mosher.Util.esc(us[i].toASCIIString())@">&#x1f517;</a>
 @end loop@

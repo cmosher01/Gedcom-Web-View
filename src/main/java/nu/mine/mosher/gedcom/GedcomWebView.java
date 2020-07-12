@@ -67,7 +67,7 @@ public class GedcomWebView {
         before(this::backwardCompatibility);
 
         redirect.get("", "/");
-        get("/", (req, res) -> index());
+        get("/", (req, res) -> index(res));
 
         get("/favicon.ico", (req, res) -> null);
 
@@ -173,8 +173,9 @@ public class GedcomWebView {
 
 
 
-    private String index() {
-        return render("index.tat", this.files.getFiles(), ".", googleClientID());
+    private String index(Response res) {
+        res.type("application/xhtml+xml; charset=utf-8");
+        return render("index.tat", this.files.getFiles(), ".", googleClientID()).trim();
     }
 
     private String personIndex(final Response res, final RbacRole auth, final String gedcomName) {
@@ -183,8 +184,9 @@ public class GedcomWebView {
             res.status(SC_NOT_FOUND);
             return "";
         }
+        res.type("application/xhtml+xml; charset=utf-8");
         final String copyright = this.files.getCopyright(gedcomName);
-        return render("personIndex.tat", people, gedcomName, copyright, "../..", auth, googleClientID());
+        return render("personIndex.tat", people, gedcomName, copyright, "../..", auth, googleClientID()).trim();
     }
 
     private String person(final Response res, final RbacRole auth, String gedcomName, final UUID uuid) {
@@ -193,10 +195,11 @@ public class GedcomWebView {
             res.status(SC_NOT_FOUND);
             return "";
         }
+        res.type("application/xhtml+xml; charset=utf-8");
         final List<String> otherFiles = this.files.getXrefs(gedcomName, uuid);
         final NoteList footnotes = GedcomFilesHandler.getFootnotesFor(person.get());
         final String copyright = this.files.getCopyright(gedcomName);
-        return render("person.tat", person.get(), gedcomName, otherFiles, footnotes, "../..", auth, googleClientID(), copyright);
+        return render("person.tat", person.get(), gedcomName, otherFiles, footnotes, "../..", auth, googleClientID(), copyright).trim();
     }
 
 

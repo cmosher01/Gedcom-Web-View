@@ -3,6 +3,7 @@ package nu.mine.mosher;
 import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.gedcom.model.Source;
+import nu.mine.mosher.xml.TeiToXhtml5;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -11,7 +12,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.*;
 import java.io.*;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
@@ -22,16 +23,6 @@ import static nu.mine.mosher.gedcom.GedcomTag.*;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
-    private static final URL TEISH = initTeish();
-
-    private static URL initTeish() {
-        try {
-            return Util.class.getResource("teish.xslt");
-        } catch (final Throwable e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
     private Util() {
         throw new IllegalStateException();
     }
@@ -378,8 +369,20 @@ public final class Util {
             return tei;
         }
 
-        // TODO: extract tei processor from Tei-Server into a library, and use that instead of XSTL here:
-        return removeDoctype(transform(tei, new StringReader(readFromUrl(TEISH))));
+        return putTeiThroughPipeline(tei);
+    }
+
+    private static String putTeiThroughPipeline(final String tei) throws IOException, TransformerException, ParserConfigurationException, SAXException {
+        final ByteArrayOutputStream result = new ByteArrayOutputStream(2048);
+        final BufferedInputStream inXml = new BufferedInputStream(new ByteArrayInputStream(tei.getBytes(StandardCharsets.UTF_8)));
+        final BufferedOutputStream outXhtml5 = new BufferedOutputStream(result);
+        TeiToXhtml5.transform(inXml, outXhtml5, false);
+        outXhtml5.close();
+
+        String xhtml5 = result.toString(StandardCharsets.UTF_8.name());
+        // kludge to remove XHTML namespace:
+        xhtml5 = xhtml5.replace("xmlns=\"http://www.w3.org/1999/xhtml\"", "");
+        return xhtml5;
     }
 
     /* kludge to remove leading space on citation */
@@ -436,7 +439,6 @@ public final class Util {
 
     private static String wrapTeiText(final String text) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-            //"<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>" +
             "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">" +
             "<teiHeader>" +
             "<fileDesc>" +
@@ -468,7 +470,7 @@ public final class Util {
 
     public static String getAttLink(final MultimediaReference att) {
         if (att.wasUri()) {
-            return att.toString();
+            return esc(att.toString());
         }
 
         return replaceFilePathPrefix(standardizePathCharacters(att.toString()));
@@ -514,7 +516,7 @@ public final class Util {
             throw new IllegalStateException("invalid _APID");
         }
         //noinspection OptionalGetWithoutIsPresent
-        return apid.get().getLink().get().toASCIIString();
+        return esc(apid.get().getLink().get().toASCIIString());
     }
 
     public static boolean hasIssue(final Person person) {

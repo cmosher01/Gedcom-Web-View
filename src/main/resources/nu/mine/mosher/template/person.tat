@@ -9,7 +9,7 @@
 
     <article class="person">
         <section class="parents">
-            <hr>
+            <hr/>
             <table class="parentsList">
                 <tbody>
                     @loop iFather : person.getFathers().size()@
@@ -49,7 +49,7 @@
         </section>
 
         <header>
-            <hr>
+            <hr/>
             <h1 class="personName">@nu.mine.mosher.Util.esc(person.toString())@</h1>
         </header>
 

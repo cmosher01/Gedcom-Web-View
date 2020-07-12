@@ -1,0 +1,47 @@
+@template googleStylesheets()@
+<style>
+.abcRioButton {
+    border: 1px solid var(--sol-base00);
+    background-color:#fff;
+    background-image:none;
+    color:inherit;
+    cursor:pointer;
+    outline:none;
+    overflow:hidden;
+    position:relative;
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+    width:auto;
+}
+.abcRioButtonLightBlue {
+    background-color:#fff;
+    color:inherit;
+}
+.abcRioButtonIcon {
+    float:left;
+    position:relative;
+    top: 1px;
+    left: 5px;
+}
+.abcRioButtonSvg {
+    display:block;
+}
+.abcRioButtonContents {
+    position:relative;
+    bottom: 1px;
+}
+.abcRioButtonContents::before {
+    content: "{";
+}
+.abcRioButtonContents::after {
+    content: "}";
+}
+.abcRioButtonContents[style] {
+    font-size: inherit !important;
+}
+.abcRioButtonContentWrapper {
+    height:100%;
+    width:100%;
+}
+</style>

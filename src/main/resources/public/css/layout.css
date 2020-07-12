@@ -1,7 +1,7 @@
 @import url("https://mosher.mine.nu/uniwebfonts/css/reset.css");
 @import url("https://mosher.mine.nu/uniwebfonts/css/solarized.css");
 @import url("https://mosher.mine.nu/uniwebfonts/css/fonts.css");
-@import url("https://mosher.mine.nu/tei/teish.css");
+@import url("https://mosher.mine.nu/tei/tei.css");
 
 /* General */
 header, section, footer {
@@ -225,3 +225,10 @@ div.source, div.citation, div.transcript {
 table, td, th {
     border: 1px solid var(--sol-base1);
 }
+
+
+
+
+
+
+
