@@ -4,6 +4,8 @@ import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.gedcom.model.Source;
 import nu.mine.mosher.xml.TeiToXhtml5;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -125,7 +127,7 @@ public final class Util {
 
         final String author = noPunc(src.getAuthor());
         if (is(author)) {
-            sb.append(author);
+            sb.append(esc(author));
         }
 
         final String title = noPunc(filterTitle(src.getTitle()));
@@ -133,7 +135,7 @@ public final class Util {
             sb.append(", ");
         }
         if (is(title)) {
-            sb.append("<i>").append(title).append("</i>");
+            sb.append("<i>").append(esc(title)).append("</i>");
         }
 
         final String publ = links(noPunc(parsePublication(src.getPublication())));
@@ -193,7 +195,7 @@ public final class Util {
         }
 
         if (looksLikeHtml(s)) {
-            return removeDoctype(s);
+            return htmlToXhtml("   <!doctype  html>   \n   "+s);
         }
 
         return filterPlainTranscript(s);
@@ -216,7 +218,8 @@ public final class Util {
             low.contains("<span") ||
             low.contains("<i>") ||
             low.contains("<u>") ||
-            low.contains("href");
+            low.contains("<hr") ||
+            low.contains("href=");
     }
 
     private static boolean looksLikeTei(final String s) {
@@ -228,9 +231,9 @@ public final class Util {
     }
 
     public static String links(final String s) {
-        return s
-            .replaceAll("\\b(\\w+?://\\S+?)(\\s|[]<>{}\"|\\\\^`]|$)", "<a href=\"$1\">$1</a>$2")
-            .replaceAll("([^/.]www\\.[a-zA-Z]\\S*?)(\\s|[]<>{}\"|\\\\^`]|$)", "<a href=\"http://$1\">$1</a>$2");
+        return esc(s)
+            .replaceAll("\\b(\\w+?://\\S+?)(\\s|[<>{}\"|\\\\^`\\]]|$)", "<a href=\"$1\">$1</a>$2")
+            .replaceAll("([^/.]www\\.[a-zA-Z]\\S*?)(\\s|[<>{}\"|\\\\^`\\]]|$)", "<a href=\"http://$1\">$1</a>$2");
     }
 
     public static String uuid() {
@@ -246,8 +249,8 @@ public final class Util {
 
     private static String markupUnknownDateFields(String s) {
         return s
-            .replace("XXXX", "<span class=\"placeholder\">XXXX</span>")
-            .replace("XX", "<span class=\"placeholder\">XX</span>");
+            .replace("XXXX", "<span class=\"placeholder\">\u00d7\u00d7\u00d7\u00d7</span>")
+            .replace("XX", "<span class=\"placeholder\">\u00d7\u00d7</span>");
     }
 
     public static String eventDate(final Event e) {
@@ -385,7 +388,10 @@ public final class Util {
         return xhtml5;
     }
 
-    /* kludge to remove leading space on citation */
+    /*
+        Kludge to remove leading space on citation, and add missing double quotes around unpublished titles.
+        this is far from perfect. TODO find a better solution
+    */
     private static String filterBibl(final String bibl) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final InputStream streamXml = new ByteArrayInputStream(bibl.getBytes(StandardCharsets.UTF_8));
@@ -433,10 +439,6 @@ public final class Util {
         return out.toString().replaceFirst("<bibl>\\s+", "<bibl>");
     }
 
-    private static String removeDoctype(final String html) {
-        return html.replaceFirst("(?is)^\\s*<!doctype.+?>\\s*", "");
-    }
-
     private static String wrapTeiText(final String text) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<TEI xml:lang=\"en\" xmlns=\"http://www.tei-c.org/ns/1.0\">" +
@@ -453,19 +455,13 @@ public final class Util {
 
     private static String wrapTeiBibl(final String bibl) {
         return wrapTeiText(
-            "<text xml:lang=\"en\">" +
+            "<text>" +
             "<body>" +
             "<ab>" +
             bibl +
             "</ab>" +
             "</body>" +
             "</text>");
-    }
-
-    public static String readFromUrl(final URL source) throws IOException {
-        try (final BufferedReader in = new BufferedReader(new InputStreamReader(source.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
-            return in.lines().collect(Collectors.joining("\n"));
-        }
     }
 
     public static String getAttLink(final MultimediaReference att) {
@@ -549,19 +545,39 @@ public final class Util {
         return Util.eventDate(birth);
     }
 
-    private static String transform(final String xml, final Reader xslt) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    private static String htmlToXhtml(final String html) {
+        final org.jsoup.nodes.Document document = Jsoup.parseBodyFragment(html);
+        document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        document.outputSettings().charset(StandardCharsets.UTF_8);
 
-        factory.setNamespaceAware(true);
-        //factory.setValidating(true);
+        final List<org.jsoup.nodes.Node> garbage = new ArrayList<>(4);
 
-        final InputStream streamXml = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
-        final Document document = factory.newDocumentBuilder().parse(streamXml);
+        for (final org.jsoup.nodes.Node node : document.childNodes()) {
+            if (!(node instanceof org.jsoup.nodes.Element)) {
+                garbage.add(node);
+            } else if (!((org.jsoup.nodes.Element)node).tagName().equalsIgnoreCase("HTML")) {
+                garbage.add(node);
+            } else {
+                final org.jsoup.nodes.Element elem = (org.jsoup.nodes.Element)node;
+                elem.tagName("DIV");
+                for (final org.jsoup.nodes.Node node2 : elem.childNodes()) {
+                    if (!(node2 instanceof org.jsoup.nodes.Element)) {
+                        garbage.add(node2);
+                    } else if (!((org.jsoup.nodes.Element)node2).tagName().equalsIgnoreCase("BODY")) {
+                        garbage.add(node2);
+                    } else {
+                        final org.jsoup.nodes.Element elem2 = (org.jsoup.nodes.Element)node2;
+                        elem2.tagName("DIV");
+                    }
+                }
+            }
+        }
 
-        final Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(xslt));
+        for (final org.jsoup.nodes.Node node : garbage) {
+            node.remove();
+        }
 
-        final StringWriter out = new StringWriter(1024);
-        transformer.transform(new DOMSource(document), new StreamResult(out));
-        return out.toString();
+        return document.html();
     }
 }

@@ -1,1 +1,1 @@
-@template footnote(n)@<div class="source"><div class="citation">@n@</div></div>
+@template footnote(n)@<div class="source"><div class="citation">@nu.mine.mosher.Util.esc(n)@</div></div>

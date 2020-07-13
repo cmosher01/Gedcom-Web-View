@@ -11,6 +11,7 @@ dependencies {
     implementation group: 'com.sparkjava', name: 'spark-core', version: 'latest.release'
     implementation group: 'org.slf4j', name: 'slf4j-jdk14', version: 'latest.release'
     implementation group: 'nu.mine.mosher.xml', name: 'tei-to-xhtml5', version: 'latest.integration'
+    implementation group: 'org.jsoup', name: 'jsoup', version: 'latest.release'
 
     runtimeOnly group: 'xerces', name: 'xercesImpl', version: 'latest.release', {
         exclude group: 'xml-apis'
