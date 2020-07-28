@@ -257,7 +257,7 @@ public final class Util {
         if (e == null || e.getDate() == null || e.getDate().getTabularString().equals("?")) {
             return unk("");
         }
-        return unk(e.getDate().getTabularString());
+        return unk(e.getDate().getTabularString().replaceAll("-", "\u2012"));
     }
 
     private static final Set<String> setPrimaryEventTypes = new HashSet<>();
