@@ -14,8 +14,8 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.*;
 import java.io.*;
-import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.text.Collator;
 import java.util.*;
 import java.util.regex.*;
@@ -25,6 +25,20 @@ import static nu.mine.mosher.gedcom.GedcomTag.*;
 
 @SuppressWarnings({ "unused", "WeakerAccess" }) /* Many of these methods are used only in templates */
 public final class Util {
+    private static final List<PathReplacement> pathReplacements = readPathReplacements();
+
+    private static List<PathReplacement> readPathReplacements() {
+        try {
+            return
+                Files.lines(Paths.get("gedcom/REGEX_PATH_TO_URL")).
+                map(PathReplacement::parse).
+                collect(Collectors.toUnmodifiableList());
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     private Util() {
         throw new IllegalStateException();
     }
@@ -469,17 +483,14 @@ public final class Util {
             return esc(att.toString());
         }
 
-        return replaceFilePathPrefix(standardizePathCharacters(att.toString()));
+        return applyPathReplacements(att.toString());
     }
 
-    private static String replaceFilePathPrefix(final String s)
-    {
-        // TODO: make prefixes configurable
-        return s.replaceFirst("^.*/Family Tree Maker/", "/ftm/");
-    }
-
-    public static String standardizePathCharacters(final String pathAnyOs) {
-        return pathAnyOs.replaceAll("\\\\", "/");
+    private static String applyPathReplacements(String s) {
+        for (final PathReplacement repl : Util.pathReplacements) {
+            s = repl.applyTo(s);
+        }
+        return s;
     }
 
     public static int size(final Collection<?> r) {
@@ -579,5 +590,23 @@ public final class Util {
         }
 
         return document.html();
+    }
+
+
+
+    private static class PathReplacement {
+        private final String regex;
+        private final String replacement;
+        public static PathReplacement parse(final String s) {
+            final String[] p = s.split(";", 2);
+            return new PathReplacement(p[0],p[1]);
+        }
+        public PathReplacement(String regex, String replacement) {
+            this.regex = regex;
+            this.replacement = replacement;
+        }
+        public String applyTo(final String path) {
+            return path.replaceAll(this.regex, this.replacement);
+        }
     }
 }

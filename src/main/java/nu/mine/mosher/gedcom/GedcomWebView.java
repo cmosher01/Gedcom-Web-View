@@ -32,7 +32,6 @@ public class GedcomWebView {
     }
 
     private static final NetHttpTransport TRANSPORT = new NetHttpTransport();
-    private static final JacksonFactory JACKSON = JacksonFactory.getDefaultInstance();
 
     public static void main(final String... args) {
         Jul.setLevel(Level.FINER);
@@ -119,7 +118,7 @@ public class GedcomWebView {
     }
 
     private static GoogleIdTokenVerifier tokenVerifier() {
-        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JACKSON).setAudience(Collections.singleton(googleClientID())).build();
+        return new GoogleIdTokenVerifier.Builder(TRANSPORT, JacksonFactory.getDefaultInstance()).setAudience(Collections.singleton(googleClientID())).build();
     }
 
     private static boolean emailIsAuthorized(final String email) {
