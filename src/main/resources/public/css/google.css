@@ -50,3 +50,8 @@
     height:100%;
     width:100%;
 }
+
+#gedcom-web-view-google-signin {
+    float: left;
+    margin-right: 0.5em;
+}

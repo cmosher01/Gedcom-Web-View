@@ -24,3 +24,7 @@ function renderButton() {
         }
     );
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('signout').addEventListener('click', signOut);
+});

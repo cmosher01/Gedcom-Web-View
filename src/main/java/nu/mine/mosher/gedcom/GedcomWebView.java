@@ -87,7 +87,7 @@ public class GedcomWebView {
     private String findGedcom(final Response res, final UUID uuid) {
         final Optional<Loader> loader= this.files.findLoaderForPerson(uuid);
         if (loader.isPresent()) {
-            res.redirect("../"+loader.get().getName() + "/persons/" + uuid);
+            res.redirect("../"+loader.get().getName() + "/persons/" + uuid, SC_MOVED_PERMANENTLY);
         } else {
             res.status(SC_NOT_FOUND);
         }

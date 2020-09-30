@@ -4,8 +4,6 @@ import nu.mine.mosher.collection.NoteList;
 import nu.mine.mosher.gedcom.model.*;
 import nu.mine.mosher.gedcom.model.Source;
 import nu.mine.mosher.xml.TeiToXhtml5;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Entities;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -557,9 +555,9 @@ public final class Util {
     }
 
     private static String htmlToXhtml(final String html) {
-        final org.jsoup.nodes.Document document = Jsoup.parseBodyFragment(html);
+        final org.jsoup.nodes.Document document = org.jsoup.Jsoup.parseBodyFragment(html);
         document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-        document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        document.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml);
         document.outputSettings().charset(StandardCharsets.UTF_8);
 
         final List<org.jsoup.nodes.Node> garbage = new ArrayList<>(4);
